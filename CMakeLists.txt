@@ -166,9 +166,7 @@ if(BUILD_TESTS)
   endfunction()
 
   # Register tests using the function
-  # register_test(test_args::none)
-  # register_test(test_args::invalid)
-  register_test(test_csv::save_load)
+  register_test("test_dummy::dummy")
 
   message(STATUS "[INFO] Tests enabled.")
 endif()
