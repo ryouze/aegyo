@@ -54,24 +54,24 @@ class UI {
 
         // Initialize question circle
         this->question_circle_.setRadius(80.f);
-        this->question_circle_.setFillColor(core::colors::QuestionCircle);
+        this->question_circle_.setFillColor(core::colors::question_circle);
         this->question_circle_.setOrigin(80.f, 80.f);
         this->question_circle_.setPosition(400.f, 150.f);
 
         // Initialize question text
         this->question_text_.setFont(this->font_);
         this->question_text_.setCharacterSize(48);
-        this->question_text_.setFillColor(core::colors::Text);
+        this->question_text_.setFillColor(core::colors::text);
 
         // Initialize answer buttons
         float button_radius = 60.f;
         for (std::size_t idx = 0; idx < 4; ++idx) {
             this->button_shapes_[idx].setRadius(button_radius);
-            this->button_shapes_[idx].setFillColor(core::colors::DefaultButton);
+            this->button_shapes_[idx].setFillColor(core::colors::default_button);
             this->button_shapes_[idx].setOrigin(button_radius, button_radius);
             this->answer_buttons_[idx].setFont(this->font_);
             this->answer_buttons_[idx].setCharacterSize(28);
-            this->answer_buttons_[idx].setFillColor(core::colors::Text);
+            this->answer_buttons_[idx].setFillColor(core::colors::text);
         }
         this->button_shapes_[0].setPosition(250.f, 350.f);
         this->button_shapes_[1].setPosition(550.f, 350.f);
@@ -81,7 +81,7 @@ class UI {
         // Initialize percentage text
         this->percentage_text_.setFont(this->font_);
         this->percentage_text_.setCharacterSize(18);  // Smaller font size
-        this->percentage_text_.setFillColor(core::colors::Text);
+        this->percentage_text_.setFillColor(core::colors::text);
         this->percentage_text_.setPosition(10.f, 10.f);  // Top-left corner
 
         // Initialize toggle buttons
@@ -93,12 +93,12 @@ class UI {
             button.setSize({50.f, 35.f});
             // Set fill color based on initial state
             if (this->toggle_states_[this->toggle_categories_[idx]]) {
-                button.setFillColor(core::colors::EnabledColor);  // Enabled state color
+                button.setFillColor(core::colors::enabled_color);  // Enabled state color
             }
             else {
-                button.setFillColor(core::colors::DisabledColor);  // Disabled state color
+                button.setFillColor(core::colors::disabled_color);  // Disabled state color
             }
-            button.setOutlineColor(core::colors::Text);
+            button.setOutlineColor(core::colors::text);
             button.setOutlineThickness(1.f);
             button.setPosition(start_x + idx * 60.f, 10.f);  // Positioned in the top-right corner
 
@@ -107,7 +107,7 @@ class UI {
             sf::Text text;
             text.setFont(this->font_);
             text.setCharacterSize(14);
-            text.setFillColor(core::colors::Text);
+            text.setFillColor(core::colors::text);
             text.setString(this->toggle_labels_[idx]);
             // Center text in the button
             sf::FloatRect text_bounds = text.getLocalBounds();
@@ -136,7 +136,7 @@ class UI {
                 this->game_state_ = GameState::NoEntriesEnabled;
                 // Disable answer buttons visually
                 for (auto &button_shape : this->button_shapes_) {
-                    button_shape.setFillColor(core::colors::DisabledColor);
+                    button_shape.setFillColor(core::colors::disabled_color);
                 }
                 for (auto &answer_button : this->answer_buttons_) {
                     answer_button.setString("");
@@ -171,7 +171,7 @@ class UI {
 
                 // Setup answer buttons
                 for (std::size_t idx = 0; idx < 4; ++idx) {
-                    this->button_shapes_[idx].setFillColor(core::colors::DefaultButton);  // Reset button colors
+                    this->button_shapes_[idx].setFillColor(core::colors::default_button);  // Reset button colors
                     this->answer_buttons_[idx].setString(core::string::to_sfml_string(this->is_hangul_ ? options[idx].latin : options[idx].hangul));
 
                     // Center text in the answer buttons
@@ -212,10 +212,10 @@ class UI {
                             this->vocabulary_.set_category_enabled(this->toggle_categories_[idx], !current_state);
                             // Update button appearance
                             if (this->toggle_states_[this->toggle_categories_[idx]]) {
-                                this->toggle_buttons_[idx].setFillColor(core::colors::EnabledColor);  // Enabled state color
+                                this->toggle_buttons_[idx].setFillColor(core::colors::enabled_color);  // Enabled state color
                             }
                             else {
-                                this->toggle_buttons_[idx].setFillColor(core::colors::DisabledColor);  // Disabled state color
+                                this->toggle_buttons_[idx].setFillColor(core::colors::disabled_color);  // Disabled state color
                             }
                             // Reset the game
                             setup_new_question();
@@ -229,10 +229,10 @@ class UI {
                         // Handle hover effect for answer buttons
                         for (std::size_t idx = 0; idx < 4; ++idx) {
                             if (this->button_shapes_[idx].getGlobalBounds().contains(static_cast<float>(mouse_pos.x), static_cast<float>(mouse_pos.y))) {
-                                this->button_shapes_[idx].setFillColor(core::colors::HoverButton);
+                                this->button_shapes_[idx].setFillColor(core::colors::hover_button);
                             }
                             else {
-                                this->button_shapes_[idx].setFillColor(core::colors::DefaultButton);
+                                this->button_shapes_[idx].setFillColor(core::colors::default_button);
                             }
                         }
                     }
@@ -245,16 +245,16 @@ class UI {
                                 // Highlight the buttons based on the user's selection
                                 if (idx == this->correct_index_) {
                                     this->correct_answers_++;
-                                    this->button_shapes_[idx].setFillColor(core::colors::CorrectAnswer);  // Correct answer
+                                    this->button_shapes_[idx].setFillColor(core::colors::correct_answer);  // Correct answer
                                 }
                                 else {
-                                    this->button_shapes_[idx].setFillColor(core::colors::SelectedWrongAnswer);             // Chosen wrong answer (orange)
-                                    this->button_shapes_[this->correct_index_].setFillColor(core::colors::CorrectAnswer);  // Highlight correct answer
+                                    this->button_shapes_[idx].setFillColor(core::colors::selected_wrong_answer);            // Chosen wrong answer (orange)
+                                    this->button_shapes_[this->correct_index_].setFillColor(core::colors::correct_answer);  // Highlight correct answer
                                 }
                                 // Set the other buttons to incorrect color
                                 for (std::size_t jdx = 0; jdx < 4; ++jdx) {
                                     if (jdx != idx && jdx != this->correct_index_) {
-                                        this->button_shapes_[jdx].setFillColor(core::colors::IncorrectAnswer);  // Incorrect answers
+                                        this->button_shapes_[jdx].setFillColor(core::colors::incorrect_answer);  // Incorrect answers
                                     }
                                 }
                                 update_percentage_text();
@@ -283,16 +283,16 @@ class UI {
                             // Highlight the buttons based on the user's selection
                             if (selected_index == this->correct_index_) {
                                 this->correct_answers_++;
-                                this->button_shapes_[selected_index].setFillColor(core::colors::CorrectAnswer);  // Correct answer
+                                this->button_shapes_[selected_index].setFillColor(core::colors::correct_answer);  // Correct answer
                             }
                             else {
-                                this->button_shapes_[selected_index].setFillColor(core::colors::SelectedWrongAnswer);  // Chosen wrong answer (orange)
-                                this->button_shapes_[this->correct_index_].setFillColor(core::colors::CorrectAnswer);  // Highlight correct answer
+                                this->button_shapes_[selected_index].setFillColor(core::colors::selected_wrong_answer);  // Chosen wrong answer (orange)
+                                this->button_shapes_[this->correct_index_].setFillColor(core::colors::correct_answer);   // Highlight correct answer
                             }
                             // Set the other buttons to incorrect color
                             for (std::size_t jdx = 0; jdx < 4; ++jdx) {
                                 if (jdx != selected_index && jdx != this->correct_index_) {
-                                    this->button_shapes_[jdx].setFillColor(core::colors::IncorrectAnswer);  // Incorrect answers
+                                    this->button_shapes_[jdx].setFillColor(core::colors::incorrect_answer);  // Incorrect answers
                                 }
                             }
                             update_percentage_text();
@@ -323,21 +323,21 @@ class UI {
             if (this->game_state_ == GameState::WaitingForAnswer) {
                 for (std::size_t idx = 0; idx < 4; ++idx) {
                     if (this->button_shapes_[idx].getGlobalBounds().contains(static_cast<float>(mouse_pos.x), static_cast<float>(mouse_pos.y))) {
-                        this->button_shapes_[idx].setFillColor(core::colors::HoverButton);
+                        this->button_shapes_[idx].setFillColor(core::colors::hover_button);
                     }
                     else {
-                        this->button_shapes_[idx].setFillColor(core::colors::DefaultButton);
+                        this->button_shapes_[idx].setFillColor(core::colors::default_button);
                     }
                 }
             }
             else if (this->game_state_ == GameState::NoEntriesEnabled) {
                 // Disable hover effect on answer buttons
                 for (auto &button_shape : this->button_shapes_) {
-                    button_shape.setFillColor(core::colors::DisabledColor);
+                    button_shape.setFillColor(core::colors::disabled_color);
                 }
             }
 
-            this->window_.clear(core::colors::Background);  // Dark background color
+            this->window_.clear(core::colors::background);  // Dark background color
             this->window_.draw(this->question_circle_);
             this->window_.draw(this->question_text_);
             for (std::size_t idx = 0; idx < 4; ++idx) {
