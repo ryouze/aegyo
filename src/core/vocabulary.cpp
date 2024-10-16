@@ -107,7 +107,8 @@ Entry Vocabulary::get_random_wrong_entry(const Entry &correct_entry)
     return wrong_entries[dist(rng)];
 }
 
-std::vector<Entry> Vocabulary::get_question_options(const Entry &correct_entry, std::size_t num_options)
+std::vector<Entry> Vocabulary::get_question_options(const Entry &correct_entry,
+                                                    const std::size_t num_options)
 {
     std::vector<Entry> options = {correct_entry};
 
@@ -136,7 +137,8 @@ std::vector<Entry> Vocabulary::get_question_options(const Entry &correct_entry, 
     return options;
 }
 
-void Vocabulary::set_category_enabled(Category category, bool enabled)
+void Vocabulary::set_category_enabled(const Category category,
+                                      const bool enabled)
 {
     category_enabled[category] = enabled;
 }
