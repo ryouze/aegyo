@@ -9,9 +9,7 @@ aegyo is a cross-platform GUI app for learning Korean hangul.
 
 ## Motivation
 
-When I was learning Japanese kana, I liked the idea of cramming the characters into my head by repeatedly choosing the correct character from a set of options. I found an iOS app called [Kana School](https://apps.apple.com/us/app/kana-school-japanese-letters/id1214626499) that did exactly that. Unfortunately, no such app existed for Korean hangul, so I decided to make one myself.
-
-Nothing beats pure brute force memorization.
+When I was learning Japanese kana, I liked the idea of drilling the characters into my memory through pure brute-force repetition. I found an iOS app called [Kana School](https://apps.apple.com/us/app/kana-school-japanese-letters/id1214626499) that did exactly that. Unfortunately, no similar app existed for Korean Hangul, so I decided to create one myself.
 
 
 ## Features
@@ -138,7 +136,7 @@ On first run on macOS, the app will request access to keystrokes from any applic
 Grant access to this application in Privacy & Security settings, located in System Settings.
 ```
 
-This is caused by the underlying SFML library, which reads raw keyboard input. You should **deny** this request, as the app does not expect any input while it`s not in focus. I'd rather not have such a request appear in the first place, but I have no control over it.
+This is caused by the underlying SFML library, which reads raw keyboard input. You should **deny** this request, as the app does not expect any input while it's not in focus. I'd rather not have such a request appear in the first place, but I have no control over it.
 
 ### Controls
 
