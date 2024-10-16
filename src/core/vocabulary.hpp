@@ -21,13 +21,13 @@ enum class Category {
     CompoundVowel
 };
 
-struct Entry {
+struct Entry final {
     std::string hangul;
     std::string latin;
     Category category;
 };
 
-class Vocabulary {
+class Vocabulary final {
   public:
     Vocabulary();
 

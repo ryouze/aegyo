@@ -21,7 +21,7 @@
 
 namespace app {
 
-class UI {
+class UI final {
   public:
     UI()
         : window_(sf::VideoMode(800, 600), fmt::format("aegyo ({})", PROJECT_VERSION), sf::Style::Titlebar | sf::Style::Close),
