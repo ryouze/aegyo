@@ -133,7 +133,7 @@ if(APPLE)
     )
 
     # Add install target for macOS app bundle
-    install(TARGETS ${PROJECT_NAME} BUNDLE DESTINATION ~/Applications)
+    install(TARGETS ${PROJECT_NAME} BUNDLE DESTINATION "/Applications")
 elseif(WIN32)
     # Specify the path to the .ico file
     set(ICON_PATH "${CMAKE_SOURCE_DIR}/cmake/assets/Icon.ico")

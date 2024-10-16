@@ -115,8 +115,10 @@ If not already built, follow the steps in the [Build](#build) section and ensure
 To install the program, use the following command:
 
 ```sh
-cmake --install .
+sudo cmake --install .
 ```
+
+On macOS, this will install the program to `/Applications`. You can then run `aegyo` from the Launchpad, Spotlight, or by double-clicking the app in Finder.
 
 
 ## Usage
