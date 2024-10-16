@@ -12,64 +12,56 @@
 namespace core::vocabulary {
 
 Vocabulary::Vocabulary()
-    : rng(std::random_device{}())
+    : entries{
+          // Basic Vowels
+          {"ㅏ", "a", Category::BasicVowel},
+          {"ㅑ", "ya", Category::BasicVowel},
+          {"ㅓ", "eo", Category::BasicVowel},
+          {"ㅕ", "yeo", Category::BasicVowel},
+          {"ㅗ", "o", Category::BasicVowel},
+          {"ㅛ", "yo", Category::BasicVowel},
+          {"ㅜ", "u", Category::BasicVowel},
+          {"ㅠ", "yu", Category::BasicVowel},
+          {"ㅡ", "eu", Category::BasicVowel},
+          {"ㅣ", "i", Category::BasicVowel},
+
+          // Basic Consonants
+          {"ㄱ", "g", Category::BasicConsonant},
+          {"ㄴ", "n", Category::BasicConsonant},
+          {"ㄷ", "d", Category::BasicConsonant},
+          {"ㄹ", "r/l", Category::BasicConsonant},
+          {"ㅁ", "m", Category::BasicConsonant},
+          {"ㅂ", "b", Category::BasicConsonant},
+          {"ㅅ", "s", Category::BasicConsonant},
+          {"ㅇ", "ng", Category::BasicConsonant},
+          {"ㅈ", "j", Category::BasicConsonant},
+          {"ㅊ", "ch", Category::BasicConsonant},
+          {"ㅋ", "k", Category::BasicConsonant},
+          {"ㅌ", "t", Category::BasicConsonant},
+          {"ㅍ", "p", Category::BasicConsonant},
+          {"ㅎ", "h", Category::BasicConsonant},
+
+          // Double Consonants
+          {"ㄲ", "kk", Category::DoubleConsonant},
+          {"ㄸ", "tt", Category::DoubleConsonant},
+          {"ㅃ", "pp", Category::DoubleConsonant},
+          {"ㅆ", "ss", Category::DoubleConsonant},
+          {"ㅉ", "jj", Category::DoubleConsonant},
+
+          // Compound Vowels
+          {"ㅐ", "ae", Category::CompoundVowel},
+          {"ㅒ", "yae", Category::CompoundVowel},
+          {"ㅔ", "e", Category::CompoundVowel},
+          {"ㅖ", "ye", Category::CompoundVowel},
+          {"ㅘ", "wa", Category::CompoundVowel},
+          {"ㅙ", "wae", Category::CompoundVowel},
+          {"ㅚ", "oe", Category::CompoundVowel},
+          {"ㅝ", "wo", Category::CompoundVowel},
+          {"ㅞ", "we", Category::CompoundVowel},
+          {"ㅟ", "wi", Category::CompoundVowel},
+          {"ㅢ", "ui", Category::CompoundVowel}},
+      category_enabled{{Category::BasicVowel, true}, {Category::BasicConsonant, true}, {Category::DoubleConsonant, true}, {Category::CompoundVowel, true}}, rng(std::random_device{}())
 {
-    // Initialize entries with actual Korean vocabulary
-    this->entries = {
-        // Basic Vowels
-        {"ㅏ", "a", Category::BasicVowel},
-        {"ㅑ", "ya", Category::BasicVowel},
-        {"ㅓ", "eo", Category::BasicVowel},
-        {"ㅕ", "yeo", Category::BasicVowel},
-        {"ㅗ", "o", Category::BasicVowel},
-        {"ㅛ", "yo", Category::BasicVowel},
-        {"ㅜ", "u", Category::BasicVowel},
-        {"ㅠ", "yu", Category::BasicVowel},
-        {"ㅡ", "eu", Category::BasicVowel},
-        {"ㅣ", "i", Category::BasicVowel},
-
-        // Basic Consonants
-        {"ㄱ", "g", Category::BasicConsonant},
-        {"ㄴ", "n", Category::BasicConsonant},
-        {"ㄷ", "d", Category::BasicConsonant},
-        {"ㄹ", "r/l", Category::BasicConsonant},
-        {"ㅁ", "m", Category::BasicConsonant},
-        {"ㅂ", "b", Category::BasicConsonant},
-        {"ㅅ", "s", Category::BasicConsonant},
-        {"ㅇ", "ng", Category::BasicConsonant},
-        {"ㅈ", "j", Category::BasicConsonant},
-        {"ㅊ", "ch", Category::BasicConsonant},
-        {"ㅋ", "k", Category::BasicConsonant},
-        {"ㅌ", "t", Category::BasicConsonant},
-        {"ㅍ", "p", Category::BasicConsonant},
-        {"ㅎ", "h", Category::BasicConsonant},
-
-        // Double Consonants
-        {"ㄲ", "kk", Category::DoubleConsonant},
-        {"ㄸ", "tt", Category::DoubleConsonant},
-        {"ㅃ", "pp", Category::DoubleConsonant},
-        {"ㅆ", "ss", Category::DoubleConsonant},
-        {"ㅉ", "jj", Category::DoubleConsonant},
-
-        // Compound Vowels
-        {"ㅐ", "ae", Category::CompoundVowel},
-        {"ㅒ", "yae", Category::CompoundVowel},
-        {"ㅔ", "e", Category::CompoundVowel},
-        {"ㅖ", "ye", Category::CompoundVowel},
-        {"ㅘ", "wa", Category::CompoundVowel},
-        {"ㅙ", "wae", Category::CompoundVowel},
-        {"ㅚ", "oe", Category::CompoundVowel},
-        {"ㅝ", "wo", Category::CompoundVowel},
-        {"ㅞ", "we", Category::CompoundVowel},
-        {"ㅟ", "wi", Category::CompoundVowel},
-        {"ㅢ", "ui", Category::CompoundVowel}};
-
-    // Initialize category_enabled map
-    this->category_enabled = {
-        {Category::BasicVowel, true},
-        {Category::BasicConsonant, true},
-        {Category::DoubleConsonant, true},
-        {Category::CompoundVowel, true}};
 }
 
 Entry Vocabulary::get_random_entry()
