@@ -201,7 +201,7 @@ class UI final {
 
         auto update_percentage_text = [&]() {
             const float percentage = this->total_questions_ > 0 ? (static_cast<float>(this->correct_answers_) / this->total_questions_) * 100.f : 0.f;
-            const auto percentage_str = fmt::format("정답률: {:.1f}%", percentage);
+            const auto percentage_str = fmt::format("게임 점수: {:.1f}%", percentage);
             this->percentage_text_.setString(core::string::to_sfml_string(percentage_str));
         };
 
