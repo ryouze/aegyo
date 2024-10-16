@@ -28,19 +28,6 @@ Vocabulary::Vocabulary()
         {"ㅡ", "eu", Category::BasicVowel},
         {"ㅣ", "i", Category::BasicVowel},
 
-        // Compound Vowels
-        {"ㅐ", "ae", Category::CompoundVowel},
-        {"ㅒ", "yae", Category::CompoundVowel},
-        {"ㅔ", "e", Category::CompoundVowel},
-        {"ㅖ", "ye", Category::CompoundVowel},
-        {"ㅘ", "wa", Category::CompoundVowel},
-        {"ㅙ", "wae", Category::CompoundVowel},
-        {"ㅚ", "oe", Category::CompoundVowel},
-        {"ㅝ", "wo", Category::CompoundVowel},
-        {"ㅞ", "we", Category::CompoundVowel},
-        {"ㅟ", "wi", Category::CompoundVowel},
-        {"ㅢ", "ui", Category::CompoundVowel},
-
         // Basic Consonants
         {"ㄱ", "g", Category::BasicConsonant},
         {"ㄴ", "n", Category::BasicConsonant},
@@ -62,7 +49,20 @@ Vocabulary::Vocabulary()
         {"ㄸ", "tt", Category::DoubleConsonant},
         {"ㅃ", "pp", Category::DoubleConsonant},
         {"ㅆ", "ss", Category::DoubleConsonant},
-        {"ㅉ", "jj", Category::DoubleConsonant}};
+        {"ㅉ", "jj", Category::DoubleConsonant},
+
+        // Compound Vowels
+        {"ㅐ", "ae", Category::CompoundVowel},
+        {"ㅒ", "yae", Category::CompoundVowel},
+        {"ㅔ", "e", Category::CompoundVowel},
+        {"ㅖ", "ye", Category::CompoundVowel},
+        {"ㅘ", "wa", Category::CompoundVowel},
+        {"ㅙ", "wae", Category::CompoundVowel},
+        {"ㅚ", "oe", Category::CompoundVowel},
+        {"ㅝ", "wo", Category::CompoundVowel},
+        {"ㅞ", "we", Category::CompoundVowel},
+        {"ㅟ", "wi", Category::CompoundVowel},
+        {"ㅢ", "ui", Category::CompoundVowel}};
 
     // Initialize category_enabled map
     category_enabled = {
