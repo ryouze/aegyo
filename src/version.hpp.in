@@ -1,0 +1,9 @@
+/**
+ * @file version.hpp
+ *
+ * @brief Project version header, modified by CMake during build.
+ */
+
+#pragma once
+
+#define PROJECT_VERSION "@PROJECT_VERSION@"
