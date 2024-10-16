@@ -21,9 +21,22 @@
 
 namespace app {
 
+namespace {
+
+/**
+ * @brief Private helper class that handles the user interface.
+ *
+ * On construction, the class loads the CSV file and sets up the window.
+ * To run the application, call the "run()" method.
+ *
+ * @note This class is marked as `final` to prevent inheritance.
+ */
 class UI final {
   public:
-    UI()
+    /**
+     * @brief Construct a new UI object.
+     */
+    explicit UI()
         : window_(sf::VideoMode(800, 600), fmt::format("aegyo ({})", PROJECT_VERSION), sf::Style::Titlebar | sf::Style::Close),
           font_(core::assets::load_font()),
           vocabulary_(),
@@ -49,7 +62,7 @@ class UI final {
                           {core::vocabulary::Category::DoubleConsonant, true},
                           {core::vocabulary::Category::CompoundVowel, true}})
     {
-        // Set vertical sync
+        // Enable V-Sync to limit the frame rate to the refresh rate of the monitor
         this->window_.setVerticalSyncEnabled(true);
 
         // Initialize question circle
@@ -64,7 +77,7 @@ class UI final {
         this->question_text_.setFillColor(core::colors::text);
 
         // Initialize answer buttons
-        float button_radius = 60.f;
+        constexpr float button_radius = 60.f;
         for (std::size_t idx = 0; idx < 4; ++idx) {
             this->button_shapes_[idx].setRadius(button_radius);
             this->button_shapes_[idx].setFillColor(core::colors::default_button);
@@ -85,14 +98,14 @@ class UI final {
         this->percentage_text_.setPosition(10.f, 10.f);  // Top-left corner
 
         // Initialize toggle buttons
-        float total_toggle_width = this->toggle_labels_.size() * 60.f;
-        float start_x = this->window_.getSize().x - total_toggle_width - 10.f;  // 10.f padding from the right
+        const float total_toggle_width = this->toggle_labels_.size() * 60.f;
+        const float start_x = this->window_.getSize().x - total_toggle_width - 10.f;  // 10.f padding from the right
 
         for (std::size_t idx = 0; idx < this->toggle_categories_.size(); ++idx) {
             sf::RectangleShape button;
             button.setSize({50.f, 35.f});
             // Set fill color based on initial state
-            if (this->toggle_states_[this->toggle_categories_[idx]]) {
+            if (this->toggle_states_.at(this->toggle_categories_[idx])) {
                 button.setFillColor(core::colors::enabled_color);  // Enabled state color
             }
             else {
@@ -110,7 +123,7 @@ class UI final {
             text.setFillColor(core::colors::text);
             text.setString(this->toggle_labels_[idx]);
             // Center text in the button
-            sf::FloatRect text_bounds = text.getLocalBounds();
+            const sf::FloatRect text_bounds = text.getLocalBounds();
             text.setOrigin(text_bounds.left + text_bounds.width / 2.0f,
                            text_bounds.top + text_bounds.height / 2.0f);
             text.setPosition(button.getPosition() + sf::Vector2f(25.f, 17.5f));
@@ -119,6 +132,9 @@ class UI final {
         }
     }
 
+    /**
+     * @brief Run the main application loop.
+     */
     void run()
     {
         // Lambda functions for setup
@@ -128,7 +144,7 @@ class UI final {
                 this->question_text_.setString("X");
                 this->question_text_.setCharacterSize(72);  // Increase font size for the 'X'
                 // Center text in the question circle
-                sf::FloatRect text_bounds = this->question_text_.getLocalBounds();
+                const sf::FloatRect text_bounds = this->question_text_.getLocalBounds();
                 this->question_text_.setOrigin(text_bounds.left + text_bounds.width / 2.0f,
                                                text_bounds.top + text_bounds.height / 2.0f);
                 this->question_text_.setPosition(this->question_circle_.getPosition());
@@ -150,7 +166,7 @@ class UI final {
                 this->is_hangul_ = dist(this->rng_) == 0;
 
                 // Get unique options
-                auto options = this->vocabulary_.get_question_options(this->correct_entry_);
+                const auto options = this->vocabulary_.get_question_options(this->correct_entry_);
 
                 // Find the index of the correct answer after shuffling
                 for (std::size_t idx = 0; idx < options.size(); ++idx) {
@@ -164,7 +180,7 @@ class UI final {
                 this->question_text_.setCharacterSize(48);  // Reset to default size
                 this->question_text_.setString(core::string::to_sfml_string(this->is_hangul_ ? this->correct_entry_.hangul : this->correct_entry_.latin));
                 // Center text in the question circle
-                sf::FloatRect text_bounds = this->question_text_.getLocalBounds();
+                const sf::FloatRect text_bounds = this->question_text_.getLocalBounds();
                 this->question_text_.setOrigin(text_bounds.left + text_bounds.width / 2.0f,
                                                text_bounds.top + text_bounds.height / 2.0f);
                 this->question_text_.setPosition(this->question_circle_.getPosition());
@@ -175,7 +191,7 @@ class UI final {
                     this->answer_buttons_[idx].setString(core::string::to_sfml_string(this->is_hangul_ ? options[idx].latin : options[idx].hangul));
 
                     // Center text in the answer buttons
-                    sf::FloatRect ans_text_bounds = this->answer_buttons_[idx].getLocalBounds();
+                    const sf::FloatRect ans_text_bounds = this->answer_buttons_[idx].getLocalBounds();
                     this->answer_buttons_[idx].setOrigin(ans_text_bounds.left + ans_text_bounds.width / 2.0f,
                                                          ans_text_bounds.top + ans_text_bounds.height / 2.0f);
                     this->answer_buttons_[idx].setPosition(this->button_shapes_[idx].getPosition());
@@ -184,8 +200,8 @@ class UI final {
         };
 
         auto update_percentage_text = [&]() {
-            float percentage = this->total_questions_ > 0 ? (static_cast<float>(this->correct_answers_) / this->total_questions_) * 100.f : 0.f;
-            auto percentage_str = fmt::format("정답률: {:.1f}%", percentage);
+            const float percentage = this->total_questions_ > 0 ? (static_cast<float>(this->correct_answers_) / this->total_questions_) * 100.f : 0.f;
+            const auto percentage_str = fmt::format("정답률: {:.1f}%", percentage);
             this->percentage_text_.setString(core::string::to_sfml_string(percentage_str));
         };
 
@@ -194,7 +210,7 @@ class UI final {
         update_percentage_text();
 
         while (this->window_.isOpen()) {
-            sf::Vector2i mouse_pos = sf::Mouse::getPosition(this->window_);
+            const sf::Vector2i mouse_pos = sf::Mouse::getPosition(this->window_);
 
             sf::Event event;
             while (this->window_.pollEvent(event)) {
@@ -207,7 +223,7 @@ class UI final {
                     for (std::size_t idx = 0; idx < this->toggle_buttons_.size(); ++idx) {
                         if (this->toggle_buttons_[idx].getGlobalBounds().contains(static_cast<float>(mouse_pos.x), static_cast<float>(mouse_pos.y))) {
                             // Toggle the category
-                            bool current_state = this->toggle_states_[this->toggle_categories_[idx]];
+                            const bool current_state = this->toggle_states_[this->toggle_categories_[idx]];
                             this->toggle_states_[this->toggle_categories_[idx]] = !current_state;
                             this->vocabulary_.set_category_enabled(this->toggle_categories_[idx], !current_state);
                             // Update button appearance
@@ -241,10 +257,10 @@ class UI final {
                         for (std::size_t idx = 0; idx < 4; ++idx) {
                             if (this->button_shapes_[idx].getGlobalBounds().contains(static_cast<float>(mouse_pos.x), static_cast<float>(mouse_pos.y))) {
                                 this->game_state_ = GameState::ShowResult;
-                                this->total_questions_++;
+                                ++this->total_questions_;
                                 // Highlight the buttons based on the user's selection
                                 if (idx == this->correct_index_) {
-                                    this->correct_answers_++;
+                                    ++this->correct_answers_;
                                     this->button_shapes_[idx].setFillColor(core::colors::correct_answer);  // Correct answer
                                 }
                                 else {
@@ -279,10 +295,10 @@ class UI final {
                         }
                         if (selected_index != static_cast<std::size_t>(-1)) {
                             this->game_state_ = GameState::ShowResult;
-                            this->total_questions_++;
+                            ++this->total_questions_;
                             // Highlight the buttons based on the user's selection
                             if (selected_index == this->correct_index_) {
-                                this->correct_answers_++;
+                                ++this->correct_answers_;
                                 this->button_shapes_[selected_index].setFillColor(core::colors::correct_answer);  // Correct answer
                             }
                             else {
@@ -391,9 +407,10 @@ class UI final {
     std::vector<sf::Text> toggle_texts_;
 };
 
+}  // namespace
+
 void run()
 {
-
     UI().run();
 }
 
