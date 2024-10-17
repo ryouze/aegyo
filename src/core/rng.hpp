@@ -20,22 +20,24 @@ class RNG final {
     /**
      * @brief Get the static random number generator instance.
      *
-     * @return Reference to the static instace of "std::mt19937" random number generator.
+     * @return Reference to the static instance of "std::mt19937" random number generator.
      */
-    static std::mt19937 &instance();
+    [[nodiscard]] static std::mt19937 &instance();
 
     /**
-     * @brief Get a random integer in the range [min, max].
+     * @brief Get a random number in the range [min, max].
      *
-     * @param min Minimum value (e.g., "0").
+     * @tparam T Numeric type (must be an integral or unsigned type).
+     *@param min Minimum value (e.g., "0").
      * @param max Maximum value (e.g., "10").
      *
-     * @return Random integer in the specified range.
+     * @return Random number in the specified range (e.g., "5").
      *
      * @note The range is inclusive for both the minimum and maximum values.
      */
-    static int get_random_int(const int min,
-                              const int max);
+    template <typename T>
+    [[nodiscard]] static T get_random_number(const T min,
+                                             const T max);
 
     /**
      * @brief Get a random boolean value with a given probability of being true.
@@ -44,7 +46,7 @@ class RNG final {
      *
      * @return Random boolean value (e.g., "true").
      */
-    static bool get_random_bool(const double probability = 0.5);
+    [[nodiscard]] static bool get_random_bool(const double probability = 0.5);
 };
 
 }  // namespace core::rng

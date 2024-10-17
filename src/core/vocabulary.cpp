@@ -4,9 +4,9 @@
 
 #include <algorithm>  // for std::shuffle
 #include <cstddef>    // for std::size_t
-#include <random>     // for std::random_device, std::uniform_int_distribution
 #include <vector>     // for std::vector
 
+#include "core/rng.hpp"
 #include "vocabulary.hpp"
 
 namespace core::vocabulary {
@@ -60,7 +60,7 @@ Vocabulary::Vocabulary()
           {"ㅞ", "we", Category::CompoundVowel},
           {"ㅟ", "wi", Category::CompoundVowel},
           {"ㅢ", "ui", Category::CompoundVowel}},
-      category_enabled{{Category::BasicVowel, true}, {Category::BasicConsonant, true}, {Category::DoubleConsonant, true}, {Category::CompoundVowel, true}}, rng(std::random_device{}())
+      category_enabled{{Category::BasicVowel, true}, {Category::BasicConsonant, true}, {Category::DoubleConsonant, true}, {Category::CompoundVowel, true}}
 {
 }
 
@@ -69,7 +69,7 @@ Entry Vocabulary::get_random_entry()
     // Collect enabled entries
     std::vector<Entry> enabled_entries;
     for (const auto &entry : this->entries) {
-        if (this->category_enabled[entry.category]) {
+        if (this->category_enabled.at(entry.category)) {
             enabled_entries.push_back(entry);
         }
     }
@@ -78,15 +78,15 @@ Entry Vocabulary::get_random_entry()
         return {"N/A", "N/A", Category::BasicVowel};
     }
 
-    std::uniform_int_distribution<std::size_t> dist(0, enabled_entries.size() - 1);
-    return enabled_entries[dist(this->rng)];
+    const auto index = core::rng::RNG::get_random_number<std::size_t>(0, enabled_entries.size() - 1);
+    return enabled_entries[index];
 }
 
 Entry Vocabulary::get_random_wrong_entry(const Entry &correct_entry)
 {
     std::vector<Entry> wrong_entries;
     for (const auto &entry : this->entries) {
-        if (this->category_enabled[entry.category] && entry.hangul != correct_entry.hangul) {
+        if (this->category_enabled.at(entry.category) && entry.hangul != correct_entry.hangul) {
             wrong_entries.push_back(entry);
         }
     }
@@ -95,8 +95,8 @@ Entry Vocabulary::get_random_wrong_entry(const Entry &correct_entry)
         return {"N/A", "N/A", Category::BasicVowel};
     }
 
-    std::uniform_int_distribution<std::size_t> dist(0, wrong_entries.size() - 1);
-    return wrong_entries[dist(this->rng)];
+    const auto index = core::rng::RNG::get_random_number<std::size_t>(0, wrong_entries.size() - 1);
+    return wrong_entries[index];
 }
 
 std::vector<Entry> Vocabulary::get_question_options(const Entry &correct_entry,
@@ -107,13 +107,13 @@ std::vector<Entry> Vocabulary::get_question_options(const Entry &correct_entry,
     // Collect possible wrong entries
     std::vector<Entry> wrong_entries;
     for (const auto &entry : this->entries) {
-        if (this->category_enabled[entry.category] && entry.hangul != correct_entry.hangul) {
+        if (this->category_enabled.at(entry.category) && entry.hangul != correct_entry.hangul) {
             wrong_entries.push_back(entry);
         }
     }
 
     // Shuffle wrong entries
-    std::shuffle(wrong_entries.begin(), wrong_entries.end(), this->rng);
+    std::shuffle(wrong_entries.begin(), wrong_entries.end(), core::rng::RNG::instance());
 
     // Add unique wrong entries until we have the desired number of options
     for (const auto &wrong_entry : wrong_entries) {
@@ -124,7 +124,7 @@ std::vector<Entry> Vocabulary::get_question_options(const Entry &correct_entry,
     }
 
     // Shuffle the options
-    std::shuffle(options.begin(), options.end(), this->rng);
+    std::shuffle(options.begin(), options.end(), core::rng::RNG::instance());
 
     return options;
 }

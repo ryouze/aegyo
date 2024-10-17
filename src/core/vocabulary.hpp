@@ -7,7 +7,6 @@
 #pragma once
 
 #include <cstddef>        // for std::size_t
-#include <random>         // for std::mt19937
 #include <string>         // for std::string
 #include <unordered_map>  // for std::unordered_map
 #include <vector>         // for std::vector
@@ -105,11 +104,6 @@ class Vocabulary final {
      * @brief Map indicating whether each category is enabled.
      */
     std::unordered_map<Category, bool> category_enabled;
-
-    /**
-     * @brief Random number generator used for selecting random entries.
-     */
-    std::mt19937 rng;
 };
 
 }  // namespace core::vocabulary
