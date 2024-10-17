@@ -38,8 +38,8 @@ Pre-built binaries are available for macOS (ARM64), GNU/Linux (x86_64), and Wind
 To remove macOS quarantine, use the following command:
 
 ```sh
-xattr -d com.apple.quarantine aegyo-macos-arm64
-chmod +x aegyo-macos-arm64
+xattr -d com.apple.quarantine aegyo-macos-arm64.app
+chmod +x aegyo-macos-arm64.app
 ```
 
 
