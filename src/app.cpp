@@ -65,6 +65,9 @@ class UI final {
         // Enable V-Sync to limit the frame rate to the refresh rate of the monitor
         this->window_.setVerticalSyncEnabled(true);
 
+        // Disable key repeat, as we only want one key press to register
+        this->window_.setKeyRepeatEnabled(false);
+
         // Initialize question circle
         this->question_circle_.setRadius(80.f);
         this->question_circle_.setFillColor(core::colors::question_circle);
