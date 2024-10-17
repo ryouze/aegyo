@@ -23,19 +23,22 @@ jobs:
             cpp_compiler: clang++
             input_name: aegyo.app
             output_name: aegyo-macos-arm64.app
-            zip_name: aegyo-macos-arm64.zip
+            archive_name: aegyo-macos-arm64.tar.gz
+            archive_type: tar
           - os: ubuntu-latest
             # c_compiler: gcc
             cpp_compiler: g++
             input_name: aegyo
             output_name: aegyo-linux-x86_64
-            zip_name: aegyo-linux-x86_64.zip
+            archive_name: aegyo-linux-x86_64.tar.gz
+            archive_type: tar
           - os: windows-latest
             # c_compiler: cl
             cpp_compiler: cl
             input_name: Release/aegyo.exe  # Stored in a subdirectory on Windows
             output_name: aegyo-windows-x86_64.exe
-            zip_name: aegyo-windows-x86_64.zip
+            archive_name: aegyo-windows-x86_64.zip
+            archive_type: zip
 
     steps:
       - uses: actions/checkout@v4
@@ -84,11 +87,11 @@ jobs:
           echo "Renaming '${{ matrix.input_name }}' to '${{ matrix.output_name }}'"
           mv "${{ matrix.input_name }}" "${{ matrix.output_name }}"
 
-      - name: Zip binary
+      - name: Archive binary
         uses: thedoctor0/zip-release@0.7.6
         with:
-          type: "zip"
-          filename: "${{ matrix.zip_name }}"
+          type: ${{ matrix.archive_type }}
+          filename: "${{ matrix.archive_name }}"
           directory: ${{ steps.strings.outputs.build-output-dir }}
           path: ${{ matrix.output_name }}
 
@@ -97,4 +100,4 @@ jobs:
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.zip_name }}
+          files: ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.archive_name }}
