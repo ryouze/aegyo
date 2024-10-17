@@ -24,9 +24,9 @@ inline const sf::Color hover_color = sf::Color(150, 150, 150);     // Gray for h
 // Answer button colors
 inline const sf::Color default_button = sf::Color(80, 80, 80);
 inline const sf::Color hover_button = sf::Color(100, 100, 100);
-inline const sf::Color correct_answer = sf::Color(0, 200, 0);
-inline const sf::Color incorrect_answer = sf::Color(200, 0, 0);
-inline const sf::Color selected_wrong_answer = sf::Color(255, 165, 0);  // Orange
+inline const sf::Color correct_answer = sf::Color(30, 130, 30);
+inline const sf::Color incorrect_answer = sf::Color(130, 30, 30);
+inline const sf::Color selected_wrong_answer = sf::Color(200, 120, 0);
 
 // Question circle color
 inline const sf::Color question_circle = sf::Color(50, 50, 50);
