@@ -9,7 +9,7 @@
 #include "core/rng.hpp"
 #include "vocabulary.hpp"
 
-namespace core::vocabulary {
+namespace modules::vocabulary {
 
 Vocabulary::Vocabulary()
     : entries{
@@ -135,4 +135,4 @@ void Vocabulary::set_category_enabled(const Category category,
     this->category_enabled[category] = enabled;
 }
 
-}  // namespace core::vocabulary
+}  // namespace modules::vocabulary

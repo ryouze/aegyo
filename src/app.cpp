@@ -16,7 +16,7 @@
 #include "core/colors.hpp"
 #include "core/rng.hpp"
 #include "core/string.hpp"
-#include "core/vocabulary.hpp"
+#include "modules/vocabulary.hpp"
 #include "version.hpp"
 
 namespace app {
@@ -52,14 +52,14 @@ class UI final {
           button_shapes_(4),
           percentage_text_(),
           toggle_labels_({"Vow", "Con", "DCon", "CompV"}),
-          toggle_categories_({core::vocabulary::Category::BasicVowel,
-                              core::vocabulary::Category::BasicConsonant,
-                              core::vocabulary::Category::DoubleConsonant,
-                              core::vocabulary::Category::CompoundVowel}),
-          toggle_states_({{core::vocabulary::Category::BasicVowel, true},
-                          {core::vocabulary::Category::BasicConsonant, true},
-                          {core::vocabulary::Category::DoubleConsonant, true},
-                          {core::vocabulary::Category::CompoundVowel, true}})
+          toggle_categories_({modules::vocabulary::Category::BasicVowel,
+                              modules::vocabulary::Category::BasicConsonant,
+                              modules::vocabulary::Category::DoubleConsonant,
+                              modules::vocabulary::Category::CompoundVowel}),
+          toggle_states_({{modules::vocabulary::Category::BasicVowel, true},
+                          {modules::vocabulary::Category::BasicConsonant, true},
+                          {modules::vocabulary::Category::DoubleConsonant, true},
+                          {modules::vocabulary::Category::CompoundVowel, true}})
     {
         // Enable V-Sync to limit the frame rate to the refresh rate of the monitor
         this->window_.setVerticalSyncEnabled(true);
@@ -375,7 +375,7 @@ class UI final {
     // Member variables
     sf::RenderWindow window_;
     const sf::Font &font_;
-    core::vocabulary::Vocabulary vocabulary_;
+    modules::vocabulary::Vocabulary vocabulary_;
 
     enum class GameState {
         WaitingForAnswer,
@@ -384,7 +384,7 @@ class UI final {
     };
     GameState game_state_;
 
-    core::vocabulary::Entry correct_entry_;
+    modules::vocabulary::Entry correct_entry_;
     std::vector<sf::Text> answer_buttons_;
     std::size_t correct_index_;
     bool is_hangul_;
@@ -401,8 +401,8 @@ class UI final {
 
     // Toggle button states
     std::vector<std::string> toggle_labels_;
-    std::vector<core::vocabulary::Category> toggle_categories_;
-    std::unordered_map<core::vocabulary::Category, bool> toggle_states_;
+    std::vector<modules::vocabulary::Category> toggle_categories_;
+    std::unordered_map<modules::vocabulary::Category, bool> toggle_states_;
     std::vector<sf::RectangleShape> toggle_buttons_;
     std::vector<sf::Text> toggle_texts_;
 };

@@ -74,7 +74,7 @@ add_library(${PROJECT_NAME}-lib STATIC
   src/core/io.cpp
   src/core/rng.cpp
   src/core/string.cpp
-  src/core/vocabulary.cpp
+  src/modules/vocabulary.cpp
 )
 
 # Include headers relatively to the src directory

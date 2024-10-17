@@ -11,7 +11,7 @@
 #include <unordered_map>  // for std::unordered_map
 #include <vector>         // for std::vector
 
-namespace core::vocabulary {
+namespace modules::vocabulary {
 
 /**
  * @brief Enum that represents the category of a Korean character.
@@ -106,4 +106,4 @@ class Vocabulary final {
     std::unordered_map<Category, bool> category_enabled;
 };
 
-}  // namespace core::vocabulary
+}  // namespace modules::vocabulary
