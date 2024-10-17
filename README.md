@@ -26,12 +26,12 @@ This project has been tested on the following systems:
 
 - macOS 14.6 (Sonoma)
 <!-- - Manjaro 24.0 (Wynsdey)
-- Windows 11 23H2
+- Windows 11 23H2 -->
 
-Automated testing is also performed on the latest versions of macOS, GNU/Linux, and Windows using GitHub Actions. -->
+Automated testing is also performed on the latest versions of macOS, GNU/Linux, and Windows using GitHub Actions.
 
 
-<!-- ## Pre-built Binaries
+## Pre-built Binaries
 
 Pre-built binaries are available for macOS (ARM64), GNU/Linux (x86_64), and Windows (x86_64). You can download the latest version from the [Releases](../../releases) page.
 
@@ -40,7 +40,7 @@ To remove macOS quarantine, use the following command:
 ```sh
 xattr -d com.apple.quarantine aegyo-macos-arm64
 chmod +x aegyo-macos-arm64
-``` -->
+```
 
 
 ## Requirements
@@ -156,7 +156,7 @@ All categories are enabled by default. You can disable a category by clicking on
 If you're a beginner, start with the `Vow` categories and gradually enable the other categories as you continue to learn.
 
 
-<!-- ## Testing
+## Testing
 
 Tests are included in the project but are not built by default.
 
@@ -166,7 +166,7 @@ To enable and build the tests manually, run the following commands:
 cmake .. -DBUILD_TESTS=ON
 make
 ctest --output-on-failure
-``` -->
+```
 
 
 ## Credits
