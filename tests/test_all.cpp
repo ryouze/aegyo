@@ -2,14 +2,10 @@
  * @file test_all.cpp
  */
 
-#include <algorithm>      // for std::sort
-#include <cstddef>        // for std::size_t
 #include <cstdlib>        // for EXIT_FAILURE, EXIT_SUCCESS
 #include <exception>      // for std::exception
-#include <filesystem>     // for std::filesystem
-#include <fstream>        // for std::ofstream
 #include <functional>     // for std::function
-#include <stdexcept>      // for std::runtime_error
+#include <random>         // for std::mt19937, std::shuffle
 #include <string>         // for std::string
 #include <unordered_map>  // for std::unordered_map
 #include <vector>         // for std::vector
@@ -19,18 +15,11 @@
 
 #include "core/assets.hpp"
 #include "core/rng.hpp"
-// #include "app.hpp"
-// #include "core/args.hpp"
-// #include "core/string.hpp"
-// #include "modules/analyze.hpp"
+#include "core/string.hpp"
+#include "modules/vocabulary.hpp"
 #if defined(_WIN32)
 #include "core/io.hpp"
 #endif
-
-// #include "examples.hpp"
-// #include "helpers.hpp"
-
-#define TEST_EXECUTABLE_NAME "tests"
 
 namespace test_assets {
 [[nodiscard]] int load_font();
@@ -41,6 +30,14 @@ namespace test_rng {
 [[nodiscard]] int get_random_number();
 [[nodiscard]] int get_random_bool();
 }  // namespace test_rng
+
+namespace test_string {
+[[nodiscard]] int to_sfml_string();
+}
+
+namespace test_vocabulary {
+[[nodiscard]] int entry();
+}
 
 /**
  * @brief Entry-point of the test application.
@@ -82,6 +79,8 @@ int main(int argc,
         {"test_rng::instance", test_rng::instance},
         {"test_rng::get_random_number", test_rng::get_random_number},
         {"test_rng::get_random_bool", test_rng::get_random_bool},
+        {"test_string::to_sfml_string", test_string::to_sfml_string},
+        {"test_vocabulary::entry", test_vocabulary::entry},
     };
 
     // Get the test name from the command-line arguments
@@ -204,6 +203,51 @@ int test_rng::get_random_bool()
     }
     catch (const std::exception &e) {
         fmt::print(stderr, "core::rng::RNG::get_random_bool() failed: {}\n", e.what());
+        return EXIT_FAILURE;
+    }
+}
+
+int test_string::to_sfml_string()
+{
+    try {
+        // Convert a UTF-8 string to an SFML string
+        const std::string utf8_str = "Dzień dobry";
+        const sf::String sfml_str = core::string::to_sfml_string(utf8_str);
+        if (sfml_str.isEmpty()) {
+            fmt::print(stderr, "core::string::to_sfml_string() failed: the SFML string is empty\n");
+            return EXIT_FAILURE;
+        }
+        fmt::print("core::string::to_sfml_string() passed.\n");
+        return EXIT_SUCCESS;
+    }
+    catch (const std::exception &e) {
+        fmt::print(stderr, "core::string::to_sfml_string() failed: {}\n", e.what());
+        return EXIT_FAILURE;
+    }
+}
+
+int test_vocabulary::entry()
+{
+    try {
+        // Create a vocabulary entry
+        const modules::vocabulary::Entry entry = {"ㅏ", "a", modules::vocabulary::Category::BasicVowel};
+        if (entry.hangul != "ㅏ") {
+            fmt::print(stderr, "modules::vocabulary::Entry failed: the actual Korean character '{}' is not equal to expected 'ㅏ'\n", entry.hangul);
+            return EXIT_FAILURE;
+        }
+        if (entry.latin != "a") {
+            fmt::print(stderr, "modules::vocabulary::Entry failed: the actual Latin transliteration '{}' is not equal to expected 'a'\n", entry.latin);
+            return EXIT_FAILURE;
+        }
+        if (entry.category != modules::vocabulary::Category::BasicVowel) {
+            fmt::print(stderr, "modules::vocabulary::Entry failed: the actual category '{}' is not equal to expected 'Category::BasicVowel'\n", static_cast<int>(entry.category));
+            return EXIT_FAILURE;
+        }
+        fmt::print("modules::vocabulary::Entry passed.\n");
+        return EXIT_SUCCESS;
+    }
+    catch (const std::exception &e) {
+        fmt::print(stderr, "modules::vocabulary::Entry failed: {}\n", e.what());
         return EXIT_FAILURE;
     }
 }
