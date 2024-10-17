@@ -1,8 +1,8 @@
 # aegyo
 
-<!-- [![CI](https://github.com/ryouze/aegyo/actions/workflows/ci.yml/badge.svg)](https://github.com/ryouze/aegyo/actions/workflows/ci.yml)
+[![CI](https://github.com/ryouze/aegyo/actions/workflows/ci.yml/badge.svg)](https://github.com/ryouze/aegyo/actions/workflows/ci.yml)
 [![Release](https://github.com/ryouze/aegyo/actions/workflows/release.yml/badge.svg)](https://github.com/ryouze/aegyo/actions/workflows/release.yml)
-![Release version](https://img.shields.io/github/v/release/ryouze/aegyo) -->
+![Release version](https://img.shields.io/github/v/release/ryouze/aegyo)
 
 aegyo is a cross-platform GUI app for learning Korean hangul.
 
