@@ -10,8 +10,6 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "core/assets.hpp"
-
 namespace core::string {
 
 /**
