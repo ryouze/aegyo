@@ -4,10 +4,6 @@ on:
   release:
     types: [created]
 
-defaults:
-  run:
-    shell: bash
-
 permissions:
   contents: write
 
@@ -28,18 +24,18 @@ jobs:
             input_name: aegyo.app
             output_name: aegyo-macos-arm64.app
             zip_name: aegyo-macos-arm64.zip
-          # - os: ubuntu-latest
-          #   # c_compiler: gcc
-          #   cpp_compiler: g++
-          #   input_name: aegyo
-          #   output_name: aegyo-linux-x86_64
-          #   zip_name: aegyo-linux-x86_64.zip
-          # - os: windows-latest
-          #   # c_compiler: cl
-          #   cpp_compiler: cl
-          #   input_name: Release/aegyo.exe  # Stored in a subdirectory on Windows
-          #   output_name: aegyo-windows-x86_64.exe
-          #   zip_name: aegyo-windows-x86_64.zip
+          - os: ubuntu-latest
+            # c_compiler: gcc
+            cpp_compiler: g++
+            input_name: aegyo
+            output_name: aegyo-linux-x86_64
+            zip_name: aegyo-linux-x86_64.zip
+          - os: windows-latest
+            # c_compiler: cl
+            cpp_compiler: cl
+            input_name: Release/aegyo.exe  # Stored in a subdirectory on Windows
+            output_name: aegyo-windows-x86_64.exe
+            zip_name: aegyo-windows-x86_64.zip
 
     steps:
       - uses: actions/checkout@v4
@@ -47,8 +43,18 @@ jobs:
       - name: Set reusable strings
         # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
         id: strings
+        shell: bash
         run: |
           echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+          echo "deps-dir=${{ github.workspace }}/deps" >> "$GITHUB_OUTPUT"
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.strings.outputs.deps-dir }}
+          key: ${{ runner.os }}-deps-${{ hashFiles('CMakeLists.txt') }}-${{ hashFiles('cmake/**') }}
+          restore-keys: |
+            ${{ runner.os }}-deps-
 
       - name: Install GNU/Linux dependencies
         if: runner.os == 'Linux'
@@ -73,6 +79,7 @@ jobs:
       - name: Rename binary
         # Rename the binary to match the platform, otherwise the binaries will overwrite each other.
         working-directory: ${{ steps.strings.outputs.build-output-dir }}
+        shell: bash
         run: |
           echo "Renaming '${{ matrix.input_name }}' to '${{ matrix.output_name }}'"
           mv "${{ matrix.input_name }}" "${{ matrix.output_name }}"

@@ -12,10 +12,6 @@ on:
       - "LICENSE"
       - "README.md"
 
-defaults:
-  run:
-    shell: bash
-
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -31,14 +27,14 @@ jobs:
             build_type: Release
             # c_compiler: clang
             cpp_compiler: clang++
-          # - os: ubuntu-latest
-          #   build_type: Release
-          #   # c_compiler: gcc
-          #   cpp_compiler: g++
-          # - os: windows-latest
-          #   build_type: Release
-          #   # c_compiler: cl
-          #   cpp_compiler: cl
+          - os: ubuntu-latest
+            build_type: Release
+            # c_compiler: gcc
+            cpp_compiler: g++
+          - os: windows-latest
+            build_type: Release
+            # c_compiler: cl
+            cpp_compiler: cl
 
     steps:
     - uses: actions/checkout@v4
@@ -46,8 +42,18 @@ jobs:
     - name: Set reusable strings
       # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
       id: strings
+      shell: bash
       run: |
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+        echo "deps-dir=${{ github.workspace }}/deps" >> "$GITHUB_OUTPUT"
+
+    - name: Cache CMake deps directory
+      uses: actions/cache@v4
+      with:
+        path: ${{ steps.strings.outputs.deps-dir }}
+        key: ${{ runner.os }}-deps-${{ hashFiles('CMakeLists.txt') }}-${{ hashFiles('cmake/**') }}
+        restore-keys: |
+          ${{ runner.os }}-deps-
 
     - name: Install GNU/Linux dependencies
       if: runner.os == 'Linux'
