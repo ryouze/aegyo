@@ -3,7 +3,6 @@
  */
 
 #include <cstddef>        // for std::size_t
-#include <random>         // for std::random_device, std::mt19937, std::uniform_int_distribution
 #include <string>         // for std::string
 #include <unordered_map>  // for std::unordered_map
 #include <vector>         // for std::vector
@@ -15,6 +14,7 @@
 #include "app.hpp"
 #include "core/assets.hpp"
 #include "core/colors.hpp"
+#include "core/rng.hpp"
 #include "core/string.hpp"
 #include "core/vocabulary.hpp"
 #include "version.hpp"
@@ -26,7 +26,7 @@ namespace {
 /**
  * @brief Private helper class that handles the user interface.
  *
- * On construction, the class loads the CSV file and sets up the window.
+ * On construction, the class sets up the window and initializes UI elements.
  * To run the application, call the "run()" method.
  *
  * @note This class is marked as `final` to prevent inheritance.
@@ -40,7 +40,6 @@ class UI final {
         : window_(sf::VideoMode(800, 600), fmt::format("aegyo ({})", PROJECT_VERSION), sf::Style::Titlebar | sf::Style::Close),
           font_(core::assets::load_font()),
           vocabulary_(),
-          rng_(std::random_device{}()),
           game_state_(GameState::WaitingForAnswer),
           correct_entry_(),
           answer_buttons_(4),
@@ -164,9 +163,8 @@ class UI final {
             else {
                 this->game_state_ = GameState::WaitingForAnswer;
 
-                // Randomly decide whether to display Hangul or Latin
-                std::uniform_int_distribution<int> dist(0, 1);
-                this->is_hangul_ = dist(this->rng_) == 0;
+                // Randomly decide whether to display Hangul or Latin using a Bernoulli distribution
+                this->is_hangul_ = core::rng::RNG::get_random_bool();
 
                 // Get unique options
                 const auto options = this->vocabulary_.get_question_options(this->correct_entry_);
@@ -378,7 +376,6 @@ class UI final {
     sf::RenderWindow window_;
     const sf::Font &font_;
     core::vocabulary::Vocabulary vocabulary_;
-    std::mt19937 rng_;
 
     enum class GameState {
         WaitingForAnswer,
