@@ -98,8 +98,8 @@ class UI final {
         this->percentage_text_.setPosition(10.f, 10.f);  // Top-left corner
 
         // Initialize toggle buttons
-        const float total_toggle_width = this->toggle_labels_.size() * 60.f;
-        const float start_x = this->window_.getSize().x - total_toggle_width - 10.f;  // 10.f padding from the right
+        const float total_toggle_width = static_cast<float>(this->toggle_labels_.size()) * 60.f;
+        const float start_x = static_cast<float>(this->window_.getSize().x) - total_toggle_width - 10.f;  // 10.f padding from the right
 
         for (std::size_t idx = 0; idx < this->toggle_categories_.size(); ++idx) {
             sf::RectangleShape button;
@@ -113,7 +113,7 @@ class UI final {
             }
             button.setOutlineColor(core::colors::text);
             button.setOutlineThickness(1.f);
-            button.setPosition(start_x + idx * 60.f, 10.f);  // Positioned in the top-right corner
+            button.setPosition(start_x + static_cast<float>(idx) * 60.f, 10.f);  // Positioned in the top-right corner
 
             this->toggle_buttons_.push_back(button);
 
@@ -200,7 +200,7 @@ class UI final {
         };
 
         auto update_percentage_text = [&]() {
-            const float percentage = this->total_questions_ > 0 ? (static_cast<float>(this->correct_answers_) / this->total_questions_) * 100.f : 0.f;
+            const float percentage = this->total_questions_ > 0 ? (static_cast<float>(this->correct_answers_) / static_cast<float>(this->total_questions_)) * 100.f : 0.f;
             const auto percentage_str = fmt::format("게임 점수: {:.1f}%", percentage);
             this->percentage_text_.setString(core::string::to_sfml_string(percentage_str));
         };
