@@ -24,9 +24,9 @@ When I was learning Japanese kana, I liked the idea of drilling the characters i
 
 This project has been tested on the following systems:
 
-- macOS 14.6 (Sonoma)
-<!-- - Manjaro 24.0 (Wynsdey)
-- Windows 11 23H2 -->
+- macOS 15.0.1 (Sequoia)
+- Manjaro 24.0 (Wynsdey)
+- Windows 11 23H2
 
 Automated testing is also performed on the latest versions of macOS, GNU/Linux, and Windows using GitHub Actions.
 
@@ -41,6 +41,8 @@ To remove macOS quarantine, use the following command:
 xattr -d com.apple.quarantine aegyo-macos-arm64.app
 chmod +x aegyo-macos-arm64.app
 ```
+
+On Windows, the app might be detected as a virus by Windows Defender, so you'll have to add it to the [exclusions list](https://support.microsoft.com/en-us/windows/add-an-exclusion-to-windows-security-811816c0-4dfd-af4a-47e4-c301afe13b26). You can upload the binary to [VirusTotal](https://www.virustotal.com/gui/home/upload) and read the source code to verify that it's safe. As of right now, the app is detected as a false positive by 2 out of 73 antivirus engines, which includes the built-in Windows Defender. Other SFML apps I have built in the past did not have this issue, so I'm not sure what's causing it.
 
 
 ## Requirements
