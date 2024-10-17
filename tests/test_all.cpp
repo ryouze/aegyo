@@ -14,8 +14,11 @@
 #include <unordered_map>  // for std::unordered_map
 #include <vector>         // for std::vector
 
+#include <SFML/Graphics.hpp>
 #include <fmt/core.h>
 
+#include "core/assets.hpp"
+#include "core/rng.hpp"
 // #include "app.hpp"
 // #include "core/args.hpp"
 // #include "core/string.hpp"
@@ -29,9 +32,15 @@
 
 #define TEST_EXECUTABLE_NAME "tests"
 
-namespace test_dummy {
-[[nodiscard]] int dummy();
+namespace test_assets {
+[[nodiscard]] int load_font();
 }
+
+namespace test_rng {
+[[nodiscard]] int instance();
+[[nodiscard]] int get_random_number();
+[[nodiscard]] int get_random_bool();
+}  // namespace test_rng
 
 /**
  * @brief Entry-point of the test application.
@@ -69,7 +78,10 @@ int main(int argc,
 
     // Otherwise, define argument to function mapping
     const std::unordered_map<std::string, std::function<int()>> tests = {
-        {"test_dummy::dummy", test_dummy::dummy},
+        {"test_assets::load_font", test_assets::load_font},
+        {"test_rng::instance", test_rng::instance},
+        {"test_rng::get_random_number", test_rng::get_random_number},
+        {"test_rng::get_random_bool", test_rng::get_random_bool},
     };
 
     // Get the test name from the command-line arguments
@@ -113,8 +125,85 @@ int main(int argc,
     }
 }
 
-int test_dummy::dummy()
+int test_assets::load_font()
 {
-    fmt::print("Hello world!\n");
-    return EXIT_SUCCESS;
+    try {
+        const sf::Font &font = core::assets::load_font();
+        // Get font properties
+        const std::string family = font.getInfo().family;
+        const std::string expected_family = "NanumGothic";
+        if (family != expected_family) {
+            fmt::print(stderr, "core::assets::load_font() failed: the actual font family '{}' is not equal to expected '{}'\n", family, expected_family);
+            return EXIT_FAILURE;
+        }
+        const bool smooth = font.isSmooth();
+        constexpr bool expected_smooth = true;
+        if (smooth != expected_smooth) {
+            fmt::print(stderr, "core::assets::load_font() failed: the actual font smooth property '{}' is not equal to expected '{}'\n", smooth, expected_smooth);
+            return EXIT_FAILURE;
+        }
+        fmt::print("core::assets::load_font() passed.\n");
+        return EXIT_SUCCESS;
+    }
+    catch (const std::exception &e) {
+        fmt::print(stderr, "core::assets::load_font() failed: {}\n", e.what());
+        return EXIT_FAILURE;
+    }
+}
+
+int test_rng::instance()
+{
+    try {
+        // Define a vector of cars
+        std::vector<std::string> cars = {"Nissan Skyline GT-R R32", "Toyota Supra Mk4", "Mazda RX-7 FD", "Honda NSX"};
+
+        // Shuffle the cars using the random number generator
+        std::mt19937 &rng = core::rng::RNG::instance();
+        std::shuffle(cars.begin(), cars.end(), rng);
+        fmt::print("core::rng::RNG::instance() passed.\n");
+        return EXIT_SUCCESS;
+    }
+    catch (const std::exception &e) {
+        fmt::print(stderr, "core::rng::RNG::instance() failed: {}\n", e.what());
+        return EXIT_FAILURE;
+    }
+}
+
+int test_rng::get_random_number()
+{
+    try {
+        // Generate random numbers
+        constexpr int min = 0;
+        constexpr int max = 10;
+        const int random_number = core::rng::RNG::get_random_number<int>(min, max);
+        if (random_number < min || random_number > max) {
+            fmt::print(stderr, "core::rng::RNG::get_random_number() failed: the actual random number '{}' is not in the range [{}, {}]\n", random_number, min, max);
+            return EXIT_FAILURE;
+        }
+        fmt::print("core::rng::RNG::get_random_number() passed.\n");
+        return EXIT_SUCCESS;
+    }
+    catch (const std::exception &e) {
+        fmt::print(stderr, "core::rng::RNG::get_random_number() failed: {}\n", e.what());
+        return EXIT_FAILURE;
+    }
+}
+
+int test_rng::get_random_bool()
+{
+    try {
+        // Generate random boolean values
+        constexpr double probability = 0.5;
+        const bool random_bool = core::rng::RNG::get_random_bool(probability);
+        if (random_bool != true && random_bool != false) {
+            fmt::print(stderr, "core::rng::RNG::get_random_bool() failed: the actual random boolean value '{}' is not true or false\n", random_bool);
+            return EXIT_FAILURE;
+        }
+        fmt::print("core::rng::RNG::get_random_bool() passed.\n");
+        return EXIT_SUCCESS;
+    }
+    catch (const std::exception &e) {
+        fmt::print(stderr, "core::rng::RNG::get_random_bool() failed: {}\n", e.what());
+        return EXIT_FAILURE;
+    }
 }

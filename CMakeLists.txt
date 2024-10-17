@@ -167,7 +167,10 @@ if(BUILD_TESTS)
   endfunction()
 
   # Register tests using the function
-  register_test("test_dummy::dummy")
+  register_test("test_assets::load_font")
+  register_test("test_rng::instance")
+  register_test("test_rng::get_random_number")
+  register_test("test_rng::get_random_bool")
 
   message(STATUS "[INFO] Tests enabled.")
 endif()
