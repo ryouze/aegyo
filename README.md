@@ -6,6 +6,8 @@
 
 aegyo is a cross-platform GUI app for learning Korean Hangul.
 
+![Screenshot](assets/screenshot.jpeg)
+
 
 ## Motivation
 
