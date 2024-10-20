@@ -28,7 +28,7 @@ class RNG final {
      * @brief Get a random number in the range [min, max].
      *
      * @tparam T Numeric type (must be an integral or unsigned type).
-     *@param min Minimum value (e.g., "0").
+     * @param min Minimum value (e.g., "0").
      * @param max Maximum value (e.g., "10").
      *
      * @return Random number in the specified range (e.g., "5").

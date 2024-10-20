@@ -70,7 +70,7 @@ Entry Vocabulary::get_random_entry()
     std::vector<Entry> enabled_entries;
     for (const auto &entry : this->entries) {
         if (this->category_enabled.at(entry.category)) {
-            enabled_entries.push_back(entry);
+            enabled_entries.emplace_back(entry);
         }
     }
 
@@ -79,7 +79,7 @@ Entry Vocabulary::get_random_entry()
     }
 
     const auto index = core::rng::RNG::get_random_number<std::size_t>(0, enabled_entries.size() - 1);
-    return enabled_entries[index];
+    return enabled_entries.at(index);
 }
 
 Entry Vocabulary::get_random_wrong_entry(const Entry &correct_entry)
@@ -87,7 +87,7 @@ Entry Vocabulary::get_random_wrong_entry(const Entry &correct_entry)
     std::vector<Entry> wrong_entries;
     for (const auto &entry : this->entries) {
         if (this->category_enabled.at(entry.category) && entry.hangul != correct_entry.hangul) {
-            wrong_entries.push_back(entry);
+            wrong_entries.emplace_back(entry);
         }
     }
 
@@ -96,7 +96,7 @@ Entry Vocabulary::get_random_wrong_entry(const Entry &correct_entry)
     }
 
     const auto index = core::rng::RNG::get_random_number<std::size_t>(0, wrong_entries.size() - 1);
-    return wrong_entries[index];
+    return wrong_entries.at(index);
 }
 
 std::vector<Entry> Vocabulary::get_question_options(const Entry &correct_entry,
@@ -108,7 +108,7 @@ std::vector<Entry> Vocabulary::get_question_options(const Entry &correct_entry,
     std::vector<Entry> wrong_entries;
     for (const auto &entry : this->entries) {
         if (this->category_enabled.at(entry.category) && entry.hangul != correct_entry.hangul) {
-            wrong_entries.push_back(entry);
+            wrong_entries.emplace_back(entry);
         }
     }
 
@@ -120,7 +120,7 @@ std::vector<Entry> Vocabulary::get_question_options(const Entry &correct_entry,
         if (options.size() >= num_options) {
             break;
         }
-        options.push_back(wrong_entry);
+        options.emplace_back(wrong_entry);
     }
 
     // Shuffle the options
@@ -132,7 +132,7 @@ std::vector<Entry> Vocabulary::get_question_options(const Entry &correct_entry,
 void Vocabulary::set_category_enabled(const Category category,
                                       const bool enabled)
 {
-    this->category_enabled[category] = enabled;
+    this->category_enabled.at(category) = enabled;
 }
 
 }  // namespace modules::vocabulary

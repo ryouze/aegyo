@@ -117,7 +117,7 @@ class UI final {
             button.setOutlineThickness(1.f);
             button.setPosition(start_x + static_cast<float>(idx) * 60.f, 10.f);  // Positioned in the top-right corner
 
-            this->toggle_buttons_.push_back(button);
+            this->toggle_buttons_.emplace_back(button);
 
             sf::Text text;
             text.setFont(this->font_);
@@ -130,7 +130,7 @@ class UI final {
                            text_bounds.top + text_bounds.height / 2.0f);
             text.setPosition(button.getPosition() + sf::Vector2f(25.f, 17.5f));
 
-            this->toggle_texts_.push_back(text);
+            this->toggle_texts_.emplace_back(text);
         }
     }
 
