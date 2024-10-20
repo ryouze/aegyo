@@ -13,10 +13,10 @@ namespace modules::vocabulary {
 
 Vocabulary::Vocabulary()
     : entries{
-          // Basic Vowels
+          // Basic vowels
           {"ㅏ", "a", Category::BasicVowel},
           {"ㅑ", "ya", Category::BasicVowel},
-          {"ㅓ", "eo", Category::BasicVowel},
+          {"ㅓ", "uh/eo/o", Category::BasicVowel},
           {"ㅕ", "yeo", Category::BasicVowel},
           {"ㅗ", "o", Category::BasicVowel},
           {"ㅛ", "yo", Category::BasicVowel},
@@ -24,16 +24,18 @@ Vocabulary::Vocabulary()
           {"ㅠ", "yu", Category::BasicVowel},
           {"ㅡ", "eu", Category::BasicVowel},
           {"ㅣ", "i", Category::BasicVowel},
+          {"ㅐ", "ae", Category::BasicVowel},
+          {"ㅔ", "e", Category::BasicVowel},
 
-          // Basic Consonants
-          {"ㄱ", "g", Category::BasicConsonant},
+          // Basic consonants
+          {"ㄱ", "g/k", Category::BasicConsonant},
           {"ㄴ", "n", Category::BasicConsonant},
-          {"ㄷ", "d", Category::BasicConsonant},
+          {"ㄷ", "d/t", Category::BasicConsonant},
           {"ㄹ", "r/l", Category::BasicConsonant},
           {"ㅁ", "m", Category::BasicConsonant},
-          {"ㅂ", "b", Category::BasicConsonant},
+          {"ㅂ", "b/p", Category::BasicConsonant},
           {"ㅅ", "s", Category::BasicConsonant},
-          {"ㅇ", "ng", Category::BasicConsonant},
+          {"ㅇ", "ng/-", Category::BasicConsonant},
           {"ㅈ", "j", Category::BasicConsonant},
           {"ㅊ", "ch", Category::BasicConsonant},
           {"ㅋ", "k", Category::BasicConsonant},
@@ -41,17 +43,15 @@ Vocabulary::Vocabulary()
           {"ㅍ", "p", Category::BasicConsonant},
           {"ㅎ", "h", Category::BasicConsonant},
 
-          // Double Consonants
+          // Double consonants
           {"ㄲ", "kk", Category::DoubleConsonant},
           {"ㄸ", "tt", Category::DoubleConsonant},
           {"ㅃ", "pp", Category::DoubleConsonant},
           {"ㅆ", "ss", Category::DoubleConsonant},
           {"ㅉ", "jj", Category::DoubleConsonant},
 
-          // Compound Vowels
-          {"ㅐ", "ae", Category::CompoundVowel},
+          // Compound vowels
           {"ㅒ", "yae", Category::CompoundVowel},
-          {"ㅔ", "e", Category::CompoundVowel},
           {"ㅖ", "ye", Category::CompoundVowel},
           {"ㅘ", "wa", Category::CompoundVowel},
           {"ㅙ", "wae", Category::CompoundVowel},
