@@ -175,6 +175,7 @@ ctest --output-on-failure
 
 - [fmt](https://github.com/fmtlib/fmt)
 - [Language](https://macosicons.com/#/u/Bonjour)
+- [Let's Learn Hangul!](http://letslearnhangul.com/)
 - [Nanum Gothic](https://fonts.google.com/specimen/Nanum+Gothic)
 - [Simple and Fast Multimedia Library](https://github.com/sfml/sfml)
 

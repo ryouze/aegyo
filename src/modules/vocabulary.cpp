@@ -12,11 +12,12 @@
 namespace modules::vocabulary {
 
 Vocabulary::Vocabulary()
+    // Transliteration reference: http://letslearnhangul.com/
     : entries{
           // Basic vowels
           {"ㅏ", "a", Category::BasicVowel},
           {"ㅑ", "ya", Category::BasicVowel},
-          {"ㅓ", "uh/eo/o", Category::BasicVowel},
+          {"ㅓ", "eo", Category::BasicVowel},  // "eo" is the standard transliteration for ㅓ
           {"ㅕ", "yeo", Category::BasicVowel},
           {"ㅗ", "o", Category::BasicVowel},
           {"ㅛ", "yo", Category::BasicVowel},
@@ -28,14 +29,14 @@ Vocabulary::Vocabulary()
           {"ㅔ", "e", Category::BasicVowel},
 
           // Basic consonants
-          {"ㄱ", "g/k", Category::BasicConsonant},
+          {"ㄱ", "g/k", Category::BasicConsonant},  // "g" at the beginning, "k" at the end
           {"ㄴ", "n", Category::BasicConsonant},
-          {"ㄷ", "d/t", Category::BasicConsonant},
-          {"ㄹ", "r/l", Category::BasicConsonant},
+          {"ㄷ", "d/t", Category::BasicConsonant},  // "d" at the beginning, "t" at the end
+          {"ㄹ", "r/l", Category::BasicConsonant},  // "r" at the beginning, "l" at the end
           {"ㅁ", "m", Category::BasicConsonant},
-          {"ㅂ", "b/p", Category::BasicConsonant},
-          {"ㅅ", "s", Category::BasicConsonant},
-          {"ㅇ", "ng/-", Category::BasicConsonant},
+          {"ㅂ", "b/p", Category::BasicConsonant},   // "b" at the beginning, "p" at the end
+          {"ㅅ", "s/sh", Category::BasicConsonant},  // "s" generally, "sh" before "i" or "y" sounds
+          {"ㅇ", "ng/-", Category::BasicConsonant},  // Silent at the beginning, "ng" at the end
           {"ㅈ", "j", Category::BasicConsonant},
           {"ㅊ", "ch", Category::BasicConsonant},
           {"ㅋ", "k", Category::BasicConsonant},
