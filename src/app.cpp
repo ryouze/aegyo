@@ -37,7 +37,11 @@ class UI final {
      * @brief Construct a new UI object.
      */
     explicit UI()
-        : window_(sf::VideoMode(800, 600), fmt::format("aegyo ({})", PROJECT_VERSION), sf::Style::Titlebar | sf::Style::Close),
+        : window_(sf::VideoMode(800, 600),
+                  fmt::format("aegyo ({})", PROJECT_VERSION),
+                  sf::Style::Titlebar | sf::Style::Close,
+                  // Set the default anti-aliasing level to 8
+                  sf::ContextSettings(0, 0, 8)),
           font_(core::assets::load_font()),
           vocabulary_(),
           game_state_(GameState::WaitingForAnswer),
