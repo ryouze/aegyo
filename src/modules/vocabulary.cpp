@@ -128,13 +128,14 @@ std::vector<Entry> Vocabulary::get_question_options(const Entry &correct_entry,
         options.emplace_back(wrong_entry);
     }
 
+    // Throw if the number of options is less than the desired number
+    // This will NOT happen unless the vocabulary in "Vocabulary::Vocabulary()" is modified to have less than 4 entries in a category
+    if (const std::size_t len = options.size(); len < num_options) {
+        throw std::runtime_error(fmt::format("Generated '{}' question options, but '{}' were requested; each category in vocabulary needs at least {} entries", len, num_options, num_options));
+    }
+
     // Shuffle the options
     std::shuffle(options.begin(), options.end(), core::rng::RNG::instance());
-
-    // Throw if the number of options is less than the desired number
-    if (const std::size_t len = options.size(); len < num_options) {
-        throw std::runtime_error(fmt::format("Generated '{}' question options, but '{}' were requested", len, num_options));
-    }
 
     return options;
 }
