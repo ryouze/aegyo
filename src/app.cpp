@@ -24,6 +24,22 @@ namespace app {
 namespace {
 
 /**
+ * @brief Private helper function to get improved context settings for the SFML window.
+ *
+ * This overwrites the default context settings to improve the rendering quality by enabling anti-aliasing.
+ *
+ * @param antialiasing Anti-aliasing level (default: 8).
+ *
+ * @return Improved context settings.
+ */
+[[nodiscard]] sf::ContextSettings get_improved_context_settings(const unsigned int antialiasing = 8)
+{
+    sf::ContextSettings settings;
+    settings.antialiasingLevel = antialiasing;
+    return settings;
+}
+
+/**
  * @brief Private helper class that handles the user interface.
  *
  * On construction, the class sets up the window and initializes UI elements.
@@ -40,8 +56,8 @@ class UI final {
         : window_(sf::VideoMode(800, 600),
                   fmt::format("aegyo ({})", PROJECT_VERSION),
                   sf::Style::Titlebar | sf::Style::Close,
-                  // Set the default anti-aliasing level to 8
-                  sf::ContextSettings(0, 0, 8)),
+                  // Overwrite the default context settings with improved settings
+                  get_improved_context_settings()),
           font_(core::assets::load_font()),
           vocabulary_(),
           game_state_(GameState::WaitingForAnswer),
@@ -70,6 +86,9 @@ class UI final {
 
         // Disable key repeat, as we only want one key press to register
         this->window_.setKeyRepeatEnabled(false);
+
+        // Log anti-aliasing level
+        fmt::print("Anti-aliasing level: {}\n", this->window_.getSettings().antialiasingLevel);
 
         // Initialize question circle
         this->question_circle_.setRadius(80.f);
