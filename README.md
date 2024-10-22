@@ -44,7 +44,7 @@ xattr -d com.apple.quarantine aegyo-macos-arm64.app
 chmod +x aegyo-macos-arm64.app
 ```
 
-On Windows, the app might be detected as a virus by Windows Defender, so you'll have to add it to the [exclusions list](https://support.microsoft.com/en-us/windows/add-an-exclusion-to-windows-security-811816c0-4dfd-af4a-47e4-c301afe13b26). You can upload the binary to [VirusTotal](https://www.virustotal.com/gui/home/upload) and read the source code to verify that it's safe. As of right now, the app is detected as a false positive by 2 out of 73 antivirus engines, which includes the built-in Windows Defender. Other SFML apps I have built in the past did not have this issue, so I'm not sure what's causing it.
+On Windows, the OS might complain about the binary being unsigned. You can bypass this by clicking on "More info" and then "Run anyway".
 
 
 ## Requirements
