@@ -6,6 +6,8 @@
 #include <cstddef>    // for std::size_t
 #include <vector>     // for std::vector
 
+#include <fmt/core.h>
+
 #include "core/rng.hpp"
 #include "vocabulary.hpp"
 
@@ -13,6 +15,8 @@ namespace modules::vocabulary {
 
 Vocabulary::Vocabulary()
     // Transliteration reference: http://letslearnhangul.com/
+    // Note: The number of entries in each category must be greater than 3 (i.e., 4, 5, 6, 7, 8, 9, etc.).
+    // If 3 or fewer entries are present in a category, the get_question_options will throw an exception and the program will crash.
     : entries{
           // Basic vowels
           {"ㅏ", "a", Category::BasicVowel},
@@ -126,6 +130,11 @@ std::vector<Entry> Vocabulary::get_question_options(const Entry &correct_entry,
 
     // Shuffle the options
     std::shuffle(options.begin(), options.end(), core::rng::RNG::instance());
+
+    // Throw if the number of options is less than the desired number
+    if (const std::size_t len = options.size(); len < num_options) {
+        throw std::runtime_error(fmt::format("Generated '{}' question options, but '{}' were requested", len, num_options));
+    }
 
     return options;
 }

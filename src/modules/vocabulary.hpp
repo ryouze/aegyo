@@ -80,7 +80,10 @@ class Vocabulary final {
      *
      * @param correct_entry Correct Entry object that should be included in the options.
      * @param num_options Total number of options to generate (default: 4).
-     * @return Vector of Entry objects representing the question options. The size of the vector may be less than "num_options" if there are not enough unique entries.
+     *
+     * @return Vector of Entry objects representing the question options.
+     *
+     * @throws std::runtime_error if the size of the vector is less than "num_options because there are not enough unique entries.
      */
     [[nodiscard]] std::vector<Entry> get_question_options(const Entry &correct_entry,
                                                           const std::size_t num_options = 4);

@@ -193,7 +193,7 @@ class UI final {
                 const auto options = this->vocabulary_.get_question_options(this->correct_entry_);
 
                 // Find the index of the correct answer after shuffling
-                for (std::size_t idx = 0; idx < options.size(); ++idx) {
+                for (std::size_t idx = 0; idx < 4; ++idx) {
                     if (options[idx].hangul == this->correct_entry_.hangul) {
                         this->correct_index_ = idx;
                         break;
