@@ -41,6 +41,11 @@ struct Entry final {
     std::string latin;
 
     /**
+     * @brief Short memo to help remember the character.
+     */
+    std::string memo;
+
+    /**
      * @brief Category of the Korean character (e.g., "Category::BasicVowel").
      */
     Category category;

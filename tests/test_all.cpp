@@ -225,12 +225,15 @@ int test_vocabulary::entry()
 {
     try {
         // Create a vocabulary entry
-        const modules::vocabulary::Entry entry = {"ㅏ", "a", modules::vocabulary::Category::BasicVowel};
+        const modules::vocabulary::Entry entry = {"ㅏ", "a", "Looks like an 'a' without the crossbar", modules::vocabulary::Category::BasicVowel};
         if (entry.hangul != "ㅏ") {
             throw std::runtime_error(fmt::format("The actual Korean character '{}' is not equal to expected 'ㅏ'", entry.hangul));
         }
         if (entry.latin != "a") {
             throw std::runtime_error(fmt::format("The actual Latin transliteration '{}' is not equal to expected 'a'", entry.latin));
+        }
+        if (entry.memo != "Looks like an 'a' without the crossbar") {
+            throw std::runtime_error(fmt::format("The actual memo '{}' is not equal to expected 'Looks like an 'a' without the crossbar'", entry.memo));
         }
         if (entry.category != modules::vocabulary::Category::BasicVowel) {
             throw std::runtime_error(fmt::format("The actual category '{}' is not equal to expected 'Category::BasicVowel'", static_cast<int>(entry.category)));

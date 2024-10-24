@@ -22,52 +22,52 @@ Vocabulary::Vocabulary()
     // The automated tests count the number of entries in each category to ensure this requirement is met.
     : entries_{
           // Basic vowels
-          {"ㅏ", "a", Category::BasicVowel},
-          {"ㅑ", "ya", Category::BasicVowel},
-          {"ㅓ", "eo", Category::BasicVowel},  // "eo" is the standard transliteration for ㅓ
-          {"ㅕ", "yeo", Category::BasicVowel},
-          {"ㅗ", "o", Category::BasicVowel},
-          {"ㅛ", "yo", Category::BasicVowel},
-          {"ㅜ", "u", Category::BasicVowel},
-          {"ㅠ", "yu", Category::BasicVowel},
-          {"ㅡ", "eu", Category::BasicVowel},
-          {"ㅣ", "i", Category::BasicVowel},
-          {"ㅐ", "ae", Category::BasicVowel},
-          {"ㅔ", "e", Category::BasicVowel},
+          {"ㅏ", "a", "Looks like an 'a' without the crossbar", Category::BasicVowel},
+          {"ㅑ", "ya", "It's 'ㅏ' with an extra line (adds 'y')", Category::BasicVowel},
+          {"ㅓ", "eo", "Think of 'eo' as 'uh' sound", Category::BasicVowel},
+          {"ㅕ", "yeo", "It's 'ㅓ' with an extra line (adds 'y')", Category::BasicVowel},
+          {"ㅗ", "o", "Line 'o'ver the bar", Category::BasicVowel},
+          {"ㅛ", "yo", "It's 'ㅗ' with an extra line (adds 'y')", Category::BasicVowel},
+          {"ㅜ", "u", "Line 'u'nder the bar", Category::BasicVowel},
+          {"ㅠ", "yu", "It's 'ㅜ' with an extra line (adds 'y')", Category::BasicVowel},
+          {"ㅡ", "eu", "A horizontal line, sounds like 'oo' in 'good'", Category::BasicVowel},
+          {"ㅣ", "i", "Looks like the letter 'i'", Category::BasicVowel},
+          {"ㅐ", "ae", "'ㅏ' plus an extra line", Category::BasicVowel},
+          {"ㅔ", "e", "'ㅓ' plus an extra line", Category::BasicVowel},
 
           // Basic consonants
-          {"ㄱ", "g/k", Category::BasicConsonant},  // "g" at the beginning, "k" at the end
-          {"ㄴ", "n", Category::BasicConsonant},
-          {"ㄷ", "d/t", Category::BasicConsonant},  // "d" at the beginning, "t" at the end
-          {"ㄹ", "r/l", Category::BasicConsonant},  // "r" at the beginning, "l" at the end
-          {"ㅁ", "m", Category::BasicConsonant},
-          {"ㅂ", "b/p", Category::BasicConsonant},   // "b" at the beginning, "p" at the end
-          {"ㅅ", "s", Category::BasicConsonant},     // "s" regardless of position, but "sh" before "i" or "y" sounds
-          {"ㅇ", "-/ng", Category::BasicConsonant},  // Silent at the beginning, "ng" at the end
-          {"ㅈ", "j", Category::BasicConsonant},
-          {"ㅊ", "ch", Category::BasicConsonant},
-          {"ㅋ", "k", Category::BasicConsonant},
-          {"ㅌ", "t", Category::BasicConsonant},
-          {"ㅍ", "p", Category::BasicConsonant},
-          {"ㅎ", "h", Category::BasicConsonant},
+          {"ㄱ", "g/k", "Looks like a 'gun'", Category::BasicConsonant},
+          {"ㄴ", "n", "Nike swoosh or 'n' rotated", Category::BasicConsonant},
+          {"ㄷ", "d/t", "Door frame shape", Category::BasicConsonant},
+          {"ㄹ", "r/l", "Resembles 'r' and 'l' combined", Category::BasicConsonant},
+          {"ㅁ", "m", "Looks like a mouth", Category::BasicConsonant},
+          {"ㅂ", "b/p", "Bucket shape", Category::BasicConsonant},
+          {"ㅅ", "s", "Looks like a mountain", Category::BasicConsonant},
+          {"ㅇ", "-/ng", "Circle like 'zero' sound", Category::BasicConsonant},
+          {"ㅈ", "j", "Looks like 'ㅅ' with a line", Category::BasicConsonant},
+          {"ㅊ", "ch", "It's 'ㅈ' with an extra line on top", Category::BasicConsonant},
+          {"ㅋ", "k", "Looks like a 'key'", Category::BasicConsonant},
+          {"ㅌ", "t", "Looks like a 't' with a hat", Category::BasicConsonant},
+          {"ㅍ", "p", "Looks like a 'pi' symbol", Category::BasicConsonant},
+          {"ㅎ", "h", "Man with a hat on", Category::BasicConsonant},
 
           // Double consonants
-          {"ㄲ", "kk", Category::DoubleConsonant},
-          {"ㄸ", "tt", Category::DoubleConsonant},
-          {"ㅃ", "pp", Category::DoubleConsonant},
-          {"ㅆ", "ss", Category::DoubleConsonant},
-          {"ㅉ", "jj", Category::DoubleConsonant},
+          {"ㄲ", "kk", "Double 'ㄱ'", Category::DoubleConsonant},
+          {"ㄸ", "tt", "Double 'ㄷ'", Category::DoubleConsonant},
+          {"ㅃ", "pp", "Double 'ㅂ'", Category::DoubleConsonant},
+          {"ㅆ", "ss", "Double 'ㅅ'", Category::DoubleConsonant},
+          {"ㅉ", "jj", "Double 'ㅈ'", Category::DoubleConsonant},
 
           // Compound vowels
-          {"ㅒ", "yae", Category::CompoundVowel},
-          {"ㅖ", "ye", Category::CompoundVowel},
-          {"ㅘ", "wa", Category::CompoundVowel},
-          {"ㅙ", "wae", Category::CompoundVowel},
-          {"ㅚ", "oe", Category::CompoundVowel},
-          {"ㅝ", "wo", Category::CompoundVowel},
-          {"ㅞ", "we", Category::CompoundVowel},
-          {"ㅟ", "wi", Category::CompoundVowel},
-          {"ㅢ", "ui", Category::CompoundVowel}},
+          {"ㅒ", "yae", "Combination of 'ㅑ' and 'ㅣ'", Category::CompoundVowel},
+          {"ㅖ", "ye", "Combination of 'ㅕ' and 'ㅣ'", Category::CompoundVowel},
+          {"ㅘ", "wa", "'ㅗ' plus 'ㅏ'", Category::CompoundVowel},
+          {"ㅙ", "wae", "'ㅗ' plus 'ㅐ'", Category::CompoundVowel},
+          {"ㅚ", "oe", "'ㅗ' plus 'ㅣ'", Category::CompoundVowel},
+          {"ㅝ", "wo", "'ㅜ' plus 'ㅓ'", Category::CompoundVowel},
+          {"ㅞ", "we", "'ㅜ' plus 'ㅔ'", Category::CompoundVowel},
+          {"ㅟ", "wi", "'ㅜ' plus 'ㅣ'", Category::CompoundVowel},
+          {"ㅢ", "ui", "'ㅡ' plus 'ㅣ'", Category::CompoundVowel}},
       category_enabled_{{Category::BasicVowel, true}, {Category::BasicConsonant, true}, {Category::DoubleConsonant, true}, {Category::CompoundVowel, true}}
 {
 }
@@ -115,8 +115,6 @@ std::vector<Entry> Vocabulary::generate_enabled_question_options(const Entry &co
     }
 
     // Throw if the number of options is less than the desired number
-    // This will NOT happen unless the vocabulary in "Vocabulary::Vocabulary()" is modified to have less than 4 entries in a category
-    // The automated tests ensure that each category has more than 3 entries, but on the off chance that this requirement is not met, a human-readable error message is thrown
     if (const std::size_t len = options.size(); len < num_options) {
         throw std::runtime_error(fmt::format("Generated '{}' question options, but '{}' were requested; each category in vocabulary needs at least {} entries", len, num_options, num_options));
     }
