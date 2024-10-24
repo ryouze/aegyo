@@ -134,14 +134,12 @@ int test_assets::load_font()
         const std::string family = font.getInfo().family;
         const std::string expected_family = "NanumGothic";
         if (family != expected_family) {
-            fmt::print(stderr, "core::assets::load_font() failed: the actual font family '{}' is not equal to expected '{}'\n", family, expected_family);
-            return EXIT_FAILURE;
+            throw std::runtime_error(fmt::format("The actual font family '{}' is not equal to expected '{}'", family, expected_family));
         }
         const bool smooth = font.isSmooth();
         constexpr bool expected_smooth = true;
         if (smooth != expected_smooth) {
-            fmt::print(stderr, "core::assets::load_font() failed: the actual font smooth property '{}' is not equal to expected '{}'\n", smooth, expected_smooth);
-            return EXIT_FAILURE;
+            throw std::runtime_error(fmt::format("The actual font smooth property '{}' is not equal to expected '{}'", smooth, expected_smooth));
         }
         fmt::print("core::assets::load_font() passed.\n");
         return EXIT_SUCCESS;
@@ -178,8 +176,7 @@ int test_rng::get_random_number()
         constexpr int max = 10;
         const int random_number = core::rng::RNG::get_random_number<int>(min, max);
         if (random_number < min || random_number > max) {
-            fmt::print(stderr, "core::rng::RNG::get_random_number() failed: the actual random number '{}' is not in the range [{}, {}]\n", random_number, min, max);
-            return EXIT_FAILURE;
+            throw std::runtime_error(fmt::format("The actual random number '{}' is not in the range [{}, {}]", random_number, min, max));
         }
         fmt::print("core::rng::RNG::get_random_number() passed.\n");
         return EXIT_SUCCESS;
@@ -196,10 +193,7 @@ int test_rng::get_random_bool()
         // Generate random boolean values
         constexpr double probability = 0.5;
         const bool random_bool = core::rng::RNG::get_random_bool(probability);
-        if (random_bool != true && random_bool != false) {
-            fmt::print(stderr, "core::rng::RNG::get_random_bool() failed: the actual random boolean value '{}' is not true or false\n", random_bool);
-            return EXIT_FAILURE;
-        }
+        static_cast<void>(random_bool);  // Ignore [[nodiscard]] attribute
         fmt::print("core::rng::RNG::get_random_bool() passed.\n");
         return EXIT_SUCCESS;
     }
@@ -216,8 +210,7 @@ int test_string::to_sfml_string()
         const std::string utf8_str = "Dzień dobry";
         const sf::String sfml_str = core::string::to_sfml_string(utf8_str);
         if (sfml_str.isEmpty()) {
-            fmt::print(stderr, "core::string::to_sfml_string() failed: the SFML string is empty\n");
-            return EXIT_FAILURE;
+            throw std::runtime_error("The SFML string is empty");
         }
         fmt::print("core::string::to_sfml_string() passed.\n");
         return EXIT_SUCCESS;
@@ -234,16 +227,13 @@ int test_vocabulary::entry()
         // Create a vocabulary entry
         const modules::vocabulary::Entry entry = {"ㅏ", "a", modules::vocabulary::Category::BasicVowel};
         if (entry.hangul != "ㅏ") {
-            fmt::print(stderr, "modules::vocabulary::Entry failed: the actual Korean character '{}' is not equal to expected 'ㅏ'\n", entry.hangul);
-            return EXIT_FAILURE;
+            throw std::runtime_error(fmt::format("The actual Korean character '{}' is not equal to expected 'ㅏ'", entry.hangul));
         }
         if (entry.latin != "a") {
-            fmt::print(stderr, "modules::vocabulary::Entry failed: the actual Latin transliteration '{}' is not equal to expected 'a'\n", entry.latin);
-            return EXIT_FAILURE;
+            throw std::runtime_error(fmt::format("The actual Latin transliteration '{}' is not equal to expected 'a'", entry.latin));
         }
         if (entry.category != modules::vocabulary::Category::BasicVowel) {
-            fmt::print(stderr, "modules::vocabulary::Entry failed: the actual category '{}' is not equal to expected 'Category::BasicVowel'\n", static_cast<int>(entry.category));
-            return EXIT_FAILURE;
+            throw std::runtime_error(fmt::format("The actual category '{}' is not equal to expected 'Category::BasicVowel'", static_cast<int>(entry.category)));
         }
         fmt::print("modules::vocabulary::Entry passed.\n");
         return EXIT_SUCCESS;
@@ -272,9 +262,7 @@ int test_vocabulary::category_count()
         const std::size_t min_category_entries = 4;
         for (const auto &[category, count] : category_counts) {
             if (count < min_category_entries) {
-                fmt::print(stderr, "modules::vocabulary::Vocabulary failed: Category '{}' has less than {} entries (found {}).\n",
-                           static_cast<int>(category), min_category_entries, count);
-                return EXIT_FAILURE;
+                throw std::runtime_error(fmt::format("Category '{}' has less than {} entries (found {})", static_cast<int>(category), min_category_entries, count));
             }
             fmt::print("modules::vocabulary::Vocabulary: Category '{}' has {} entries.\n", static_cast<int>(category), count);
         }
