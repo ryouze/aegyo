@@ -17,6 +17,7 @@ Vocabulary::Vocabulary()
     // Transliteration reference: http://letslearnhangul.com/
     // Note: The number of entries in each category must be greater than 3 (i.e., 4, 5, 6, 7, 8, 9, etc.).
     // If 3 or fewer entries are present in a category, the get_question_options will throw an exception and the program will crash.
+    // The automated tests count the number of entries in each category to ensure this requirement is met.
     : entries_{
           // Basic vowels
           {"ㅏ", "a", Category::BasicVowel},
@@ -130,6 +131,7 @@ std::vector<Entry> Vocabulary::get_question_options(const Entry &correct_entry,
 
     // Throw if the number of options is less than the desired number
     // This will NOT happen unless the vocabulary in "Vocabulary::Vocabulary()" is modified to have less than 4 entries in a category
+    // The automated tests ensure that each category has more than 3 entries, but on the off chance that this requirement is not met, a human-readable error message is thrown
     if (const std::size_t len = options.size(); len < num_options) {
         throw std::runtime_error(fmt::format("Generated '{}' question options, but '{}' were requested; each category in vocabulary needs at least {} entries", len, num_options, num_options));
     }
