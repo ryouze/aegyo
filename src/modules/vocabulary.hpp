@@ -101,12 +101,12 @@ class Vocabulary final {
     /**
      * @brief Vector of all vocabulary entries.
      */
-    std::vector<Entry> entries;
+    std::vector<Entry> entries_;
 
     /**
      * @brief Map indicating whether each category is enabled.
      */
-    std::unordered_map<Category, bool> category_enabled;
+    std::unordered_map<Category, bool> category_enabled_;
 };
 
 }  // namespace modules::vocabulary

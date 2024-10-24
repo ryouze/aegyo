@@ -17,7 +17,7 @@ Vocabulary::Vocabulary()
     // Transliteration reference: http://letslearnhangul.com/
     // Note: The number of entries in each category must be greater than 3 (i.e., 4, 5, 6, 7, 8, 9, etc.).
     // If 3 or fewer entries are present in a category, the get_question_options will throw an exception and the program will crash.
-    : entries{
+    : entries_{
           // Basic vowels
           {"ㅏ", "a", Category::BasicVowel},
           {"ㅑ", "ya", Category::BasicVowel},
@@ -65,7 +65,7 @@ Vocabulary::Vocabulary()
           {"ㅞ", "we", Category::CompoundVowel},
           {"ㅟ", "wi", Category::CompoundVowel},
           {"ㅢ", "ui", Category::CompoundVowel}},
-      category_enabled{{Category::BasicVowel, true}, {Category::BasicConsonant, true}, {Category::DoubleConsonant, true}, {Category::CompoundVowel, true}}
+      category_enabled_{{Category::BasicVowel, true}, {Category::BasicConsonant, true}, {Category::DoubleConsonant, true}, {Category::CompoundVowel, true}}
 {
 }
 
@@ -73,8 +73,8 @@ Entry Vocabulary::get_random_entry()
 {
     // Collect enabled entries
     std::vector<Entry> enabled_entries;
-    for (const auto &entry : this->entries) {
-        if (this->category_enabled.at(entry.category)) {
+    for (const auto &entry : this->entries_) {
+        if (this->category_enabled_.at(entry.category)) {
             enabled_entries.emplace_back(entry);
         }
     }
@@ -90,8 +90,8 @@ Entry Vocabulary::get_random_entry()
 Entry Vocabulary::get_random_wrong_entry(const Entry &correct_entry)
 {
     std::vector<Entry> wrong_entries;
-    for (const auto &entry : this->entries) {
-        if (this->category_enabled.at(entry.category) && entry.hangul != correct_entry.hangul) {
+    for (const auto &entry : this->entries_) {
+        if (this->category_enabled_.at(entry.category) && entry.hangul != correct_entry.hangul) {
             wrong_entries.emplace_back(entry);
         }
     }
@@ -111,8 +111,8 @@ std::vector<Entry> Vocabulary::get_question_options(const Entry &correct_entry,
 
     // Collect possible wrong entries
     std::vector<Entry> wrong_entries;
-    for (const auto &entry : this->entries) {
-        if (this->category_enabled.at(entry.category) && entry.hangul != correct_entry.hangul) {
+    for (const auto &entry : this->entries_) {
+        if (this->category_enabled_.at(entry.category) && entry.hangul != correct_entry.hangul) {
             wrong_entries.emplace_back(entry);
         }
     }
@@ -143,7 +143,7 @@ std::vector<Entry> Vocabulary::get_question_options(const Entry &correct_entry,
 void Vocabulary::set_category_enabled(const Category category,
                                       const bool enabled)
 {
-    this->category_enabled.at(category) = enabled;
+    this->category_enabled_.at(category) = enabled;
 }
 
 }  // namespace modules::vocabulary
