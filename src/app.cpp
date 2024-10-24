@@ -164,8 +164,8 @@ class UI final {
     {
         // Lambda functions for setup
         auto setup_new_question = [&]() {
-            this->correct_entry_ = this->vocabulary_.get_random_entry();
-            if (this->correct_entry_.hangul == "N/A") {
+            const auto optional_entry = this->vocabulary_.get_random_entry();
+            if (!optional_entry.has_value()) {
                 this->question_text_.setString("X");
                 this->question_text_.setCharacterSize(72);  // Increase font size for the 'X'
                 // Center text in the question circle
@@ -184,6 +184,7 @@ class UI final {
                 }
             }
             else {
+                this->correct_entry_ = optional_entry.value();
                 this->game_state_ = GameState::WaitingForAnswer;
 
                 // Randomly decide whether to display Hangul or Latin using a Bernoulli distribution

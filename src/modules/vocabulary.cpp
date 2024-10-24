@@ -4,6 +4,7 @@
 
 #include <algorithm>  // for std::shuffle
 #include <cstddef>    // for std::size_t
+#include <optional>   // for std::optional, std::nullopt
 #include <stdexcept>  // for std::runtime_error
 #include <vector>     // for std::vector
 
@@ -71,7 +72,7 @@ Vocabulary::Vocabulary()
 {
 }
 
-Entry Vocabulary::get_random_entry()
+std::optional<Entry> Vocabulary::get_random_entry()
 {
     // Collect enabled entries
     std::vector<Entry> enabled_entries;
@@ -82,14 +83,14 @@ Entry Vocabulary::get_random_entry()
     }
 
     if (enabled_entries.empty()) {
-        return {"N/A", "N/A", Category::BasicVowel};
+        return std::nullopt;
     }
 
     const auto index = core::rng::RNG::get_random_number<std::size_t>(0, enabled_entries.size() - 1);
     return enabled_entries.at(index);
 }
 
-Entry Vocabulary::get_random_wrong_entry(const Entry &correct_entry)
+std::optional<Entry> Vocabulary::get_random_wrong_entry(const Entry &correct_entry)
 {
     std::vector<Entry> wrong_entries;
     for (const auto &entry : this->entries_) {
@@ -99,7 +100,7 @@ Entry Vocabulary::get_random_wrong_entry(const Entry &correct_entry)
     }
 
     if (wrong_entries.empty()) {
-        return {"N/A", "N/A", Category::BasicVowel};
+        return std::nullopt;
     }
 
     const auto index = core::rng::RNG::get_random_number<std::size_t>(0, wrong_entries.size() - 1);

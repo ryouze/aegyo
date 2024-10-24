@@ -7,6 +7,7 @@
 #pragma once
 
 #include <cstddef>        // for std::size_t
+#include <optional>       // for std::optional
 #include <string>         // for std::string
 #include <unordered_map>  // for std::unordered_map
 #include <vector>         // for std::vector
@@ -60,20 +61,20 @@ class Vocabulary final {
     explicit Vocabulary();
 
     /**
-     * @brief Get the random entry object from the vocabulary.
+     * @brief Get a random entry from the vocabulary.
      *
-     * @return Random Entry object where the category is enabled or an entry with "N/A" if no categories are enabled.
+     * @return Entry object where the category is enabled, or std::nullopt if no categories are enabled.
      */
-    [[nodiscard]] Entry get_random_entry();
+    [[nodiscard]] std::optional<Entry> get_random_entry();
 
     /**
-     * @brief Get the random wrong entry object from the vocabulary.
+     * @brief Get a random wrong entry from the vocabulary.
      *
      * @param correct_entry Correct Entry object that should not be included in the result.
      *
-     * @return Random Entry object where the category is enabled and the hangul is not the same as the correct entry provided or an entry with "N/A" if no suitable entries are found.
+     * @return Entry object where the category is enabled and the hangul is not the same as the correct entry provided, or std::nullopt if no suitable entries are found.
      */
-    [[nodiscard]] Entry get_random_wrong_entry(const Entry &correct_entry);
+    [[nodiscard]] std::optional<Entry> get_random_wrong_entry(const Entry &correct_entry);
 
     /**
      * @brief Get a set of unique options for a question.
@@ -83,7 +84,7 @@ class Vocabulary final {
      *
      * @return Vector of Entry objects representing the question options.
      *
-     * @throws std::runtime_error if the size of the vector is less than "num_options because there are not enough unique entries.
+     * @throws std::runtime_error if the size of the vector is less than "num_options" because there are not enough unique entries.
      */
     [[nodiscard]] std::vector<Entry> get_question_options(const Entry &correct_entry,
                                                           const std::size_t num_options = 4);
