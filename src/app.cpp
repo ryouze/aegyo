@@ -341,16 +341,16 @@ class UI final {
                     else if (event.type == sf::Event::KeyPressed) {
                         // Handle keyboard input
                         std::size_t selected_index = static_cast<std::size_t>(-1);
-                        if (event.key.code == sf::Keyboard::Num1 || event.key.code == sf::Keyboard::Numpad1) {
+                        if (event.key.code == sf::Keyboard::Num1) {
                             selected_index = 0;
                         }
-                        else if (event.key.code == sf::Keyboard::Num2 || event.key.code == sf::Keyboard::Numpad2) {
+                        else if (event.key.code == sf::Keyboard::Num2) {
                             selected_index = 1;
                         }
-                        else if (event.key.code == sf::Keyboard::Num3 || event.key.code == sf::Keyboard::Numpad3) {
+                        else if (event.key.code == sf::Keyboard::Num3) {
                             selected_index = 2;
                         }
-                        else if (event.key.code == sf::Keyboard::Num4 || event.key.code == sf::Keyboard::Numpad4) {
+                        else if (event.key.code == sf::Keyboard::Num4) {
                             selected_index = 3;
                         }
                         if (selected_index != static_cast<std::size_t>(-1)) {
