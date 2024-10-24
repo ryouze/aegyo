@@ -4,8 +4,10 @@
 
 #include <array>          // for std::array
 #include <cstddef>        // for std::size_t
+#include <limits>         // for std::numeric_limits
 #include <string>         // for std::string
 #include <unordered_map>  // for std::unordered_map
+#include <vector>         // for std::vector
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
