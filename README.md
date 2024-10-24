@@ -133,7 +133,6 @@ To run the program, use the following command:
 aegyo
 ```
 
-
 On first run on macOS, the app will request access to keystrokes from any application:
 
 ```
