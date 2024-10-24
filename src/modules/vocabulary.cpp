@@ -90,23 +90,6 @@ std::optional<Entry> Vocabulary::get_random_entry()
     return enabled_entries.at(index);
 }
 
-std::optional<Entry> Vocabulary::get_random_wrong_entry(const Entry &correct_entry)
-{
-    std::vector<Entry> wrong_entries;
-    for (const auto &entry : this->entries_) {
-        if (this->category_enabled_.at(entry.category) && entry.hangul != correct_entry.hangul) {
-            wrong_entries.emplace_back(entry);
-        }
-    }
-
-    if (wrong_entries.empty()) {
-        return std::nullopt;
-    }
-
-    const auto index = core::rng::RNG::get_random_number<std::size_t>(0, wrong_entries.size() - 1);
-    return wrong_entries.at(index);
-}
-
 std::vector<Entry> Vocabulary::get_question_options(const Entry &correct_entry,
                                                     const std::size_t num_options)
 {

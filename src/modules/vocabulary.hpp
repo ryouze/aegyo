@@ -68,15 +68,6 @@ class Vocabulary final {
     [[nodiscard]] std::optional<Entry> get_random_entry();
 
     /**
-     * @brief Get a random wrong entry from the vocabulary.
-     *
-     * @param correct_entry Correct Entry object that should not be included in the result.
-     *
-     * @return Entry object where the category is enabled and the hangul is not the same as the correct entry provided, or std::nullopt if no suitable entries are found.
-     */
-    [[nodiscard]] std::optional<Entry> get_random_wrong_entry(const Entry &correct_entry);
-
-    /**
      * @brief Get a set of unique options for a question.
      *
      * @param correct_entry Correct Entry object that should be included in the options.
