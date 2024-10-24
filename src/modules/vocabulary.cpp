@@ -42,7 +42,7 @@ Vocabulary::Vocabulary()
           {"ㅁ", "m", Category::BasicConsonant},
           {"ㅂ", "b/p", Category::BasicConsonant},   // "b" at the beginning, "p" at the end
           {"ㅅ", "s/sh", Category::BasicConsonant},  // "s" generally, "sh" before "i" or "y" sounds
-          {"ㅇ", "ng/-", Category::BasicConsonant},  // Silent at the beginning, "ng" at the end
+          {"ㅇ", "-/ng", Category::BasicConsonant},  // Silent at the beginning, "ng" at the end
           {"ㅈ", "j", Category::BasicConsonant},
           {"ㅊ", "ch", Category::BasicConsonant},
           {"ㅋ", "k", Category::BasicConsonant},
