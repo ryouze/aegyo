@@ -5,7 +5,7 @@
 #if defined(_WIN32)
 
 #define WIN32_LEAN_AND_MEAN  // Exclude rarely-used stuff from Windows headers
-#include <cstdio>            // for freopen_s
+// #include <cstdio>            // for freopen_s
 #include <locale>            // for setlocale, LC_ALL
 #include <optional>          // for std::optional, std::nullopt
 #include <string>            // for std::string

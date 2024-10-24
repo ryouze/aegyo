@@ -4,6 +4,7 @@
 
 #include <algorithm>  // for std::shuffle
 #include <cstddef>    // for std::size_t
+#include <stdexcept>  // for std::runtime_error
 #include <vector>     // for std::vector
 
 #include <fmt/core.h>
