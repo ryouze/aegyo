@@ -41,7 +41,7 @@ Vocabulary::Vocabulary()
           {"ㄹ", "r/l", Category::BasicConsonant},  // "r" at the beginning, "l" at the end
           {"ㅁ", "m", Category::BasicConsonant},
           {"ㅂ", "b/p", Category::BasicConsonant},   // "b" at the beginning, "p" at the end
-          {"ㅅ", "s/sh", Category::BasicConsonant},  // "s" generally, "sh" before "i" or "y" sounds
+          {"ㅅ", "s", Category::BasicConsonant},     // "s" regardless of position, but "sh" before "i" or "y" sounds
           {"ㅇ", "-/ng", Category::BasicConsonant},  // Silent at the beginning, "ng" at the end
           {"ㅈ", "j", Category::BasicConsonant},
           {"ㅊ", "ch", Category::BasicConsonant},
