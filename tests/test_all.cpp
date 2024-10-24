@@ -37,7 +37,8 @@ namespace test_string {
 
 namespace test_vocabulary {
 [[nodiscard]] int entry();
-}
+[[nodiscard]] int category_count();
+}  // namespace test_vocabulary
 
 /**
  * @brief Entry-point of the test application.
@@ -81,6 +82,7 @@ int main(int argc,
         {"test_rng::get_random_bool", test_rng::get_random_bool},
         {"test_string::to_sfml_string", test_string::to_sfml_string},
         {"test_vocabulary::entry", test_vocabulary::entry},
+        {"test_vocabulary::category_count", test_vocabulary::category_count},
     };
 
     // Get the test name from the command-line arguments
@@ -248,6 +250,40 @@ int test_vocabulary::entry()
     }
     catch (const std::exception &e) {
         fmt::print(stderr, "modules::vocabulary::Entry failed: {}\n", e.what());
+        return EXIT_FAILURE;
+    }
+}
+
+int test_vocabulary::category_count()
+{
+    try {
+        // Create a vocabulary object
+        modules::vocabulary::Vocabulary vocabulary;
+
+        // Map to store the count of entries for each category
+        std::unordered_map<modules::vocabulary::Category, std::size_t> category_counts;
+
+        // Count the number of entries for each category
+        for (const auto &entry : vocabulary.get_entries()) {
+            ++category_counts[entry.category];
+        }
+
+        // Ensure each category has more than 3 entries
+        const std::size_t min_category_entries = 4;
+        for (const auto &[category, count] : category_counts) {
+            if (count < min_category_entries) {
+                fmt::print(stderr, "modules::vocabulary::Vocabulary failed: Category '{}' has less than {} entries (found {}).\n",
+                           static_cast<int>(category), min_category_entries, count);
+                return EXIT_FAILURE;
+            }
+            fmt::print("modules::vocabulary::Vocabulary: Category '{}' has {} entries.\n", static_cast<int>(category), count);
+        }
+
+        fmt::print("modules::vocabulary::Vocabulary passed.\n");
+        return EXIT_SUCCESS;
+    }
+    catch (const std::exception &e) {
+        fmt::print(stderr, "modules::vocabulary::Vocabulary failed: {}\n", e.what());
         return EXIT_FAILURE;
     }
 }

@@ -146,4 +146,9 @@ void Vocabulary::set_category_enabled(const Category category,
     this->category_enabled_.at(category) = enabled;
 }
 
+const std::vector<Entry> &Vocabulary::get_entries() const
+{
+    return this->entries_;
+}
+
 }  // namespace modules::vocabulary

@@ -97,6 +97,13 @@ class Vocabulary final {
     void set_category_enabled(const Category category,
                               const bool enabled);
 
+    /**
+     * @brief Get a vector of all vocabulary entries.
+     *
+     * @return Const reference to a vector of Entry objects.
+     */
+    [[nodiscard]] const std::vector<Entry> &get_entries() const;
+
   private:
     /**
      * @brief Vector of all vocabulary entries.
