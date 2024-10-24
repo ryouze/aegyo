@@ -18,7 +18,7 @@ namespace modules::vocabulary {
 Vocabulary::Vocabulary()
     // Transliteration reference: http://letslearnhangul.com/
     // Note: The number of entries in each category must be greater than 3 (i.e., 4, 5, 6, 7, 8, 9, etc.).
-    // If 3 or fewer entries are present in a category, the get_question_options will throw an exception and the program will crash.
+    // If 3 or fewer entries are present in a category, the generate_enabled_question_options will throw an exception and the program will crash.
     // The automated tests count the number of entries in each category to ensure this requirement is met.
     : entries_{
           // Basic vowels
@@ -72,7 +72,7 @@ Vocabulary::Vocabulary()
 {
 }
 
-std::optional<Entry> Vocabulary::get_random_entry()
+std::optional<Entry> Vocabulary::get_random_enabled_entry()
 {
     // Collect enabled entries
     std::vector<Entry> enabled_entries;
@@ -90,8 +90,8 @@ std::optional<Entry> Vocabulary::get_random_entry()
     return enabled_entries.at(index);
 }
 
-std::vector<Entry> Vocabulary::get_question_options(const Entry &correct_entry,
-                                                    const std::size_t num_options)
+std::vector<Entry> Vocabulary::generate_enabled_question_options(const Entry &correct_entry,
+                                                                 const std::size_t num_options)
 {
     std::vector<Entry> options = {correct_entry};
 

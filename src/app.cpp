@@ -164,7 +164,7 @@ class UI final {
     {
         // Lambda functions for setup
         auto setup_new_question = [&]() {
-            const auto optional_entry = this->vocabulary_.get_random_entry();
+            const auto optional_entry = this->vocabulary_.get_random_enabled_entry();
             if (!optional_entry.has_value()) {
                 this->question_text_.setString("X");
                 this->question_text_.setCharacterSize(72);  // Increase font size for the 'X'
@@ -191,7 +191,7 @@ class UI final {
                 this->is_hangul_ = core::rng::RNG::get_random_bool();
 
                 // Get unique options
-                const auto options = this->vocabulary_.get_question_options(this->correct_entry_);
+                const auto options = this->vocabulary_.generate_enabled_question_options(this->correct_entry_);
 
                 // Find the index of the correct answer after shuffling
                 for (std::size_t idx = 0; idx < 4; ++idx) {

@@ -65,7 +65,7 @@ class Vocabulary final {
      *
      * @return Entry object where the category is enabled, or std::nullopt if no categories are enabled.
      */
-    [[nodiscard]] std::optional<Entry> get_random_entry();
+    [[nodiscard]] std::optional<Entry> get_random_enabled_entry();
 
     /**
      * @brief Get a set of unique options for a question.
@@ -77,8 +77,8 @@ class Vocabulary final {
      *
      * @throws std::runtime_error if the size of the vector is less than "num_options" because there are not enough unique entries.
      */
-    [[nodiscard]] std::vector<Entry> get_question_options(const Entry &correct_entry,
-                                                          const std::size_t num_options = 4);
+    [[nodiscard]] std::vector<Entry> generate_enabled_question_options(const Entry &correct_entry,
+                                                                       const std::size_t num_options = 4);
 
     /**
      * @brief Enable or disable a category in the vocabulary.
