@@ -341,17 +341,21 @@ class UI final {
                     else if (event.type == sf::Event::KeyPressed) {
                         // Handle keyboard input
                         std::size_t selected_index = static_cast<std::size_t>(-1);
-                        if (event.key.code == sf::Keyboard::Num1) {
+                        switch (event.key.code) {
+                        case sf::Keyboard::Num1:
                             selected_index = 0;
-                        }
-                        else if (event.key.code == sf::Keyboard::Num2) {
+                            break;
+                        case sf::Keyboard::Num2:
                             selected_index = 1;
-                        }
-                        else if (event.key.code == sf::Keyboard::Num3) {
+                            break;
+                        case sf::Keyboard::Num3:
                             selected_index = 2;
-                        }
-                        else if (event.key.code == sf::Keyboard::Num4) {
+                            break;
+                        case sf::Keyboard::Num4:
                             selected_index = 3;
+                            break;
+                        default:
+                            break;
                         }
                         if (selected_index != static_cast<std::size_t>(-1)) {
                             game_state = GameState::ShowResult;
