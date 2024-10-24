@@ -2,10 +2,10 @@
  * @file app.cpp
  */
 
+#include <array>          // for std::array
 #include <cstddef>        // for std::size_t
 #include <string>         // for std::string
 #include <unordered_map>  // for std::unordered_map
-#include <vector>         // for std::vector
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
@@ -69,8 +69,8 @@ class UI final {
                           {modules::vocabulary::Category::BasicConsonant, true},
                           {modules::vocabulary::Category::DoubleConsonant, true},
                           {modules::vocabulary::Category::CompoundVowel, true}}),
-          button_shapes_(4),
-          answer_buttons_(4)
+          button_shapes_(),
+          answer_buttons_()
     {
         // Enable V-Sync to limit the frame rate to the refresh rate of the monitor
         this->window_.setVerticalSyncEnabled(true);
@@ -431,8 +431,8 @@ class UI final {
     modules::vocabulary::Vocabulary vocabulary_;
 
     // Toggle button states
-    std::vector<std::string> toggle_labels_;
-    std::vector<modules::vocabulary::Category> toggle_categories_;
+    std::array<std::string, 4> toggle_labels_;
+    std::array<modules::vocabulary::Category, 4> toggle_categories_;
     std::unordered_map<modules::vocabulary::Category, bool> toggle_states_;
 
     // UI Elements
@@ -441,8 +441,8 @@ class UI final {
     sf::Text memo_text_;
     sf::Text percentage_text_;
 
-    std::vector<sf::CircleShape> button_shapes_;
-    std::vector<sf::Text> answer_buttons_;
+    std::array<sf::CircleShape, 4> button_shapes_;
+    std::array<sf::Text, 4> answer_buttons_;
 
     std::vector<sf::RectangleShape> toggle_buttons_;
     std::vector<sf::Text> toggle_texts_;
