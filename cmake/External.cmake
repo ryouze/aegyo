@@ -37,6 +37,7 @@ function(fetch_and_link_external_dependencies target)
   target_link_libraries(${target} PUBLIC fmt::fmt sfml-graphics)
 
   # Link sfml-main for WIN32 targets to manage the WinMain entry point
+  # This makes Windows use main() instead of WinMain(), so we can use the same entry point for all platforms
   if(WIN32)
     target_link_libraries(${target} PUBLIC sfml-main)
   endif()
