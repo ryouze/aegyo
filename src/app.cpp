@@ -33,6 +33,8 @@ namespace {
  * @param antialiasing Anti-aliasing level (default: 8).
  *
  * @return Improved context settings.
+ *
+ * @note According to the SFML documentation, "if any of these settings is not supported by the graphics card, SFML tries to find the closest valid match. For example, if 4x anti-aliasing is too high, it tries 2x and then falls back to 0."
  */
 [[nodiscard]] sf::ContextSettings get_improved_context_settings(const unsigned int antialiasing = 8)
 {
