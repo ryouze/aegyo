@@ -129,10 +129,10 @@ class UI final {
         this->percentage_text_.setPosition(10.f, 10.f);  // Top-left corner
 
         // Initialize toggle buttons
-        const float total_toggle_width = static_cast<float>(this->toggle_labels_.size()) * 60.f;
+        const float total_toggle_width = 4.f * 60.f;                                                      // 4 buttons * 60 width
         const float start_x = static_cast<float>(this->window_.getSize().x) - total_toggle_width - 10.f;  // 10.f padding from the right
 
-        for (std::size_t idx = 0; idx < this->toggle_categories_.size(); ++idx) {
+        for (std::size_t idx = 0; idx < 4; ++idx) {
             sf::RectangleShape button;
             button.setSize({50.f, 35.f});
             // Set fill color based on initial state
