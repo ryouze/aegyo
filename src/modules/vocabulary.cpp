@@ -70,6 +70,8 @@ Vocabulary::Vocabulary()
           {"ㅢ", "ui", "'ㅡ' plus 'ㅣ'", Category::CompoundVowel}},
       category_enabled_{{Category::BasicVowel, true}, {Category::BasicConsonant, true}, {Category::DoubleConsonant, true}, {Category::CompoundVowel, true}}
 {
+    // Reduce memory usage
+    this->entries_.shrink_to_fit();
 }
 
 std::optional<Entry> Vocabulary::get_random_enabled_entry()
