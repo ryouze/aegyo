@@ -84,6 +84,8 @@ class Vocabulary final {
      * @return Vector of Entry objects representing the question options.
      *
      * @throws std::runtime_error if the size of the vector is less than "num_options" because there are not enough unique entries.
+     *
+     * @note The exception will NEVER be thrown unless someone modifies the vocabulary data in the constructor, which will be caught by the CI anyway. Therefore, it is safe to assume that the exception will NEVER be thrown in practice and it's only there for nice error messages in case someone messes with the data.
      */
     [[nodiscard]] std::vector<Entry> generate_enabled_question_options(const Entry &correct_entry,
                                                                        const std::unordered_map<Category, bool> &category_enabled,

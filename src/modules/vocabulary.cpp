@@ -118,6 +118,7 @@ std::vector<Entry> Vocabulary::generate_enabled_question_options(const Entry &co
     }
 
     // Throw if the number of options is less than the desired number
+    // This will NEVER happen unless someone messes with the data, it's only here for nice error messages
     if (const std::size_t len = options.size(); len < num_options) {
         throw std::runtime_error(fmt::format("Generated '{}' question options, but '{}' were requested; each category in vocabulary needs at least {} entries", len, num_options, num_options));
     }
