@@ -81,7 +81,7 @@ class UI final {
         this->window_.setKeyRepeatEnabled(false);
 
         // Log anti-aliasing level
-        fmt::print("Anti-aliasing level: {}\n", this->window_.getSettings().antialiasingLevel);
+        // fmt::print("Anti-aliasing level: {}\n", this->window_.getSettings().antialiasingLevel);
 
         // Initialize UI elements
         // Initialize question circle
