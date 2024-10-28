@@ -2,11 +2,12 @@
  * @file vocabulary.cpp
  */
 
-#include <algorithm>  // for std::shuffle
-#include <cstddef>    // for std::size_t
-#include <optional>   // for std::optional, std::nullopt
-#include <stdexcept>  // for std::runtime_error
-#include <vector>     // for std::vector
+#include <algorithm>      // for std::shuffle
+#include <cstddef>        // for std::size_t
+#include <optional>       // for std::optional, std::nullopt
+#include <stdexcept>      // for std::runtime_error
+#include <unordered_map>  // for std::unordered_map
+#include <vector>         // for std::vector
 
 #include <fmt/core.h>
 
