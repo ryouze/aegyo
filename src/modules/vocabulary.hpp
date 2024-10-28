@@ -93,6 +93,8 @@ class Vocabulary final {
      * @brief Get a vector of all vocabulary entries.
      *
      * @return Const reference to a vector of Entry objects.
+     *
+     * @note This is used by the CI to ensure that there are enough entries for each category.
      */
     [[nodiscard]] const std::vector<Entry> &get_entries() const;
 
