@@ -2,10 +2,12 @@
  * @file test_all.cpp
  */
 
+#include <cstddef>        // for std::size_t
 #include <cstdlib>        // for EXIT_FAILURE, EXIT_SUCCESS
 #include <exception>      // for std::exception
 #include <functional>     // for std::function
 #include <random>         // for std::mt19937, std::shuffle
+#include <stdexcept>      // for std::runtime_error
 #include <string>         // for std::string
 #include <unordered_map>  // for std::unordered_map
 #include <vector>         // for std::vector
