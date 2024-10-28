@@ -18,9 +18,24 @@ namespace modules::vocabulary {
  * @brief Enum that represents the category of a Korean character.
  */
 enum class Category {
+    /**
+     * @brief Basic vowel (e.g., "ㅏ").
+     */
     BasicVowel,
+
+    /**
+     * @brief Basic consonant (e.g., "ㄱ").
+     */
     BasicConsonant,
+
+    /**
+     * @brief Double consonant (e.g., "ㄲ").
+     */
     DoubleConsonant,
+
+    /**
+     * @brief Compound vowel (e.g., "ㅐ").
+     */
     CompoundVowel
 };
 
@@ -62,6 +77,8 @@ class Vocabulary final {
   public:
     /**
      * @brief Construct a new Vocabulary object.
+     *
+     * On construction, initialize the vocabulary with a hardcoded set of Korean characters and their Latin equivalents.
      */
     explicit Vocabulary();
 
