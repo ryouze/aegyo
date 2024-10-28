@@ -17,6 +17,7 @@ When I was learning Japanese kana, I liked the idea of drilling the characters i
 ## Features
 
 - Written in modern C++ (C++17).
+- Verified for accuracy by a Korean language teacher.
 - Comprehensive documentation with doxygen-style comments.
 - Automatic third-party dependency management using CMake's [FetchContent](https://www.foonathan.net/2022/06/cmake-fetchcontent/).
 - No missing STL headers thanks to [header-warden](https://github.com/ryouze/header-warden).
@@ -142,6 +143,7 @@ Grant access to this application in Privacy & Security settings, located in Syst
 ```
 
 This is caused by the underlying SFML library, which reads raw keyboard input. You should **deny** this request, as the app does not expect any input while it's not in focus. I'd rather not have such a request appear in the first place, but I have no control over it.
+
 
 ### Controls
 
