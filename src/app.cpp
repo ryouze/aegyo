@@ -193,7 +193,9 @@ class UI final {
         update_percentage_text();
 
         const auto setup_new_question = [&]() {
-            const auto optional_entry = this->vocabulary_.get_random_enabled_entry();
+            const auto optional_entry = this->vocabulary_.get_random_enabled_entry(this->toggle_states_);
+
+            // No entries enabled; display 'X' in the question circle
             if (!optional_entry.has_value()) {
                 this->question_text_.setString("X");
                 this->question_text_.setCharacterSize(72);  // Increase font size for the 'X'
@@ -214,11 +216,12 @@ class UI final {
                 this->memo_text_.setString("");
             }
             else {
+                // Entries are enabled; setup new question
                 correct_entry = optional_entry.value();
 
                 is_hangul = core::rng::RNG::get_random_bool();
 
-                const auto options = this->vocabulary_.generate_enabled_question_options(correct_entry);
+                const auto options = this->vocabulary_.generate_enabled_question_options(correct_entry, this->toggle_states_);
 
                 for (std::size_t idx = 0; idx < 4; ++idx) {
                     if (options[idx].hangul == correct_entry.hangul) {
@@ -274,7 +277,6 @@ class UI final {
                             // Toggle the category
                             const bool current_state = this->toggle_states_[this->toggle_categories_[idx]];
                             this->toggle_states_[this->toggle_categories_[idx]] = !current_state;
-                            this->vocabulary_.set_category_enabled(this->toggle_categories_[idx], !current_state);
                             // Update button appearance
                             if (this->toggle_states_[this->toggle_categories_[idx]]) {
                                 this->toggle_buttons_[idx].setFillColor(core::colors::enabled_color);  // Enabled state color

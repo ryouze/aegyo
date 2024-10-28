@@ -67,19 +67,18 @@ Vocabulary::Vocabulary()
           {"ㅝ", "wo", "'ㅜ' plus 'ㅓ'", Category::CompoundVowel},
           {"ㅞ", "we", "'ㅜ' plus 'ㅔ'", Category::CompoundVowel},
           {"ㅟ", "wi", "'ㅜ' plus 'ㅣ'", Category::CompoundVowel},
-          {"ㅢ", "ui", "'ㅡ' plus 'ㅣ'", Category::CompoundVowel}},
-      category_enabled_{{Category::BasicVowel, true}, {Category::BasicConsonant, true}, {Category::DoubleConsonant, true}, {Category::CompoundVowel, true}}
+          {"ㅢ", "ui", "'ㅡ' plus 'ㅣ'", Category::CompoundVowel}}
 {
     // Reduce memory usage
     this->entries_.shrink_to_fit();
 }
 
-std::optional<Entry> Vocabulary::get_random_enabled_entry()
+std::optional<Entry> Vocabulary::get_random_enabled_entry(const std::unordered_map<Category, bool> &category_enabled)
 {
     // Collect enabled entries
     std::vector<Entry> enabled_entries;
     for (const auto &entry : this->entries_) {
-        if (this->category_enabled_.at(entry.category)) {
+        if (category_enabled.at(entry.category)) {
             enabled_entries.emplace_back(entry);
         }
     }
@@ -93,6 +92,7 @@ std::optional<Entry> Vocabulary::get_random_enabled_entry()
 }
 
 std::vector<Entry> Vocabulary::generate_enabled_question_options(const Entry &correct_entry,
+                                                                 const std::unordered_map<Category, bool> &category_enabled,
                                                                  const std::size_t num_options)
 {
     std::vector<Entry> options = {correct_entry};
@@ -100,7 +100,7 @@ std::vector<Entry> Vocabulary::generate_enabled_question_options(const Entry &co
     // Collect possible wrong entries
     std::vector<Entry> wrong_entries;
     for (const auto &entry : this->entries_) {
-        if (this->category_enabled_.at(entry.category) && entry.hangul != correct_entry.hangul) {
+        if (category_enabled.at(entry.category) && entry.hangul != correct_entry.hangul) {
             wrong_entries.emplace_back(entry);
         }
     }
@@ -124,13 +124,9 @@ std::vector<Entry> Vocabulary::generate_enabled_question_options(const Entry &co
     // Shuffle the options
     std::shuffle(options.begin(), options.end(), core::rng::RNG::instance());
 
+    // Return shrunk vector (RVO)
+    options.shrink_to_fit();
     return options;
-}
-
-void Vocabulary::set_category_enabled(const Category category,
-                                      const bool enabled)
-{
-    this->category_enabled_.at(category) = enabled;
 }
 
 const std::vector<Entry> &Vocabulary::get_entries() const

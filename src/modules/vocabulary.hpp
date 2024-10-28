@@ -66,16 +66,19 @@ class Vocabulary final {
     explicit Vocabulary();
 
     /**
-     * @brief Get a random entry from the vocabulary.
+     * @brief Get a random entry from the vocabulary where the category is enabled.
+     *
+     * @param category_enabled Map of categories and their enabled state.
      *
      * @return Entry object where the category is enabled, or std::nullopt if no categories are enabled.
      */
-    [[nodiscard]] std::optional<Entry> get_random_enabled_entry();
+    [[nodiscard]] std::optional<Entry> get_random_enabled_entry(const std::unordered_map<Category, bool> &category_enabled);
 
     /**
      * @brief Get a set of unique options for a question.
      *
      * @param correct_entry Correct Entry object that should be included in the options.
+     * @param category_enabled Map of categories and their enabled state.
      * @param num_options Total number of options to generate (default: 4).
      *
      * @return Vector of Entry objects representing the question options.
@@ -83,16 +86,8 @@ class Vocabulary final {
      * @throws std::runtime_error if the size of the vector is less than "num_options" because there are not enough unique entries.
      */
     [[nodiscard]] std::vector<Entry> generate_enabled_question_options(const Entry &correct_entry,
+                                                                       const std::unordered_map<Category, bool> &category_enabled,
                                                                        const std::size_t num_options = 4);
-
-    /**
-     * @brief Enable or disable a category in the vocabulary.
-     *
-     * @param category Category to enable or disable.
-     * @param enabled Whether to enable or disable the category.
-     */
-    void set_category_enabled(const Category category,
-                              const bool enabled);
 
     /**
      * @brief Get a vector of all vocabulary entries.
@@ -106,11 +101,6 @@ class Vocabulary final {
      * @brief Vector of all vocabulary entries.
      */
     std::vector<Entry> entries_;
-
-    /**
-     * @brief Map indicating whether each category is enabled.
-     */
-    std::unordered_map<Category, bool> category_enabled_;
 };
 
 }  // namespace modules::vocabulary
