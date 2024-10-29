@@ -253,7 +253,7 @@ int test_vocabulary::category_count()
 {
     try {
         // Create a vocabulary object
-        modules::vocabulary::Vocabulary vocabulary;
+        const modules::vocabulary::Vocabulary vocabulary;
 
         // Map to store the count of entries for each category
         std::unordered_map<modules::vocabulary::Category, std::size_t> category_counts;
