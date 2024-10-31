@@ -11,6 +11,16 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(BUILD_SHARED_LIBS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# Enable Link Time Optimization (if supported)
+include(CheckIPOSupported)
+check_ipo_supported(RESULT lto_supported OUTPUT lto_error)
+if(lto_supported)
+  set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
+  message(STATUS "[INFO] Link Time Optimization (LTO) is enabled.")
+else()
+  message(WARNING "[WARNING] Link Time Optimization (LTO) not supported: ${lto_error}")
+endif()
+
 # Project options
 option(BUILD_TESTS "Build tests" OFF)
 option(ENABLE_COMPILE_FLAGS "Enable compile flags" ON)
