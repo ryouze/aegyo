@@ -1,0 +1,3 @@
+# Force the assets.cpp file to be treated as C++ code.
+# It contains raw embedded font data that breaks automatic language detection.
+src/core/assets.cpp linguist-language=C++ linguist-vendored
