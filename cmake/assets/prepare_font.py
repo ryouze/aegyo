@@ -10,8 +10,6 @@ For example: `pyftsubset NanumGothic-Regular.ttf --output-file=NanumGothic-Regul
 
 from pathlib import Path
 
-THIS_DIR: Path = Path(__file__).resolve().parent
-
 
 def create_header(
     font_path: Path,
@@ -33,7 +31,10 @@ def create_header(
         header_file.write(" };\n")
 
 
-create_header(
-    Path(THIS_DIR / "NanumGothic-Regular-subset.ttf"),
-    Path(THIS_DIR / "font.hpp"),
-)
+if __name__ == "__main__":
+    # Get path to this script's directory (regardless of CWD)
+    this_directory: Path = Path(__file__).resolve().parent
+    create_header(
+        Path(this_directory / "NanumGothic-Regular-subset.ttf"),
+        Path(this_directory / "font.hpp"),
+    )
