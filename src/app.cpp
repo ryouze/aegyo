@@ -88,6 +88,7 @@ class UI final {
         // Initialize UI elements
         // Initialize question circle
         this->question_circle_.setRadius(80.f);
+        this->question_circle_.setPointCount(100);
         this->question_circle_.setFillColor(core::colors::question_circle);
         this->question_circle_.setOrigin(80.f, 80.f);
         this->question_circle_.setPosition(400.f, 150.f);
@@ -108,6 +109,7 @@ class UI final {
         constexpr float button_radius = 60.f;
         for (std::size_t idx = 0; idx < 4; ++idx) {
             this->button_shapes_[idx].setRadius(button_radius);
+            this->button_shapes_[idx].setPointCount(100);
             this->button_shapes_[idx].setFillColor(core::colors::default_button);
             this->button_shapes_[idx].setOrigin(button_radius, button_radius);
             this->answer_buttons_[idx].setFont(this->font_);
