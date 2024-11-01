@@ -150,7 +150,7 @@ class UI final {
             button.setOutlineThickness(1.f);
             button.setPosition(start_x + static_cast<float>(idx) * 60.f, 10.f);  // Positioned in the top-right corner
 
-            this->toggle_buttons_.emplace_back(button);
+            this->toggle_buttons_[idx] = button;
 
             sf::Text text;
             text.setFont(this->font_);
@@ -163,7 +163,7 @@ class UI final {
                            text_bounds.top + text_bounds.height / 2.0f);
             text.setPosition(button.getPosition() + sf::Vector2f(25.f, 17.5f));
 
-            this->toggle_texts_.emplace_back(text);
+            this->toggle_texts_[idx] = text;
         }
     }
 
@@ -452,8 +452,8 @@ class UI final {
     std::array<sf::CircleShape, 4> button_shapes_;
     std::array<sf::Text, 4> answer_buttons_;
 
-    std::vector<sf::RectangleShape> toggle_buttons_;
-    std::vector<sf::Text> toggle_texts_;
+    std::array<sf::RectangleShape, 4> toggle_buttons_;
+    std::array<sf::Text, 4> toggle_texts_;
 };
 
 }  // namespace
