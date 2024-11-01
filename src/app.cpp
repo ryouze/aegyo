@@ -133,7 +133,7 @@ class UI final {
         this->percentage_text_.setPosition(10.f, 10.f);  // Top-left corner
 
         // Initialize toggle buttons
-        const float total_toggle_width = 4.f * 60.f;                                                      // 4 buttons * 60 width
+        constexpr float total_toggle_width = 4.f * 60.f;                                                  // 4 buttons * 60 width
         const float start_x = static_cast<float>(this->window_.getSize().x) - total_toggle_width - 10.f;  // 10.f padding from the right
 
         for (std::size_t idx = 0; idx < 4; ++idx) {
@@ -439,8 +439,8 @@ class UI final {
     modules::vocabulary::Vocabulary vocabulary_;
 
     // Toggle button states
-    std::array<std::string, 4> toggle_labels_;
-    std::array<modules::vocabulary::Category, 4> toggle_categories_;
+    const std::array<std::string, 4> toggle_labels_;
+    const std::array<modules::vocabulary::Category, 4> toggle_categories_;
     std::unordered_map<modules::vocabulary::Category, bool> toggle_states_;
 
     // UI Elements
