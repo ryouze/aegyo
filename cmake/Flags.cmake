@@ -29,7 +29,7 @@ function(apply_compile_flags target)
     # MSVC
     target_compile_options(${target} PUBLIC
       /W4     # Enable high warning level
-      # /WX     # Treat warnings as errors
+      /WX     # Treat warnings as errors
       /utf-8  # Use UTF-8 encoding for source and execution
     )
   endif()

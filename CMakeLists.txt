@@ -91,7 +91,7 @@ add_library(${PROJECT_NAME}-lib STATIC
 target_include_directories(${PROJECT_NAME}-lib PUBLIC src)
 
 # Apply public compile flags to the library target if enabled
-if (ENABLE_COMPILE_FLAGS)
+if(ENABLE_COMPILE_FLAGS)
   apply_compile_flags(${PROJECT_NAME}-lib)
 endif()
 
