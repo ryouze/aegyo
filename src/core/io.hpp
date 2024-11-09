@@ -13,21 +13,21 @@
 
 namespace core::io {
 
-// /**
-//  * @brief Attach to the console if it exists. Do nothing on other platforms.
-//  *
-//  * This ensures that when the application is run from the command line, it can print to the console.
-//  *
-//  * @return Error message if the attachment fails, "std::nullopt" otherwise.
-//  */
-// [[nodiscard]] std::optional<std::string> attach_to_console();
-
 /**
  * @brief Setup UTF-8 input/output on Windows. Do nothing on other platforms.
  *
- * @return Error message if the setup fails, "std::nullopt" otherwise.
+ * @return Error message if the setup failed, "std::nullopt" otherwise.
  */
 [[nodiscard]] std::optional<std::string> setup_utf8_console();
+
+/**
+ * @brief Setup the icon on Windows using the embedded icon data (must be embedded by CMake).
+ *
+ * @param window Window to set the icon for.
+ *
+ * @return Error message if the setup failed, "std::nullopt" otherwise.
+ */
+std::optional<std::string> setup_windows_icon(sf::RenderWindow &window);
 
 }  // namespace core::io
 
