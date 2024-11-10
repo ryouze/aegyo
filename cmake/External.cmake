@@ -20,12 +20,11 @@ function(fetch_and_link_external_dependencies target)
     SYSTEM
   )
 
-  set(SFML_VERSION 2.6.1)
   set(SFML_BUILD_AUDIO OFF)
   set(SFML_BUILD_NETWORK OFF)
   FetchContent_Declare(
     sfml
-    URL https://github.com/SFML/SFML/archive/${SFML_VERSION}.zip
+    URL https://github.com/SFML/SFML/archive/refs/tags/2.6.1.zip
     EXCLUDE_FROM_ALL
     SYSTEM
   )
