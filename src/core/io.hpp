@@ -11,6 +11,8 @@
 #include <optional>  // for std::optional
 #include <string>    // for std::string
 
+#include <SFML/Window.hpp>
+
 namespace core::io {
 
 /**
@@ -27,7 +29,7 @@ namespace core::io {
  *
  * @return Error message if the setup failed, "std::nullopt" otherwise.
  */
-std::optional<std::string> setup_windows_icon(sf::RenderWindow &window);
+std::optional<std::string> setup_titlebar_icon(const sf::Window &window);
 
 }  // namespace core::io
 
