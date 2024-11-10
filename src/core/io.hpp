@@ -21,9 +21,9 @@ namespace core::io {
 [[nodiscard]] std::optional<std::string> setup_utf8_console();
 
 /**
- * @brief Setup the icon on Windows using the embedded icon data (must be embedded by CMake).
+ * @brief Setup the titlebar icon on Windows using the embedded icon data (must be embedded by CMake).
  *
- * @param window Window to set the icon for.
+ * @param window Window to set the titlebar icon for.
  *
  * @return Error message if the setup failed, "std::nullopt" otherwise.
  */

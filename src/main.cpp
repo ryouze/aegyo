@@ -23,11 +23,6 @@ int main()
 #if defined(_WIN32)
         // Boilerplate to make Windows behave more like *nix
 
-        // DEBUG: Display output to the console if started from the command line
-        // if (const auto e = core::io::attach_to_console(); e.has_value()) {
-        // fmt::print(stderr, "Warning: {}\n", *e);
-        // }
-
         // Setup UTF-8 input/output and locale
         if (const auto e = core::io::setup_utf8_console(); e.has_value()) {
             fmt::print(stderr, "Warning: {}\n", *e);

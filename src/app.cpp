@@ -19,6 +19,9 @@
 #include "core/string.hpp"
 #include "modules/vocabulary.hpp"
 #include "version.hpp"
+#if defined(_WIN32)
+#include "core/io.hpp"
+#endif
 
 namespace app {
 
@@ -83,6 +86,14 @@ class UI final {
 
         // Log anti-aliasing level
         // fmt::print("Anti-aliasing level: {}\n", this->window_.getSettings().antialiasingLevel);
+
+        // Set window titlebar icon (Windows only)
+        // macOS doesn't have titlebar icons, GNU/Linux is DE-dependent
+#if defined(_WIN32)
+        if (const auto e = core::io::setup_windows_icon(this->window_); e.has_value()) {
+            fmt::print(stderr, "Warning: {}\n", *e);
+        }
+#endif
 
         // Initialize UI elements
         // Initialize question circle
