@@ -103,6 +103,7 @@ add_executable(${PROJECT_NAME} src/main.cpp)
 target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}-lib)
 
 # Prevent the creation of a console window on Windows and create an application bundle on macOS
+# If "WIN32_EXECUTABLE" is set to ON, the "sfml-main" library must be linked to the target, which is done in "cmake/External.cmake"
 set_target_properties(${PROJECT_NAME} PROPERTIES
   WIN32_EXECUTABLE ON
   MACOSX_BUNDLE ON
@@ -110,62 +111,62 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 
 # If on macOS, bundle the executable into an app bundle
 if(APPLE)
-    # Set variables for Info.plist
-    set(MACOSX_BUNDLE_BUNDLE_NAME ${PROJECT_NAME})
-    set(MACOSX_BUNDLE_GUI_IDENTIFIER "com.ryouze.${PROJECT_NAME}")
-    set(MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION})
-    set(MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION})
+  # Set variables for Info.plist
+  set(MACOSX_BUNDLE_BUNDLE_NAME ${PROJECT_NAME})
+  set(MACOSX_BUNDLE_GUI_IDENTIFIER "com.ryouze.${PROJECT_NAME}")
+  set(MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION})
+  set(MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION})
 
-    # Generate the Info.plist file
-    configure_file(${CMAKE_SOURCE_DIR}/cmake/assets/Info.plist.in ${CMAKE_BINARY_DIR}/Info.plist @ONLY)
+  # Generate the Info.plist file
+  configure_file(${CMAKE_SOURCE_DIR}/cmake/assets/Info.plist.in ${CMAKE_BINARY_DIR}/Info.plist @ONLY)
 
-    # Set macOS-specific properties
-    set_target_properties(${PROJECT_NAME} PROPERTIES
-        MACOSX_BUNDLE_INFO_PLIST ${CMAKE_BINARY_DIR}/Info.plist
-        INSTALL_RPATH "@executable_path/../Frameworks"
-        BUILD_WITH_INSTALL_RPATH TRUE
-    )
+  # Set macOS-specific properties
+  set_target_properties(${PROJECT_NAME} PROPERTIES
+    MACOSX_BUNDLE_INFO_PLIST ${CMAKE_BINARY_DIR}/Info.plist
+    INSTALL_RPATH "@executable_path/../Frameworks"
+    BUILD_WITH_INSTALL_RPATH TRUE
+  )
 
-    # Copy the icon into the app bundle
-    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy
-            ${CMAKE_SOURCE_DIR}/cmake/assets/Icon.icns
-            $<TARGET_BUNDLE_DIR:${PROJECT_NAME}>/Contents/Resources/Icon.icns
-        COMMENT "Copying icon to the app bundle"
-    )
+  # Copy the icon into the app bundle
+  add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+      ${CMAKE_SOURCE_DIR}/cmake/assets/Icon.icns
+      $<TARGET_BUNDLE_DIR:${PROJECT_NAME}>/Contents/Resources/Icon.icns
+    COMMENT "Copying icon to the app bundle"
+  )
 
-    # Clean up the Frameworks directory before copying
-    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E remove_directory $<TARGET_BUNDLE_DIR:${PROJECT_NAME}>/Contents/Frameworks
-        COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_BUNDLE_DIR:${PROJECT_NAME}>/Contents/Frameworks
-        COMMENT "Cleaning Frameworks directory"
-    )
+  # Clean up the Frameworks directory before copying
+  add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E remove_directory $<TARGET_BUNDLE_DIR:${PROJECT_NAME}>/Contents/Frameworks
+    COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_BUNDLE_DIR:${PROJECT_NAME}>/Contents/Frameworks
+    COMMENT "Cleaning Frameworks directory"
+  )
 
-    # Copy only the SFML freetype framework into the app bundle
-    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND rsync -a ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/freetype.framework
-            $<TARGET_BUNDLE_DIR:${PROJECT_NAME}>/Contents/Frameworks/
-        COMMENT "Copying SFML freetype framework into the app bundle"
-    )
-
-    # Add install target for macOS app bundle
-    install(TARGETS ${PROJECT_NAME} BUNDLE DESTINATION "/Applications")
+  # Copy only the SFML freetype framework into the app bundle
+  add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND rsync -a ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/freetype.framework
+      $<TARGET_BUNDLE_DIR:${PROJECT_NAME}>/Contents/Frameworks/
+    COMMENT "Copying SFML freetype framework into the app bundle"
+  )
 elseif(WIN32)
-    # Specify the path to the .ico file
-    set(ICON_PATH "${CMAKE_SOURCE_DIR}/cmake/assets/Icon.ico")
+  # If on Windows, add an icon to the executable
+  # Specify the path to the .ico file
+  set(ICON_PATH "${CMAKE_SOURCE_DIR}/cmake/assets/Icon.ico")
 
-    # Generate the icon.rc file dynamically
-    file(GENERATE OUTPUT "${CMAKE_BINARY_DIR}/generated/icon.rc" CONTENT "IDI_ICON1 ICON \"${ICON_PATH}\"")
+  # Generate the icon.rc file dynamically
+  # Ensure that the macro in "src/core/io.cpp" matches "IDI_ICON1"
+  file(GENERATE OUTPUT "${CMAKE_BINARY_DIR}/generated/icon.rc" CONTENT "IDI_ICON1 ICON \"${ICON_PATH}\"")
 
-    # Add the generated .rc file to the target
-    target_sources(${PROJECT_NAME} PRIVATE "${CMAKE_BINARY_DIR}/generated/icon.rc")
-
-    # Add install target for Windows executable
-    install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
-else()
-    # Add install target for regular executable
-    install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+  # Add the generated .rc file to the target
+  target_sources(${PROJECT_NAME} PRIVATE "${CMAKE_BINARY_DIR}/generated/icon.rc")
 endif()
+
+# Add install target
+include(GNUInstallDirs)
+install(TARGETS ${PROJECT_NAME}
+  BUNDLE DESTINATION "/Applications"           # macOS
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}  # GNU/Linux, Windows
+)
 
 # Add tests if enabled
 if(BUILD_TESTS)
