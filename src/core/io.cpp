@@ -6,7 +6,9 @@
 
 #define WIN32_LEAN_AND_MEAN  // Exclude rarely-used stuff from Windows headers
 
-#define IDI_ICON1 101  // Icon resource ID, must match the one in CMakeLists.txt
+#define IDI_ICON1 101  // Icon resource ID, must match the generated "icon.rc" in CMakeLists.txt
+// Typically, you’d define this ID in a "resource.h" file and include it in both "icon.rc" and this file
+// However, I want to avoid any platform-specific files whenever possible
 
 #include <locale>     // for setlocale, LC_ALL
 #include <optional>   // for std::optional, std::nullopt
