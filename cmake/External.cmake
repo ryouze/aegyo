@@ -12,14 +12,12 @@ function(fetch_and_link_external_dependencies target)
   # SYSTEM is used to prevent applying compile flags to the dependencies
   FetchContent_Declare(
     fmt
-    GIT_REPOSITORY https://github.com/fmtlib/fmt.git
-    GIT_TAG        11.0.2
-    GIT_PROGRESS   TRUE
-    GIT_SHALLOW    TRUE
+    URL https://github.com/fmtlib/fmt/releases/download/11.0.2/fmt-11.0.2.zip
     EXCLUDE_FROM_ALL
     SYSTEM
   )
 
+  # Do not build unnecessary SFML modules
   set(SFML_BUILD_AUDIO OFF)
   set(SFML_BUILD_NETWORK OFF)
   FetchContent_Declare(
