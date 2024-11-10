@@ -4,6 +4,8 @@
 
 #if defined(_WIN32)
 
+#define IDI_ICON1 101  // Icon resource ID, must match the one in CMakeLists.txt
+
 #define WIN32_LEAN_AND_MEAN  // Exclude rarely-used stuff from Windows headers
 
 #include <locale>     // for setlocale, LC_ALL
@@ -15,7 +17,6 @@
 #include <fmt/core.h>
 
 #include "io.hpp"
-#include "resource.hpp"
 
 namespace core::io {
 
@@ -33,13 +34,13 @@ std::optional<std::string> setup_utf8_console()
 
 std::optional<std::string> setup_titlebar_icon(const sf::Window &window)
 {
-    // Get the native window handle
+    // Get the native window handle from the SFML window
     const HWND hwnd = window.getSystemHandle();
     if (hwnd == NULL) {
         return "Window handle is null";
     }
 
-    // Load the icon resource
+    // Load the embedded icon resource
     const HICON hIcon = LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(IDI_ICON1));
     if (hIcon == NULL) {
         return fmt::format("Failed to load icon resource: {}", GetLastError());
