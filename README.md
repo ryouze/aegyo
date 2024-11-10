@@ -123,12 +123,12 @@ To install the program, use the following command:
 sudo cmake --install .
 ```
 
-On macOS, this will install the program to `/Applications`. You can then run `aegyo` from the Launchpad, Spotlight, or by double-clicking the app in Finder.
+On macOS, this will install the program to `/Applications`. You can then run `aegyo.app` from the Launchpad, Spotlight, or by double-clicking the app in Finder.
 
 
 ## Usage
 
-To start the program, simply run the `aegyo` executable (`aegyo.app` on macOS, `open aegyo.app` to run from the terminal).
+To start the program, simply run the `aegyo` executable (`aegyo.app` on macOS, `open /Applications/aegyo.app` to run from the terminal).
 
 On first run on macOS, the app will request access to keystrokes from any application:
 
