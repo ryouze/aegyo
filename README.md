@@ -128,11 +128,7 @@ On macOS, this will install the program to `/Applications`. You can then run `ae
 
 ## Usage
 
-To run the program, use the following command:
-
-```sh
-aegyo
-```
+To start the program, simply run the `aegyo` executable (`aegyo.app` on macOS, `open aegyo.app` to run from the terminal).
 
 On first run on macOS, the app will request access to keystrokes from any application:
 
