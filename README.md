@@ -27,7 +27,7 @@ When I was learning Japanese kana, I liked the idea of drilling the characters i
 
 This project has been tested on the following systems:
 
-- macOS 15.0.1 (Sequoia)
+- macOS 15.1 (Sequoia)
 - Manjaro 24.0 (Wynsdey)
 - Windows 11 23H2
 
