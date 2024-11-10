@@ -153,9 +153,11 @@ elseif(WIN32)
   # Specify the path to the .ico file
   set(ICON_PATH "${CMAKE_SOURCE_DIR}/cmake/assets/Icon.ico")
 
+  # Generate the resource.hpp file from src/resource.hpp.in
+  configure_file(${CMAKE_SOURCE_DIR}/src/resource.hpp.in ${CMAKE_BINARY_DIR}/generated/resource.hpp @ONLY)
+
   # Generate the icon.rc file dynamically
-  # Ensure that the macro in "src/core/io.cpp" matches "IDI_ICON1"
-  file(GENERATE OUTPUT "${CMAKE_BINARY_DIR}/generated/icon.rc" CONTENT "IDI_ICON1 ICON \"${ICON_PATH}\"")
+  file(GENERATE OUTPUT "${CMAKE_BINARY_DIR}/generated/icon.rc" CONTENT "#include \"resource.hpp\"\nIDI_ICON1 ICON \"${ICON_PATH}\"")
 
   # Add the generated .rc file to the target
   target_sources(${PROJECT_NAME} PRIVATE "${CMAKE_BINARY_DIR}/generated/icon.rc")

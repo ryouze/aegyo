@@ -4,8 +4,6 @@
 
 #if defined(_WIN32)
 
-#define IDI_ICON1 101  // Icon resource ID, must match the one in CMakeLists.txt
-
 #define WIN32_LEAN_AND_MEAN  // Exclude rarely-used stuff from Windows headers
 
 #include <locale>     // for setlocale, LC_ALL
@@ -17,6 +15,7 @@
 #include <fmt/core.h>
 
 #include "io.hpp"
+#include "resource.hpp"
 
 namespace core::io {
 
