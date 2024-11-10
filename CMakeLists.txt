@@ -98,9 +98,15 @@ endif()
 # Fetch and link external dependencies to the library target
 fetch_and_link_external_dependencies(${PROJECT_NAME}-lib)
 
-# Add the main executable and link the library (WIN32 is ignored on non-Windows platforms)
-add_executable(${PROJECT_NAME} WIN32 src/main.cpp)
+# Add the main executable and link the library
+add_executable(${PROJECT_NAME} src/main.cpp)
 target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}-lib)
+
+# Prevent the creation of a console window on Windows and create an application bundle on macOS
+set_target_properties(${PROJECT_NAME} PROPERTIES
+  WIN32_EXECUTABLE ON
+  MACOSX_BUNDLE ON
+)
 
 # If on macOS, bundle the executable into an app bundle
 if(APPLE)
@@ -115,7 +121,6 @@ if(APPLE)
 
     # Set macOS-specific properties
     set_target_properties(${PROJECT_NAME} PROPERTIES
-        MACOSX_BUNDLE TRUE
         MACOSX_BUNDLE_INFO_PLIST ${CMAKE_BINARY_DIR}/Info.plist
         INSTALL_RPATH "@executable_path/../Frameworks"
         BUILD_WITH_INSTALL_RPATH TRUE
