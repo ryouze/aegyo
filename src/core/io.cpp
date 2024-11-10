@@ -54,4 +54,4 @@ std::optional<std::string> setup_titlebar_icon(const sf::Window &window)
 
 }  // namespace core::io
 
-#endif  // defined(_WIN32)
+#endif
