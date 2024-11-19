@@ -80,7 +80,7 @@ jobs:
         run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Release
 
       - name: Rename binary
-        # Rename the binary to match the platform, otherwise the binaries will overwrite each other.
+        # Rename the binary to match the platform.
         working-directory: ${{ steps.strings.outputs.build-output-dir }}
         shell: bash
         run: |
