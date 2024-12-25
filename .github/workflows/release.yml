@@ -19,21 +19,18 @@ jobs:
       matrix:
         include:
           - os: macos-latest
-            # c_compiler: clang
             cpp_compiler: clang++
             input_name: aegyo.app
             output_name: aegyo-macos-arm64.app
             archive_name: aegyo-macos-arm64.tar.gz
             archive_type: tar
           - os: ubuntu-latest
-            # c_compiler: gcc
             cpp_compiler: g++
             input_name: aegyo
             output_name: aegyo-linux-x86_64
             archive_name: aegyo-linux-x86_64.tar.gz
             archive_type: tar
           - os: windows-latest
-            # c_compiler: cl
             cpp_compiler: cl
             input_name: Release/aegyo.exe  # Stored in a subdirectory on Windows
             output_name: aegyo-windows-x86_64.exe
