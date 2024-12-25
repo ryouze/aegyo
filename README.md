@@ -140,6 +140,8 @@ Grant access to this application in Privacy & Security settings, located in Syst
 
 This is caused by the underlying SFML library, which reads raw keyboard input. You should **deny** this request, as the app does not expect any input while it's not in focus. I'd rather not have such a request appear in the first place, but I have no control over it.
 
+The issue is resolved in [SFML 3.0](https://github.com/SFML/SFML/blob/2c7c3dd056e294730e12e123cb1012c46eaa3c4f/changelog.md); however, I do not plan to update this project further. I consider it complete and sufficiently feature-rich for its intended purpose.
+
 
 ### Controls
 
@@ -176,7 +178,7 @@ ctest --output-on-failure
 - [Language](https://macosicons.com/#/u/Bonjour)
 - [Let's Learn Hangul!](http://letslearnhangul.com/)
 - [Nanum Gothic](https://fonts.google.com/specimen/Nanum+Gothic)
-- [Simple and Fast Multimedia Library](https://github.com/sfml/sfml)
+- [Simple and Fast Multimedia Library 2](https://github.com/sfml/sfml)
 
 
 ## Contributing
