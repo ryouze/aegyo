@@ -30,8 +30,8 @@
     <key>CFBundleIconFile</key>
     <string>Icon.icns</string>
 
-    <!-- Enable high resolution mode on a Mac with a Retina display. -->
+    <!-- Disable high resolution mode on a Mac with a Retina display. -->
     <key>NSHighResolutionCapable</key>
-	<true/>
+	<false/>
 </dict>
 </plist>
