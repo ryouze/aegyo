@@ -116,6 +116,7 @@ if(APPLE)
   set(MACOSX_BUNDLE_GUI_IDENTIFIER "com.ryouze.${PROJECT_NAME}")
   set(MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION})
   set(MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION})
+  set(MACOSX_COPYRIGHT "ryouze.net")  # Not by default in macOS bundles
 
   # Generate the Info.plist file
   configure_file(${CMAKE_SOURCE_DIR}/cmake/assets/Info.plist.in ${CMAKE_BINARY_DIR}/Info.plist @ONLY)

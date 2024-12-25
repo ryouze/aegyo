@@ -30,8 +30,16 @@
     <key>CFBundleIconFile</key>
     <string>Icon.icns</string>
 
+    <!-- Region the bundle was developed in. -->
+    <key>CFBundleDevelopmentRegion</key>
+    <string>English</string>
+
+    <!-- Human-readable copyright information. -->
+    <key>NSHumanReadableCopyright</key>
+    <string>@MACOSX_COPYRIGHT@</string>
+
     <!-- Disable high resolution mode on a Mac with a Retina display. -->
     <key>NSHighResolutionCapable</key>
-	<false/>
+    <false/>
 </dict>
 </plist>
