@@ -130,16 +130,6 @@ On macOS, this will install the program to `/Applications`. You can then run `ae
 
 To start the program, simply run the `aegyo` executable (`aegyo.app` on macOS, `open /Applications/aegyo.app` to run from the terminal).
 
-On first run on macOS, the app will request access to keystrokes from any application:
-
-```
-"aegyo.app" would like to receive keystrokes from any application.
-
-Grant access to this application in Privacy & Security settings, located in System Settings.
-```
-
-This is caused by the underlying SFML library, which reads raw keyboard input. You should **deny** this request, as the app does not expect any input while it's not in focus. I'd rather not have such a request appear in the first place, but I have no control over it.
-
 
 ### Controls
 

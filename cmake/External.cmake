@@ -23,7 +23,7 @@ function(fetch_and_link_external_dependencies target)
   set(SFML_BUILD_NETWORK OFF)
   FetchContent_Declare(
     sfml
-    URL https://github.com/SFML/SFML/archive/refs/tags/2.6.1.zip
+    URL https://github.com/SFML/SFML/archive/refs/tags/3.0.0.zip
     DOWNLOAD_EXTRACT_TIMESTAMP TRUE
     EXCLUDE_FROM_ALL
     SYSTEM
@@ -33,12 +33,12 @@ function(fetch_and_link_external_dependencies target)
   FetchContent_MakeAvailable(fmt sfml)
 
   # Link dependencies to the target
-  target_link_libraries(${target} PUBLIC fmt::fmt sfml-graphics)
+  target_link_libraries(${target} PUBLIC fmt::fmt SFML::Graphics)
 
-  # Link sfml-main for WIN32 targets to manage the WinMain entry point
+  # Link SFML::Main for WIN32 targets to manage the WinMain entry point
   # This makes Windows use main() instead of WinMain(), so we can use the same entry point for all platforms
   if(WIN32)
-    target_link_libraries(${target} PUBLIC sfml-main)
+    target_link_libraries(${target} PUBLIC SFML::Main)
   endif()
 
   message(STATUS "[INFO] Linked dependencies 'fmt' and 'sfml' to target '${target}'.")
