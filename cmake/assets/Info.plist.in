@@ -40,6 +40,6 @@
 
     <!-- Disable high resolution mode on a Mac with a Retina display. -->
     <key>NSHighResolutionCapable</key>
-    <false/>
+    <true/>
 </dict>
 </plist>
