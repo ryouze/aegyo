@@ -9,7 +9,7 @@
 
 #include "app.hpp"
 #if defined(_WIN32)
-#include "core/io.hpp"
+#include "core/windows.hpp"
 #endif
 
 /**
@@ -24,7 +24,7 @@ int main()
         // Boilerplate to make Windows behave more like *nix
 
         // Setup UTF-8 input/output and locale
-        if (const auto e = core::io::setup_utf8_console(); e.has_value()) {
+        if (const auto e = core::windows::setup_utf8_console(); e.has_value()) {
             fmt::print(stderr, "Warning: {}\n", *e);
         }
 #endif

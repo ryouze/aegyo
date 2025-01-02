@@ -82,10 +82,10 @@ add_library(${PROJECT_NAME}-lib STATIC
   # find . -name "*.cpp"
   src/app.cpp
   src/core/assets.cpp
-  src/core/io.cpp
   src/core/rng.cpp
   src/core/string.cpp
   src/core/text.cpp
+  src/core/windows.cpp
   src/modules/vocabulary.cpp
 )
 
@@ -157,7 +157,7 @@ elseif(WIN32)
   set(ICON_PATH "${CMAKE_SOURCE_DIR}/cmake/assets/Icon.ico")
 
   # Generate the icon.rc file dynamically
-  # Ensure that the macro's value in "src/core/io.cpp" is also 101
+  # Ensure that the macro's value in "src/core/windows.cpp" is also 101
   file(GENERATE OUTPUT "${CMAKE_BINARY_DIR}/generated/icon.rc" CONTENT "#define IDI_ICON1 101\n\nIDI_ICON1 ICON \"${ICON_PATH}\"")
 
   # Add the generated .rc file to the target

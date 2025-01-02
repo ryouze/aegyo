@@ -20,7 +20,7 @@
 #include "modules/vocabulary.hpp"
 #include "version.hpp"
 #if defined(_WIN32)
-#include "core/io.hpp"
+#include "core/windows.hpp"
 #endif
 
 namespace app {
@@ -90,7 +90,7 @@ class UI final {
         // Set window titlebar icon (Windows-only)
         // macOS doesn't have titlebar icons, GNU/Linux is DE-dependent
 #if defined(_WIN32)
-        if (const auto e = core::io::setup_titlebar_icon(this->window_); e.has_value()) {
+        if (const auto e = core::windows::setup_titlebar_icon(this->window_); e.has_value()) {
             fmt::print(stderr, "Warning: {}\n", *e);
         }
 #endif

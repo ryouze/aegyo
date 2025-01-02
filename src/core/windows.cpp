@@ -1,5 +1,5 @@
 /**
- * @file io.cpp
+ * @file windows.cpp
  */
 
 #if defined(_WIN32)
@@ -18,9 +18,9 @@
 #include <SFML/Window.hpp>
 #include <fmt/core.h>
 
-#include "io.hpp"
+#include "windows.hpp"
 
-namespace core::io {
+namespace core::windows {
 
 std::optional<std::string> setup_utf8_console()
 {
@@ -55,6 +55,6 @@ std::optional<std::string> setup_titlebar_icon(const sf::Window &window)
     return std::nullopt;
 }
 
-}  // namespace core::io
+}  // namespace core::windows
 
 #endif

@@ -20,7 +20,7 @@
 #include "core/string.hpp"
 #include "modules/vocabulary.hpp"
 #if defined(_WIN32)
-#include "core/io.hpp"
+#include "core/windows.hpp"
 #endif
 
 namespace test_assets {
@@ -55,7 +55,7 @@ int main(int argc,
 {
 #if defined(_WIN32)
     // Setup UTF-8 input/output on Windows (does nothing on other platforms)
-    if (const auto e = core::io::setup_utf8_console(); e.has_value()) {
+    if (const auto e = core::windows::setup_utf8_console(); e.has_value()) {
         fmt::print(stderr, "Warning: {}\n", *e);
     }
 #endif

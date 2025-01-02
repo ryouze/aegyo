@@ -1,5 +1,5 @@
 /**
- * @file io.hpp
+ * @file windows.hpp
  *
  * @brief Input/output functions.
  */
@@ -13,7 +13,7 @@
 
 #include <SFML/Window.hpp>
 
-namespace core::io {
+namespace core::windows {
 
 /**
  * @brief Setup UTF-8 input/output on Windows. Do nothing on other platforms.
@@ -31,6 +31,6 @@ namespace core::io {
  */
 std::optional<std::string> setup_titlebar_icon(const sf::Window &window);
 
-}  // namespace core::io
+}  // namespace core::windows
 
 #endif
