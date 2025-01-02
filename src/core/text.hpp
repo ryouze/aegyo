@@ -23,4 +23,15 @@ void set_integer_position(sf::Text &text,
                           const float x,
                           const float y);
 
+/**
+ * @brief Set the position of an SFML text object using integer coordinates.
+ *
+ * The provided coordinate is cast to an integer before setting the position.
+ *
+ * @param text SFML text object to set the position for.
+ * @param position X and Y coordinates (e.g., {10.0, 123.4}).
+ */
+void set_integer_position(sf::Text &text,
+                          const sf::Vector2f &position);
+
 }  // namespace core::text

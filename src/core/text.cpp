@@ -15,4 +15,10 @@ void set_integer_position(sf::Text &text,
     text.setPosition(static_cast<int>(x), static_cast<int>(y));
 }
 
+void set_integer_position(sf::Text &text,
+                          const sf::Vector2f &position)
+{
+    text.setPosition(static_cast<int>(position.x), static_cast<int>(position.y));
+}
+
 }  // namespace core::text
