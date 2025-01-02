@@ -85,28 +85,8 @@ Follow these steps to build the project:
     To compile the project, use the following command:
 
     ```sh
-    make
+    cmake --build . --parallel
     ```
-
-    If you want to use all available cores when compiling with `make`, you can pass the `-j` flag along with the number of cores available on your system:
-
-    - **macOS**:
-
-      ```sh
-      make -j$(sysctl -n hw.ncpu)
-      ```
-
-    - **GNU/Linux**:
-
-      ```sh
-      make -j$(nproc)
-      ```
-
-    - **8-core CPU**:
-
-      ```sh
-      make -j8
-      ```
 
 After successful compilation, you can run the program using `./aegyo` (`open aegyo.app` on macOS). However, it is highly recommended to install the program, so that it can be run from any directory. Refer to the [Install](#install) section below.
 
