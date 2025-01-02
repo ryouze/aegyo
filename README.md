@@ -143,11 +143,11 @@ If you're a beginner, start with the `Vow` categories and gradually enable the o
 
 Tests are included in the project but are not built by default.
 
-To enable and build the tests manually, run the following commands:
+To enable and build the tests manually, run the following commands from the `build` directory:
 
 ```sh
 cmake .. -DBUILD_TESTS=ON
-make
+cmake --build . --parallel
 ctest --output-on-failure
 ```
 
