@@ -2,7 +2,7 @@
  * @file string.cpp
  */
 
-#include <string>     // for std::string
+#include <string>  // for std::string
 
 #include <SFML/Graphics.hpp>
 
