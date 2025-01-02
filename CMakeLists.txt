@@ -79,11 +79,13 @@ include_directories(${CMAKE_BINARY_DIR}/generated)
 
 # Add the main library target
 add_library(${PROJECT_NAME}-lib STATIC
+  # find . -name "*.cpp"
   src/app.cpp
   src/core/assets.cpp
   src/core/io.cpp
   src/core/rng.cpp
   src/core/string.cpp
+  src/core/text.cpp
   src/modules/vocabulary.cpp
 )
 
