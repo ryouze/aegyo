@@ -16,6 +16,7 @@
 #include "core/assets.hpp"
 #include "core/rng.hpp"
 #include "core/string.hpp"
+#include "core/text.hpp"
 #include "modules/vocabulary.hpp"
 #include "version.hpp"
 #if defined(_WIN32)
@@ -106,13 +107,15 @@ class UI final {
         this->question_text_.setFont(this->font_);
         this->question_text_.setCharacterSize(48);
         this->question_text_.setFillColor(this->colors_text);
-        this->question_text_.setPosition(this->question_circle_.getPosition());
+        core::text::set_integer_position(this->question_text_,
+                                         this->question_circle_.getPosition());
 
         // Initialize memo text
         this->memo_text_.setFont(this->font_);
         this->memo_text_.setCharacterSize(16);
         this->memo_text_.setFillColor(this->colors_text);
-        this->memo_text_.setPosition(400.f, 270.f);  // Position below the question circle
+        core::text::set_integer_position(this->memo_text_,
+                                         400.f, 270.f);  // Position below the question circle
 
         // Initialize answer buttons
         constexpr float button_radius = 60.f;
@@ -132,14 +135,15 @@ class UI final {
 
         // Set positions of answer button texts
         for (std::size_t idx = 0; idx < 4; ++idx) {
-            this->answer_buttons_[idx].setPosition(this->button_shapes_[idx].getPosition());
+            core::text::set_integer_position(this->answer_buttons_[idx],
+                                             this->button_shapes_[idx].getPosition());
         }
 
         // Initialize percentage text
         this->percentage_text_.setFont(this->font_);
         this->percentage_text_.setCharacterSize(18);  // Smaller font size
         this->percentage_text_.setFillColor(this->colors_text);
-        this->percentage_text_.setPosition(10.f, 10.f);  // Top-left corner
+        core::text::set_integer_position(this->percentage_text_, 10.f, 10.f);  // Top-left corner
 
         // Initialize toggle buttons
         constexpr float total_toggle_width = 4.f * 60.f;                                                  // 4 buttons * 60 width
@@ -170,7 +174,7 @@ class UI final {
             const sf::FloatRect text_bounds = text.getLocalBounds();
             text.setOrigin(text_bounds.left + text_bounds.width / 2.0f,
                            text_bounds.top + text_bounds.height / 2.0f);
-            text.setPosition(button.getPosition() + sf::Vector2f(25.f, 17.5f));
+            core::text::set_integer_position(text, button.getPosition() + sf::Vector2f(25.f, 17.5f));
 
             this->toggle_texts_[idx] = text;
         }
@@ -263,7 +267,7 @@ class UI final {
                     this->answer_buttons_[idx].setOrigin(ans_text_bounds.left + ans_text_bounds.width / 2.0f,
                                                          ans_text_bounds.top + ans_text_bounds.height / 2.0f);
                     // Set position to center the text within the button
-                    this->answer_buttons_[idx].setPosition(this->button_shapes_[idx].getPosition());
+                    core::text::set_integer_position(this->answer_buttons_[idx], this->button_shapes_[idx].getPosition());
                 }
 
                 game_state = GameState::WaitingForAnswer;
