@@ -15,7 +15,7 @@
 #include <SFML/Graphics.hpp>
 #include <fmt/core.h>
 
-#include "core/assets.hpp"
+#include "core/assets/font.hpp"
 #include "core/rng.hpp"
 #include "core/string.hpp"
 #include "modules/vocabulary.hpp"
@@ -131,7 +131,7 @@ int main(int argc,
 int test_assets::load_font()
 {
     try {
-        const sf::Font &font = core::assets::load_font();
+        const sf::Font &font = core::assets::font::get_embedded_font();
         // Get font properties
         const std::string family = font.getInfo().family;
         const std::string expected_family = "NanumGothic";
