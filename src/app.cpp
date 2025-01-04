@@ -53,6 +53,7 @@ void run()
     sf::RenderWindow window(
         sf::VideoMode({core::settings::screen::WIDTH, core::settings::screen::HEIGHT}),
         fmt::format("aegyo ({})", PROJECT_VERSION),
+        sf::Style::Titlebar | sf::Style::Close,
         sf::State::Windowed,
         get_improved_context_settings());
 
