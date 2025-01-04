@@ -15,6 +15,7 @@
 #include "app.hpp"
 #include "core/assets.hpp"
 #include "core/rng.hpp"
+#include "core/settings/screen.hpp"
 #include "core/string.hpp"
 #include "core/text.hpp"
 #include "modules/vocabulary.hpp"
@@ -50,7 +51,7 @@ namespace {
 void run()
 {
     sf::RenderWindow window(
-        sf::VideoMode(800, 600),
+        sf::VideoMode(core::settings::screen::WIDTH, core::settings::screen::HEIGHT),
         fmt::format("aegyo ({})", PROJECT_VERSION),
         sf::Style::Titlebar | sf::Style::Close,
         get_improved_context_settings());
