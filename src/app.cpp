@@ -120,13 +120,13 @@ void run()
     memo_text.setFont(core::assets::font::get_embedded_font());
     memo_text.setCharacterSize(16);
     memo_text.setFillColor(color_text);
-    core::text::set_integer_position(memo_text, 400.f, 270.f);
+    core::text::set_integer_position(memo_text, {400.f, 270.f});
 
     sf::Text percentage_text(core::assets::font::get_embedded_font());
     percentage_text.setFont(core::assets::font::get_embedded_font());
     percentage_text.setCharacterSize(18);
     percentage_text.setFillColor(color_text);
-    core::text::set_integer_position(percentage_text, 10.f, 10.f);
+    core::text::set_integer_position(percentage_text, {10.f, 10.f});
 
     // Create four circular buttons for answer choices
     std::array<sf::CircleShape, 4> button_shapes;
