@@ -70,6 +70,9 @@ void run()
     }
 #endif
 
+    // Request focus on the window
+    window.requestFocus();
+
     // Prepare a vocabulary object to manage game entries
     modules::vocabulary::Vocabulary vocabulary_obj;
 
