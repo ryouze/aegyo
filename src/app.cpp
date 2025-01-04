@@ -15,6 +15,7 @@
 #include "app.hpp"
 #include "core/assets/font.hpp"
 #include "core/rng.hpp"
+#include "core/settings/colors.hpp"
 #include "core/settings/screen.hpp"
 #include "core/string.hpp"
 #include "core/text.hpp"
@@ -91,21 +92,9 @@ void run()
         {modules::vocabulary::Category::DoubleConsonant, true},
         {modules::vocabulary::Category::CompoundVowel, true}};
 
-    // Define basic colors used throughout
-    const sf::Color color_background(30, 30, 30);
-    const sf::Color color_text(240, 240, 240);
-    const sf::Color color_enabled_toggle(100, 200, 100);
-    const sf::Color color_disabled_toggle(200, 100, 100);
-    const sf::Color color_default_button(80, 80, 80);
-    const sf::Color color_hover_button(100, 100, 100);
-    const sf::Color color_correct_answer(30, 130, 30);
-    const sf::Color color_incorrect_answer(130, 30, 30);
-    const sf::Color color_selected_wrong_answer(200, 120, 0);
-    const sf::Color color_question_circle(50, 50, 50);
-
     // Create a circle for displaying the current question
     sf::CircleShape question_circle(80.f, 100);
-    question_circle.setFillColor(color_question_circle);
+    question_circle.setFillColor(core::settings::colors::question_circle);
     question_circle.setOrigin({80.f, 80.f});
     question_circle.setPosition({400.f, 150.f});
 
@@ -113,19 +102,19 @@ void run()
     sf::Text question_text(core::assets::font::get_embedded_font());
     question_text.setFont(core::assets::font::get_embedded_font());
     question_text.setCharacterSize(48);
-    question_text.setFillColor(color_text);
+    question_text.setFillColor(core::settings::colors::text);
     core::text::set_integer_position(question_text, question_circle.getPosition());
 
     sf::Text memo_text(core::assets::font::get_embedded_font());
     memo_text.setFont(core::assets::font::get_embedded_font());
     memo_text.setCharacterSize(16);
-    memo_text.setFillColor(color_text);
+    memo_text.setFillColor(core::settings::colors::text);
     core::text::set_integer_position(memo_text, {400.f, 270.f});
 
     sf::Text percentage_text(core::assets::font::get_embedded_font());
     percentage_text.setFont(core::assets::font::get_embedded_font());
     percentage_text.setCharacterSize(18);
-    percentage_text.setFillColor(color_text);
+    percentage_text.setFillColor(core::settings::colors::text);
     core::text::set_integer_position(percentage_text, {10.f, 10.f});
 
     // Create four circular buttons for answer choices
@@ -139,12 +128,12 @@ void run()
     for (std::size_t i = 0; i < 4; ++i) {
         button_shapes[i].setRadius(button_radius);
         button_shapes[i].setPointCount(100);
-        button_shapes[i].setFillColor(color_default_button);
+        button_shapes[i].setFillColor(core::settings::colors::default_button);
         button_shapes[i].setOrigin({button_radius, button_radius});
 
         answer_texts[i].setFont(core::assets::font::get_embedded_font());
         answer_texts[i].setCharacterSize(28);
-        answer_texts[i].setFillColor(color_text);
+        answer_texts[i].setFillColor(core::settings::colors::text);
     }
     button_shapes[0].setPosition({250.f, 350.f});
     button_shapes[1].setPosition({550.f, 350.f});
@@ -165,21 +154,21 @@ void run()
     const float start_x = static_cast<float>(window.getSize().x) - total_toggle_width - 10.f;
     for (std::size_t i = 0; i < 4; ++i) {
         sf::RectangleShape rect_button(sf::Vector2f(50.f, 35.f));
-        rect_button.setOutlineColor(color_text);
+        rect_button.setOutlineColor(core::settings::colors::text);
         rect_button.setOutlineThickness(1.f);
         rect_button.setPosition({start_x + static_cast<float>(i) * 60.f, 10.f});
         if (toggle_states[toggle_categories[i]]) {
-            rect_button.setFillColor(color_enabled_toggle);
+            rect_button.setFillColor(core::settings::colors::enabled_toggle);
         }
         else {
-            rect_button.setFillColor(color_disabled_toggle);
+            rect_button.setFillColor(core::settings::colors::disabled_toggle);
         }
         toggle_buttons[i] = rect_button;
 
         sf::Text label_text(core::assets::font::get_embedded_font());
         label_text.setFont(core::assets::font::get_embedded_font());
         label_text.setCharacterSize(14);
-        label_text.setFillColor(color_text);
+        label_text.setFillColor(core::settings::colors::text);
         label_text.setString(toggle_labels[i]);
         const sf::FloatRect text_bounds = label_text.getLocalBounds();
         label_text.setOrigin({text_bounds.position.x + text_bounds.size.x / 2.f,
@@ -225,7 +214,7 @@ void run()
                                      text_bounds.position.y + text_bounds.size.y / 2.f});
             current_game_state = game_state_t::no_entries_enabled;
             for (auto &shape : button_shapes) {
-                shape.setFillColor(color_disabled_toggle);
+                shape.setFillColor(core::settings::colors::disabled_toggle);
             }
             for (auto &text : answer_texts) {
                 text.setString("");
@@ -250,7 +239,7 @@ void run()
                                      text_bounds.position.y + text_bounds.size.y / 2.f});
             memo_text.setString("");
             for (std::size_t i = 0; i < 4; ++i) {
-                button_shapes[i].setFillColor(color_default_button);
+                button_shapes[i].setFillColor(core::settings::colors::default_button);
                 answer_texts[i].setString(core::string::to_sfml_string(
                     is_hangul ? options[i].latin : options[i].hangul));
                 const sf::FloatRect ans_bounds = answer_texts[i].getLocalBounds();
@@ -282,10 +271,10 @@ void run()
                             const bool old_state = toggle_states[toggle_categories[i]];
                             toggle_states[toggle_categories[i]] = !old_state;
                             if (toggle_states[toggle_categories[i]]) {
-                                toggle_buttons[i].setFillColor(color_enabled_toggle);
+                                toggle_buttons[i].setFillColor(core::settings::colors::enabled_toggle);
                             }
                             else {
-                                toggle_buttons[i].setFillColor(color_disabled_toggle);
+                                toggle_buttons[i].setFillColor(core::settings::colors::disabled_toggle);
                             }
                             // Reset game state and counters whenever toggles change
                             total_questions = 0;
@@ -305,7 +294,7 @@ void run()
                                                          tb.position.y + tb.size.y / 2.f});
                                 current_game_state = game_state_t::no_entries_enabled;
                                 for (auto &shape : button_shapes) {
-                                    shape.setFillColor(color_disabled_toggle);
+                                    shape.setFillColor(core::settings::colors::disabled_toggle);
                                 }
                                 for (auto &txt : answer_texts) {
                                     txt.setString("");
@@ -331,7 +320,7 @@ void run()
                                                          tb.position.y + tb.size.y / 2.f});
                                 memo_text.setString("");
                                 for (std::size_t j = 0; j < 4; ++j) {
-                                    button_shapes[j].setFillColor(color_default_button);
+                                    button_shapes[j].setFillColor(core::settings::colors::default_button);
                                     answer_texts[j].setString(core::string::to_sfml_string(
                                         is_hangul ? opts[j].latin : opts[j].hangul));
                                     const sf::FloatRect ans_bounds = answer_texts[j].getLocalBounds();
@@ -372,10 +361,10 @@ void run()
                         static_cast<float>(mouseMove->position.y));
                     for (std::size_t i = 0; i < 4; ++i) {
                         if (button_shapes[i].getGlobalBounds().contains(checkPos)) {
-                            button_shapes[i].setFillColor(color_hover_button);
+                            button_shapes[i].setFillColor(core::settings::colors::hover_button);
                         }
                         else {
-                            button_shapes[i].setFillColor(color_default_button);
+                            button_shapes[i].setFillColor(core::settings::colors::default_button);
                         }
                     }
                 }
@@ -390,15 +379,15 @@ void run()
                                 ++total_questions;
                                 if (i == correct_index) {
                                     ++correct_answers;
-                                    button_shapes[i].setFillColor(color_correct_answer);
+                                    button_shapes[i].setFillColor(core::settings::colors::correct_answer);
                                 }
                                 else {
-                                    button_shapes[i].setFillColor(color_selected_wrong_answer);
-                                    button_shapes[correct_index].setFillColor(color_correct_answer);
+                                    button_shapes[i].setFillColor(core::settings::colors::selected_wrong_answer);
+                                    button_shapes[correct_index].setFillColor(core::settings::colors::correct_answer);
                                 }
                                 for (std::size_t j = 0; j < 4; ++j) {
                                     if (j != i && j != correct_index) {
-                                        button_shapes[j].setFillColor(color_incorrect_answer);
+                                        button_shapes[j].setFillColor(core::settings::colors::incorrect_answer);
                                     }
                                 }
                                 {
@@ -440,15 +429,15 @@ void run()
                         ++total_questions;
                         if (selected_idx == correct_index) {
                             ++correct_answers;
-                            button_shapes[*selected_idx].setFillColor(color_correct_answer);
+                            button_shapes[*selected_idx].setFillColor(core::settings::colors::correct_answer);
                         }
                         else {
-                            button_shapes[*selected_idx].setFillColor(color_selected_wrong_answer);
-                            button_shapes[correct_index].setFillColor(color_correct_answer);
+                            button_shapes[*selected_idx].setFillColor(core::settings::colors::selected_wrong_answer);
+                            button_shapes[correct_index].setFillColor(core::settings::colors::correct_answer);
                         }
                         for (std::size_t j = 0; j < 4; ++j) {
                             if (j != selected_idx && j != correct_index) {
-                                button_shapes[j].setFillColor(color_incorrect_answer);
+                                button_shapes[j].setFillColor(core::settings::colors::incorrect_answer);
                             }
                         }
                         {
@@ -479,7 +468,7 @@ void run()
                                                  tb.position.y + tb.size.y / 2.f});
                         current_game_state = game_state_t::no_entries_enabled;
                         for (auto &shape : button_shapes) {
-                            shape.setFillColor(color_disabled_toggle);
+                            shape.setFillColor(core::settings::colors::disabled_toggle);
                         }
                         for (auto &text : answer_texts) {
                             text.setString("");
@@ -504,7 +493,7 @@ void run()
                                                  tb.position.y + tb.size.y / 2.f});
                         memo_text.setString("");
                         for (std::size_t i = 0; i < 4; ++i) {
-                            button_shapes[i].setFillColor(color_default_button);
+                            button_shapes[i].setFillColor(core::settings::colors::default_button);
                             answer_texts[i].setString(core::string::to_sfml_string(
                                 is_hangul ? opts[i].latin : opts[i].hangul));
                             const sf::FloatRect ans_bounds = answer_texts[i].getLocalBounds();
@@ -522,7 +511,7 @@ void run()
         }
 
         // Clear the render window and draw the entire interface
-        window.clear(color_background);
+        window.clear(core::settings::colors::background);
 
         window.draw(question_circle);
         window.draw(question_text);
