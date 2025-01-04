@@ -4,7 +4,7 @@
 
 #include <array>          // for std::array
 #include <cstddef>        // for std::size_t
-#include <limits>         // for std::numeric_limits
+#include <optional>       // for std::optional
 #include <string>         // for std::string
 #include <unordered_map>  // for std::unordered_map
 
@@ -419,7 +419,7 @@ void run()
                 }
                 // If the user presses a key, check if they selected a numeric shortcut
                 else if (const auto *keyPressed = event->getIf<sf::Event::KeyPressed>()) {
-                    std::size_t selected_idx = std::numeric_limits<std::size_t>::max();
+                    std::optional<std::size_t> selected_idx;
                     switch (keyPressed->scancode) {
                     case sf::Keyboard::Scan::Num1:
                         selected_idx = 0;
@@ -436,14 +436,14 @@ void run()
                     default:
                         break;
                     }
-                    if (selected_idx < 4) {
+                    if (selected_idx) {
                         ++total_questions;
                         if (selected_idx == correct_index) {
                             ++correct_answers;
-                            button_shapes[selected_idx].setFillColor(color_correct_answer);
+                            button_shapes[*selected_idx].setFillColor(color_correct_answer);
                         }
                         else {
-                            button_shapes[selected_idx].setFillColor(color_selected_wrong_answer);
+                            button_shapes[*selected_idx].setFillColor(color_selected_wrong_answer);
                             button_shapes[correct_index].setFillColor(color_correct_answer);
                         }
                         for (std::size_t j = 0; j < 4; ++j) {
