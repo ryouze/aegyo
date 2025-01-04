@@ -18,8 +18,8 @@
 #include "core/settings/colors.hpp"
 #include "core/settings/screen.hpp"
 #include "core/string.hpp"
-#include "core/text.hpp"
 #include "modules/vocabulary.hpp"
+#include "ui/items.hpp"
 #include "version.hpp"
 #if defined(_WIN32)
 #include "core/windows.hpp"
@@ -103,19 +103,15 @@ void run()
     question_text.setFont(core::assets::font::get_embedded_font());
     question_text.setCharacterSize(48);
     question_text.setFillColor(core::settings::colors::text);
-    core::text::set_integer_position(question_text, question_circle.getPosition());
+    ui::items::set_integer_position(question_text, question_circle.getPosition());
 
     sf::Text memo_text(core::assets::font::get_embedded_font());
     memo_text.setFont(core::assets::font::get_embedded_font());
     memo_text.setCharacterSize(16);
     memo_text.setFillColor(core::settings::colors::text);
-    core::text::set_integer_position(memo_text, {400.f, 270.f});
+    ui::items::set_integer_position(memo_text, {400.f, 270.f});
 
-    sf::Text percentage_text(core::assets::font::get_embedded_font());
-    percentage_text.setFont(core::assets::font::get_embedded_font());
-    percentage_text.setCharacterSize(18);
-    percentage_text.setFillColor(core::settings::colors::text);
-    core::text::set_integer_position(percentage_text, {10.f, 10.f});
+    ui::items::Percentage percentage_text;
 
     // Create four circular buttons for answer choices
     std::array<sf::CircleShape, 4> button_shapes;
@@ -140,7 +136,7 @@ void run()
     button_shapes[2].setPosition({250.f, 500.f});
     button_shapes[3].setPosition({550.f, 500.f});
     for (std::size_t i = 0; i < 4; ++i) {
-        core::text::set_integer_position(answer_texts[i], button_shapes[i].getPosition());
+        ui::items::set_integer_position(answer_texts[i], button_shapes[i].getPosition());
     }
 
     // Create four toggle buttons for toggling categories on/off
@@ -173,7 +169,7 @@ void run()
         const sf::FloatRect text_bounds = label_text.getLocalBounds();
         label_text.setOrigin({text_bounds.position.x + text_bounds.size.x / 2.f,
                               text_bounds.position.y + text_bounds.size.y / 2.f});
-        core::text::set_integer_position(label_text, rect_button.getPosition() + sf::Vector2f(25.f, 17.5f));
+        ui::items::set_integer_position(label_text, rect_button.getPosition() + sf::Vector2f(25.f, 17.5f));
         toggle_texts[i] = label_text;
     }
 
@@ -194,11 +190,11 @@ void run()
 
     // Update the score display whenever a question is answered
     {
+
         const float percentage = total_questions > 0
                                      ? (static_cast<float>(correct_answers) / static_cast<float>(total_questions)) * 100.f
                                      : 0.f;
-        const auto percentage_str = fmt::format("게임 점수: {:.1f}%", percentage);
-        percentage_text.setString(core::string::to_sfml_string(percentage_str));
+        percentage_text.set_number(percentage);
     }
 
     // Immediately set up the first question
@@ -245,7 +241,7 @@ void run()
                 const sf::FloatRect ans_bounds = answer_texts[i].getLocalBounds();
                 answer_texts[i].setOrigin({ans_bounds.position.x + ans_bounds.size.x / 2.f,
                                            ans_bounds.position.y + ans_bounds.size.y / 2.f});
-                core::text::set_integer_position(answer_texts[i], button_shapes[i].getPosition());
+                ui::items::set_integer_position(answer_texts[i], button_shapes[i].getPosition());
             }
             current_game_state = game_state_t::waiting_for_answer;
         }
@@ -281,8 +277,7 @@ void run()
                             correct_answers = 0;
                             {
                                 const float percentage = 0.f;
-                                const auto percentage_str = fmt::format("게임 점수: {:.1f}%", percentage);
-                                percentage_text.setString(core::string::to_sfml_string(percentage_str));
+                                percentage_text.set_number(percentage);
                             }
                             // Re-initialize a new question inline (same code as above)
                             const auto new_entry = vocabulary_obj.get_random_enabled_entry(toggle_states);
@@ -326,7 +321,7 @@ void run()
                                     const sf::FloatRect ans_bounds = answer_texts[j].getLocalBounds();
                                     answer_texts[j].setOrigin({ans_bounds.position.x + ans_bounds.size.x / 2.f,
                                                                ans_bounds.position.y + ans_bounds.size.y / 2.f});
-                                    core::text::set_integer_position(answer_texts[j], button_shapes[j].getPosition());
+                                    ui::items::set_integer_position(answer_texts[j], button_shapes[j].getPosition());
                                 }
                                 current_game_state = game_state_t::waiting_for_answer;
                             }
@@ -393,8 +388,7 @@ void run()
                                 {
                                     const float percentage =
                                         static_cast<float>(correct_answers) / static_cast<float>(total_questions) * 100.f;
-                                    const auto percentage_str = fmt::format("게임 점수: {:.1f}%", percentage);
-                                    percentage_text.setString(core::string::to_sfml_string(percentage_str));
+                                    percentage_text.set_number(percentage);
                                 }
                                 memo_text.setString(core::string::to_sfml_string(correct_entry.memo));
                                 const sf::FloatRect memo_bounds = memo_text.getLocalBounds();
@@ -443,8 +437,7 @@ void run()
                         {
                             const float percentage =
                                 static_cast<float>(correct_answers) / static_cast<float>(total_questions) * 100.f;
-                            const auto percentage_str = fmt::format("게임 점수: {:.1f}%", percentage);
-                            percentage_text.setString(core::string::to_sfml_string(percentage_str));
+                            percentage_text.set_number(percentage);
                         }
                         memo_text.setString(core::string::to_sfml_string(correct_entry.memo));
                         const sf::FloatRect memo_bounds = memo_text.getLocalBounds();
@@ -499,7 +492,7 @@ void run()
                             const sf::FloatRect ans_bounds = answer_texts[i].getLocalBounds();
                             answer_texts[i].setOrigin({ans_bounds.position.x + ans_bounds.size.x / 2.f,
                                                        ans_bounds.position.y + ans_bounds.size.y / 2.f});
-                            core::text::set_integer_position(answer_texts[i], button_shapes[i].getPosition());
+                            ui::items::set_integer_position(answer_texts[i], button_shapes[i].getPosition());
                         }
                         current_game_state = game_state_t::waiting_for_answer;
                     }
@@ -522,7 +515,7 @@ void run()
             window.draw(button_shapes[i]);
             window.draw(answer_texts[i]);
         }
-        window.draw(percentage_text);
+        percentage_text.draw(window);
         for (std::size_t i = 0; i < toggle_buttons.size(); ++i) {
             window.draw(toggle_buttons[i]);
             window.draw(toggle_texts[i]);

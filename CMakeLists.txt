@@ -84,7 +84,6 @@ add_library(${PROJECT_NAME}-lib STATIC
   src/core/assets/font.cpp
   src/core/rng.cpp
   src/core/string.cpp
-  src/core/text.cpp
   src/core/windows.cpp
   src/main.cpp
   src/modules/vocabulary.cpp
