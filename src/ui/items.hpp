@@ -44,9 +44,19 @@ class Percentage {
         set_integer_position(this->text_, {10.f, 10.f});
     }
 
-    void set_number(const float percentage)
+    void set_percentage(const float percentage)
     {
         this->text_.setString(core::string::to_sfml_string(fmt::format("게임 점수: {:.1f}%", percentage)));
+    }
+
+    void set_percentage_from_score(const std::size_t correct_answers,
+                                   const std::size_t total_questions)
+    {
+        float percentage = 0.f;
+        if (total_questions > 0) {
+            percentage = (static_cast<float>(correct_answers) / static_cast<float>(total_questions)) * 100.f;
+        }
+        this->set_percentage(percentage);
     }
 
     void draw(sf::RenderWindow &window) const

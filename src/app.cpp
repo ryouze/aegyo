@@ -189,13 +189,7 @@ void run()
     std::size_t correct_answers = 0;
 
     // Update the score display whenever a question is answered
-    {
-
-        const float percentage = total_questions > 0
-                                     ? (static_cast<float>(correct_answers) / static_cast<float>(total_questions)) * 100.f
-                                     : 0.f;
-        percentage_text.set_number(percentage);
-    }
+    percentage_text.set_percentage_from_score(correct_answers, total_questions);
 
     // Immediately set up the first question
     // Placing logic inline for clarity
@@ -275,10 +269,8 @@ void run()
                             // Reset game state and counters whenever toggles change
                             total_questions = 0;
                             correct_answers = 0;
-                            {
-                                const float percentage = 0.f;
-                                percentage_text.set_number(percentage);
-                            }
+                            percentage_text.set_percentage(0.f);
+
                             // Re-initialize a new question inline (same code as above)
                             const auto new_entry = vocabulary_obj.get_random_enabled_entry(toggle_states);
                             if (!new_entry.has_value()) {
@@ -385,11 +377,7 @@ void run()
                                         button_shapes[j].setFillColor(core::settings::colors::incorrect_answer);
                                     }
                                 }
-                                {
-                                    const float percentage =
-                                        static_cast<float>(correct_answers) / static_cast<float>(total_questions) * 100.f;
-                                    percentage_text.set_number(percentage);
-                                }
+                                percentage_text.set_percentage_from_score(correct_answers, total_questions);
                                 memo_text.setString(core::string::to_sfml_string(correct_entry.memo));
                                 const sf::FloatRect memo_bounds = memo_text.getLocalBounds();
                                 memo_text.setOrigin({memo_bounds.position.x + memo_bounds.size.x / 2.f,
@@ -434,11 +422,7 @@ void run()
                                 button_shapes[j].setFillColor(core::settings::colors::incorrect_answer);
                             }
                         }
-                        {
-                            const float percentage =
-                                static_cast<float>(correct_answers) / static_cast<float>(total_questions) * 100.f;
-                            percentage_text.set_number(percentage);
-                        }
+                        percentage_text.set_percentage_from_score(correct_answers, total_questions);
                         memo_text.setString(core::string::to_sfml_string(correct_entry.memo));
                         const sf::FloatRect memo_bounds = memo_text.getLocalBounds();
                         memo_text.setOrigin({memo_bounds.position.x + memo_bounds.size.x / 2.f,
