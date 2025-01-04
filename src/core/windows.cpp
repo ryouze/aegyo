@@ -10,10 +10,10 @@
 // Typically, you’d define this ID in a "resource.h" file and include it in both "icon.rc" and this file
 // However, I want to avoid any platform-specific files whenever possible
 
-#include <locale>     // for setlocale, LC_ALL
-#include <optional>   // for std::optional, std::nullopt
-#include <string>     // for std::string
-#include <windows.h>  // for SetConsoleCP, SetConsoleOutputCP, GetLastError, HWND, HICON, LoadIcon, GetModuleHandle, MAKEINTRESOURCE, SendMessage, WM_SETICON, ICON_BIG, ICON_SMALL, LPARAM
+#include <optional>  // for std::optional, std::nullopt
+#include <string>    // for std::string
+
+#include <windows.h>  // for HWND, HICON, LoadIcon, GetModuleHandle, MAKEINTRESOURCE, GetLastError, SendMessage, WM_SETICON, ICON_BIG, ICON_SMALL, LPARAM
 
 #include <SFML/Window.hpp>
 #include <fmt/core.h>
@@ -21,18 +21,6 @@
 #include "windows.hpp"
 
 namespace core::windows {
-
-std::optional<std::string> setup_utf8_console()
-{
-    if (!SetConsoleCP(CP_UTF8) || !SetConsoleOutputCP(CP_UTF8)) {
-        return fmt::format("Failed to set UTF-8 code page: {}", GetLastError());
-    }
-
-    if (!setlocale(LC_ALL, ".UTF8")) {
-        return "Failed to set UTF-8 locale";
-    }
-    return std::nullopt;
-}
 
 std::optional<std::string> setup_titlebar_icon(const sf::Window &window)
 {

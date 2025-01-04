@@ -6,11 +6,12 @@
 #include <exception>  // for std::exception
 
 #include <fmt/core.h>
+#if defined(_WIN32)
+#define WIN32_LEAN_AND_MEAN  // Exclude rarely-used stuff from Windows headers
+#include <windows.h>         // for SetConsoleCP, SetConsoleOutputCP, CP_UTF8
+#endif
 
 #include "app.hpp"
-#if defined(_WIN32)
-#include "core/windows.hpp"
-#endif
 
 /**
  * @brief Entry-point of the application.
@@ -19,16 +20,11 @@
  */
 int main()
 {
-    try {
-#if defined(_WIN32)
-        // Boilerplate to make Windows behave more like *nix
-
-        // Setup UTF-8 input/output and locale
-        if (const auto e = core::windows::setup_utf8_console(); e.has_value()) {
-            fmt::print(stderr, "Warning: {}\n", *e);
-        }
+#if defined(_WIN32)  // Setup UTF-8 input/output
+    SetConsoleCP(CP_UTF8);
+    SetConsoleOutputCP(CP_UTF8);
 #endif
-
+    try {
         // Run the app
         app::run();
     }
