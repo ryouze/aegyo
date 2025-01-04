@@ -13,7 +13,7 @@
 #include <fmt/core.h>
 
 #include "app.hpp"
-#include "core/assets.hpp"
+#include "core/assets/font.hpp"
 #include "core/rng.hpp"
 #include "core/settings/screen.hpp"
 #include "core/string.hpp"
@@ -70,9 +70,6 @@ void run()
     }
 #endif
 
-    // Load the font
-    const sf::Font &font = core::assets::load_font();
-
     // Prepare a vocabulary object to manage game entries
     modules::vocabulary::Vocabulary vocabulary_obj;
 
@@ -110,19 +107,19 @@ void run()
 
     // Create text elements for the question, memo, and percentage score
     sf::Text question_text;
-    question_text.setFont(font);
+    question_text.setFont(core::assets::font::get_embedded_font());
     question_text.setCharacterSize(48);
     question_text.setFillColor(color_text);
     core::text::set_integer_position(question_text, question_circle.getPosition());
 
     sf::Text memo_text;
-    memo_text.setFont(font);
+    memo_text.setFont(core::assets::font::get_embedded_font());
     memo_text.setCharacterSize(16);
     memo_text.setFillColor(color_text);
     core::text::set_integer_position(memo_text, 400.f, 270.f);
 
     sf::Text percentage_text;
-    percentage_text.setFont(font);
+    percentage_text.setFont(core::assets::font::get_embedded_font());
     percentage_text.setCharacterSize(18);
     percentage_text.setFillColor(color_text);
     core::text::set_integer_position(percentage_text, 10.f, 10.f);
@@ -137,7 +134,7 @@ void run()
         button_shapes[i].setFillColor(color_default_button);
         button_shapes[i].setOrigin(button_radius, button_radius);
 
-        answer_texts[i].setFont(font);
+        answer_texts[i].setFont(core::assets::font::get_embedded_font());
         answer_texts[i].setCharacterSize(28);
         answer_texts[i].setFillColor(color_text);
     }
@@ -168,7 +165,7 @@ void run()
         toggle_buttons[i] = rect_button;
 
         sf::Text label_text;
-        label_text.setFont(font);
+        label_text.setFont(core::assets::font::get_embedded_font());
         label_text.setCharacterSize(14);
         label_text.setFillColor(color_text);
         label_text.setString(toggle_labels[i]);
