@@ -265,7 +265,8 @@ void run()
             }
 
             // Handle category toggles when the user releases the mouse button
-            if (event.type == sf::Event::MouseButtonReleased) {
+            // Ensure it's the left mouse button
+            if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left) {
                 for (std::size_t i = 0; i < toggle_buttons.size(); ++i) {
                     if (toggle_buttons[i].getGlobalBounds().contains(
                             static_cast<float>(mouse_pos.x),
@@ -367,7 +368,7 @@ void run()
                     }
                 }
                 // If the user releases the mouse, check if they clicked an answer
-                else if (event.type == sf::Event::MouseButtonReleased) {
+                else if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left) {
                     for (std::size_t i = 0; i < 4; ++i) {
                         if (button_shapes[i].getGlobalBounds().contains(
                                 static_cast<float>(mouse_pos.x), static_cast<float>(mouse_pos.y))) {
@@ -450,7 +451,7 @@ void run()
             }
             else if (current_game_state == game_state_t::show_result) {
                 // Any mouse click or key press proceeds to the next question
-                if (event.type == sf::Event::MouseButtonReleased || event.type == sf::Event::KeyPressed) {
+                if ((event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left) || event.type == sf::Event::KeyPressed) {
                     memo_text.setString("");
                     // Re-initialize a new question inline
                     const auto maybe_entry = vocabulary_obj.get_random_enabled_entry(toggle_states);
