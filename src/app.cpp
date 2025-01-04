@@ -264,15 +264,15 @@ void run()
 
     // Start the main event loop
     while (window.isOpen()) {
-
         // Close the window if the user requests it
-        while (const std::optional<sf::Event> event_opt = window.pollEvent()) {
-            if (!event_opt)
-                continue;
+        while (const std::optional event = window.pollEvent()) {
+            if (event->is<sf::Event::Closed>()) {
+                window.close();
+            }
 
             // Handle category toggles when the user releases the mouse button
             // Ensure it's the left mouse button
-            if (const auto *mouseUp = event_opt->getIf<sf::Event::MouseButtonReleased>()) {
+            else if (const auto *mouseUp = event->getIf<sf::Event::MouseButtonReleased>()) {
                 if (mouseUp->button == sf::Mouse::Button::Left) {
                     const sf::Vector2f checkPos(
                         static_cast<float>(mouseUp->position.x),
@@ -346,11 +346,9 @@ void run()
                     }
                 }
             }
-            else if (event_opt->is<sf::Event::Closed>()) {
-                window.close();
-            }
+
             // Adjust toggle button outlines based on mouse position
-            else if (const auto *mouseMove = event_opt->getIf<sf::Event::MouseMoved>()) {
+            else if (const auto *mouseMove = event->getIf<sf::Event::MouseMoved>()) {
                 for (std::size_t i = 0; i < toggle_buttons.size(); ++i) {
                     sf::Vector2f checkPos(
                         static_cast<float>(mouseMove->position.x),
@@ -368,7 +366,7 @@ void run()
             if (current_game_state == game_state_t::waiting_for_answer) {
 
                 // Change button color when the mouse moves over them
-                if (const auto *mouseMove = event_opt->getIf<sf::Event::MouseMoved>()) {
+                if (const auto *mouseMove = event->getIf<sf::Event::MouseMoved>()) {
                     sf::Vector2f checkPos(
                         static_cast<float>(mouseMove->position.x),
                         static_cast<float>(mouseMove->position.y));
@@ -382,7 +380,7 @@ void run()
                     }
                 }
                 // If the user releases the mouse, check if they clicked an answer
-                else if (const auto *mouseUp = event_opt->getIf<sf::Event::MouseButtonReleased>()) {
+                else if (const auto *mouseUp = event->getIf<sf::Event::MouseButtonReleased>()) {
                     if (mouseUp->button == sf::Mouse::Button::Left) {
                         sf::Vector2f checkPos(
                             static_cast<float>(mouseUp->position.x),
@@ -420,7 +418,7 @@ void run()
                     }
                 }
                 // If the user presses a key, check if they selected a numeric shortcut
-                else if (const auto *keyPressed = event_opt->getIf<sf::Event::KeyPressed>()) {
+                else if (const auto *keyPressed = event->getIf<sf::Event::KeyPressed>()) {
                     std::size_t selected_idx = std::numeric_limits<std::size_t>::max();
                     switch (keyPressed->scancode) {
                     case sf::Keyboard::Scan::Num1:
@@ -469,7 +467,7 @@ void run()
             }
             else if (current_game_state == game_state_t::show_result) {
                 // Any mouse click or key press proceeds to the next question
-                if ((event_opt->is<sf::Event::MouseButtonReleased>()) || event_opt->is<sf::Event::KeyPressed>()) {
+                if ((event->is<sf::Event::MouseButtonReleased>()) || event->is<sf::Event::KeyPressed>()) {
                     memo_text.setString("");
                     // Re-initialize a new question inline
                     const auto maybe_entry = vocabulary_obj.get_random_enabled_entry(toggle_states);
