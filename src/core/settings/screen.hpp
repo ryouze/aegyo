@@ -1,7 +1,7 @@
 /**
  * @file screen.hpp
  *
- * @brief Default screen settings.
+ * @brief Default constexpr screen settings.
  */
 
 #pragma once
@@ -9,12 +9,12 @@
 namespace core::settings::screen {
 
 /**
- * @brief Default constexpr window width in pixels.
+ * @brief Default indow width in pixels.
  */
 constexpr unsigned int WIDTH = 800u;
 
 /**
- * @brief Default constexpr window height in pixels.
+ * @brief Default window height in pixels.
  */
 constexpr unsigned int HEIGHT = 600u;
 

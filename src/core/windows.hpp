@@ -1,7 +1,7 @@
 /**
  * @file windows.hpp
  *
- * @brief Input/output functions.
+ * @brief Microsoft Windows platform-specific functions.
  */
 
 #pragma once
@@ -18,7 +18,7 @@ namespace core::windows {
 /**
  * @brief Setup the titlebar icon on Windows using the embedded icon data (must be embedded by CMake).
  *
- * @param window Window to set the titlebar icon for.
+ * @param window SFML window to set the titlebar icon for.
  *
  * @return Error message if the setup failed, "std::nullopt" otherwise.
  */
