@@ -106,7 +106,7 @@ add_executable(${PROJECT_NAME} src/main.cpp)
 target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}-lib)
 
 # Prevent the creation of a console window on Windows and create an application bundle on macOS
-# If "WIN32_EXECUTABLE" is set to ON, the "sfml-main" library must be linked to the target, which is done in "cmake/External.cmake"
+# If "WIN32_EXECUTABLE" is set to ON, the "SFML::Main" library must be linked to the target, which is done in "cmake/External.cmake"
 set_target_properties(${PROJECT_NAME} PROPERTIES
   WIN32_EXECUTABLE ON
   MACOSX_BUNDLE ON
@@ -127,8 +127,8 @@ if(APPLE)
   # Set macOS-specific properties
   set_target_properties(${PROJECT_NAME} PROPERTIES
     MACOSX_BUNDLE_INFO_PLIST ${CMAKE_BINARY_DIR}/Info.plist
-    INSTALL_RPATH "@executable_path/../Frameworks"
-    BUILD_WITH_INSTALL_RPATH TRUE
+    # INSTALL_RPATH "@executable_path/../Frameworks"
+    # BUILD_WITH_INSTALL_RPATH TRUE
   )
 
   # Copy the icon into the app bundle
@@ -139,19 +139,19 @@ if(APPLE)
     COMMENT "Copying icon to the app bundle"
   )
 
-  # Clean up the Frameworks directory before copying
-  add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E remove_directory $<TARGET_BUNDLE_DIR:${PROJECT_NAME}>/Contents/Frameworks
-    COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_BUNDLE_DIR:${PROJECT_NAME}>/Contents/Frameworks
-    COMMENT "Cleaning Frameworks directory"
-  )
+  # # Clean up the Frameworks directory before copying
+  # add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+  #   COMMAND ${CMAKE_COMMAND} -E remove_directory $<TARGET_BUNDLE_DIR:${PROJECT_NAME}>/Contents/Frameworks
+  #   COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_BUNDLE_DIR:${PROJECT_NAME}>/Contents/Frameworks
+  #   COMMENT "Cleaning Frameworks directory"
+  # )
 
-  # Copy only the SFML freetype framework into the app bundle
-  add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND rsync -a ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/freetype.framework
-      $<TARGET_BUNDLE_DIR:${PROJECT_NAME}>/Contents/Frameworks/
-    COMMENT "Copying SFML freetype framework into the app bundle"
-  )
+  # # Copy only the SFML freetype framework into the app bundle
+  # add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+  #   COMMAND rsync -a ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/freetype.framework
+  #     $<TARGET_BUNDLE_DIR:${PROJECT_NAME}>/Contents/Frameworks/
+  #   COMMENT "Copying SFML freetype framework into the app bundle"
+  # )
 elseif(WIN32)
   # If on Windows, add an icon to the executable
   # Specify the path to the .ico file

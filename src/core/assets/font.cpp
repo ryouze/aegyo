@@ -19,7 +19,7 @@ const sf::Font &get_embedded_font()
 
     if (!font_opt.has_value()) {
         sf::Font font;
-        if (!font.loadFromMemory(NanumGothic::data, NanumGothic::size)) {
+        if (!font.openFromMemory(NanumGothic::data, NanumGothic::size)) {
             throw std::runtime_error("Failed to load embedded font data");
         }
         font_opt = std::move(font);
