@@ -25,7 +25,7 @@ namespace core::windows {
 std::optional<std::string> setup_titlebar_icon(const sf::Window &window)
 {
     // Get the native window handle from the SFML window
-    const HWND hwnd = window.getSystemHandle();
+    const HWND hwnd = window.getNativeHandle();
     if (hwnd == NULL) {
         return "Window handle is null";
     }
