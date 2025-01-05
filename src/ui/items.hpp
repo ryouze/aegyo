@@ -36,14 +36,16 @@ void set_integer_position(sf::Text &text,
 
 class Percentage {
   public:
-    explicit Percentage()
+    explicit Percentage(const float top_left_offset = 10.f)  // Offset from the top-left corner
         : text_(core::assets::font::get_embedded_font()),
           correct_answers_(0),
           total_answers_(0)
     {
         this->text_.setCharacterSize(18);
         this->text_.setFillColor(core::settings::colors::text);
-        set_integer_position(this->text_, {10.f, 10.f});
+        const sf::Vector2f pos = sf::Vector2f(core::settings::screen::TOP_LEFT.x + top_left_offset,
+                                              core::settings::screen::TOP_LEFT.y + top_left_offset);
+        set_integer_position(this->text_, pos);
         this->update_score_display();
     }
 
