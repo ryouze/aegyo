@@ -79,26 +79,15 @@ class Percentage {
     std::size_t correct_answers_ = 0;
     std::size_t total_answers_ = 0;
 
-    /**
-     * @brief Calculate the percentage of correct answers.
-     *
-     * @return Percentage of correct answers between 0.0 and 100.0 inclusive (e.g., 75.0).
-     */
-    [[nodiscard]] float calculate_percentage()
+    void update_score_display()
     {
-        float percentage = 0.f;
+        float percentage = 0.f;  // If no answers yet, default to 0%
         if (this->total_answers_ > 0) {
             percentage = (static_cast<float>(this->correct_answers_) / static_cast<float>(this->total_answers_)) * 100.f;
         }
-        fmt::print("[DEBUG] Percentage: {:.1f}%\n", percentage);
-        return percentage;
-    }
 
-    void update_score_display()
-    {
-        this->text_.setString(core::string::to_sfml_string(  // Unicode
-            fmt::format("게임 점수: {:.1f}%", this->calculate_percentage())));
-        fmt::print("[DEBUG] Updated score display to: {}\n", this->text_.getString().toAnsiString());
+        this->text_.setString(core::string::to_sfml_string(  // Unicode fix
+            fmt::format("게임 점수: {:.1f}%", percentage)));
     }
 };
 
