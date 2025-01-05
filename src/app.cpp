@@ -111,7 +111,7 @@ void run()
     memo_text.setFillColor(core::settings::colors::text);
     ui::items::set_integer_position(memo_text, {400.f, 270.f});
 
-    ui::items::Percentage percentage_text;
+    ui::items::Percentage percentage_display;
 
     // Create four circular buttons for answer choices
     std::array<sf::CircleShape, 4> button_shapes;
@@ -264,7 +264,7 @@ void run()
                                 toggle_buttons[i].setFillColor(core::settings::colors::disabled_toggle);
                             }
                             // Reset game state and counters whenever toggles change
-                            percentage_text.reset();
+                            percentage_display.reset();
 
                             // Re-initialize a new question inline (same code as above)
                             const auto new_entry = vocabulary_obj.get_random_enabled_entry(toggle_states);
@@ -359,11 +359,11 @@ void run()
                         for (std::size_t i = 0; i < 4; ++i) {
                             if (button_shapes[i].getGlobalBounds().contains(checkPos)) {
                                 if (i == correct_index) {
-                                    percentage_text.add_correct_answer();
+                                    percentage_display.add_correct_answer();
                                     button_shapes[i].setFillColor(core::settings::colors::correct_answer);
                                 }
                                 else {
-                                    percentage_text.add_incorrect_answer();
+                                    percentage_display.add_incorrect_answer();
                                     button_shapes[i].setFillColor(core::settings::colors::selected_wrong_answer);
                                     button_shapes[correct_index].setFillColor(core::settings::colors::correct_answer);
                                 }
@@ -404,11 +404,11 @@ void run()
                     }
                     if (selected_idx) {
                         if (selected_idx == correct_index) {
-                            percentage_text.add_correct_answer();
+                            percentage_display.add_correct_answer();
                             button_shapes[*selected_idx].setFillColor(core::settings::colors::correct_answer);
                         }
                         else {
-                            percentage_text.add_incorrect_answer();
+                            percentage_display.add_incorrect_answer();
                             button_shapes[*selected_idx].setFillColor(core::settings::colors::selected_wrong_answer);
                             button_shapes[correct_index].setFillColor(core::settings::colors::correct_answer);
                         }
@@ -494,7 +494,7 @@ void run()
             window.draw(button_shapes[i]);
             window.draw(answer_texts[i]);
         }
-        percentage_text.draw(window);
+        percentage_display.draw(window);
         for (std::size_t i = 0; i < toggle_buttons.size(); ++i) {
             window.draw(toggle_buttons[i]);
             window.draw(toggle_texts[i]);
