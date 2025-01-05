@@ -185,11 +185,8 @@ void run()
     modules::vocabulary::Entry correct_entry;
     std::size_t correct_index = 0;
     bool is_hangul = true;
-    std::size_t total_questions = 0;
-    std::size_t correct_answers = 0;
 
     // Update the score display whenever a question is answered
-    percentage_text.set_percentage_from_score(correct_answers, total_questions);
 
     // Immediately set up the first question
     // Placing logic inline for clarity
@@ -267,9 +264,7 @@ void run()
                                 toggle_buttons[i].setFillColor(core::settings::colors::disabled_toggle);
                             }
                             // Reset game state and counters whenever toggles change
-                            total_questions = 0;
-                            correct_answers = 0;
-                            percentage_text.set_percentage(0.f);
+                            percentage_text.reset();
 
                             // Re-initialize a new question inline (same code as above)
                             const auto new_entry = vocabulary_obj.get_random_enabled_entry(toggle_states);
@@ -363,12 +358,12 @@ void run()
                             static_cast<float>(mouseUp->position.y));
                         for (std::size_t i = 0; i < 4; ++i) {
                             if (button_shapes[i].getGlobalBounds().contains(checkPos)) {
-                                ++total_questions;
                                 if (i == correct_index) {
-                                    ++correct_answers;
+                                    percentage_text.add_correct_answer();
                                     button_shapes[i].setFillColor(core::settings::colors::correct_answer);
                                 }
                                 else {
+                                    percentage_text.add_incorrect_answer();
                                     button_shapes[i].setFillColor(core::settings::colors::selected_wrong_answer);
                                     button_shapes[correct_index].setFillColor(core::settings::colors::correct_answer);
                                 }
@@ -377,7 +372,7 @@ void run()
                                         button_shapes[j].setFillColor(core::settings::colors::incorrect_answer);
                                     }
                                 }
-                                percentage_text.set_percentage_from_score(correct_answers, total_questions);
+
                                 memo_text.setString(core::string::to_sfml_string(correct_entry.memo));
                                 const sf::FloatRect memo_bounds = memo_text.getLocalBounds();
                                 memo_text.setOrigin({memo_bounds.position.x + memo_bounds.size.x / 2.f,
@@ -408,12 +403,12 @@ void run()
                         break;
                     }
                     if (selected_idx) {
-                        ++total_questions;
                         if (selected_idx == correct_index) {
-                            ++correct_answers;
+                            percentage_text.add_correct_answer();
                             button_shapes[*selected_idx].setFillColor(core::settings::colors::correct_answer);
                         }
                         else {
+                            percentage_text.add_incorrect_answer();
                             button_shapes[*selected_idx].setFillColor(core::settings::colors::selected_wrong_answer);
                             button_shapes[correct_index].setFillColor(core::settings::colors::correct_answer);
                         }
@@ -422,7 +417,7 @@ void run()
                                 button_shapes[j].setFillColor(core::settings::colors::incorrect_answer);
                             }
                         }
-                        percentage_text.set_percentage_from_score(correct_answers, total_questions);
+
                         memo_text.setString(core::string::to_sfml_string(correct_entry.memo));
                         const sf::FloatRect memo_bounds = memo_text.getLocalBounds();
                         memo_text.setOrigin({memo_bounds.position.x + memo_bounds.size.x / 2.f,

@@ -37,26 +37,34 @@ void set_integer_position(sf::Text &text,
 class Percentage {
   public:
     explicit Percentage()
-        : text_(core::assets::font::get_embedded_font())
+        : text_(core::assets::font::get_embedded_font()),
+          correct_answers_(0),
+          total_answers_(0)
     {
         this->text_.setCharacterSize(18);
         this->text_.setFillColor(core::settings::colors::text);
         set_integer_position(this->text_, {10.f, 10.f});
+        this->update_score_display();
     }
 
-    void set_percentage(const float percentage)
+    void add_correct_answer()
     {
-        this->text_.setString(core::string::to_sfml_string(fmt::format("게임 점수: {:.1f}%", percentage)));
+        ++this->correct_answers_;
+        ++this->total_answers_;
+        this->update_score_display();
     }
 
-    void set_percentage_from_score(const std::size_t correct_answers,
-                                   const std::size_t total_questions)
+    void add_incorrect_answer()
     {
-        float percentage = 0.f;
-        if (total_questions > 0) {
-            percentage = (static_cast<float>(correct_answers) / static_cast<float>(total_questions)) * 100.f;
-        }
-        this->set_percentage(percentage);
+        ++this->total_answers_;
+        this->update_score_display();
+    }
+
+    void reset()
+    {
+        this->correct_answers_ = 0;
+        this->total_answers_ = 0;
+        this->update_score_display();
     }
 
     void draw(sf::RenderWindow &window) const
@@ -66,6 +74,30 @@ class Percentage {
 
   private:
     sf::Text text_;
+    std::size_t correct_answers_ = 0;
+    std::size_t total_answers_ = 0;
+
+    /**
+     * @brief Calculate the percentage of correct answers.
+     *
+     * @return Percentage of correct answers between 0.0 and 100.0 inclusive (e.g., 75.0).
+     */
+    [[nodiscard]] float calculate_percentage()
+    {
+        float percentage = 0.f;
+        if (this->total_answers_ > 0) {
+            percentage = (static_cast<float>(this->correct_answers_) / static_cast<float>(this->total_answers_)) * 100.f;
+        }
+        fmt::print("[DEBUG] Percentage: {:.1f}%\n", percentage);
+        return percentage;
+    }
+
+    void update_score_display()
+    {
+        this->text_.setString(core::string::to_sfml_string(  // Unicode
+            fmt::format("게임 점수: {:.1f}%", this->calculate_percentage())));
+        fmt::print("[DEBUG] Updated score display to: {}\n", this->text_.getString().toAnsiString());
+    }
 };
 
 }  // namespace ui::items
