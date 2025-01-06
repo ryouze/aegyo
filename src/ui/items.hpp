@@ -11,7 +11,6 @@
 #include <SFML/Graphics.hpp>
 #include <fmt/core.h>
 
-#include "core/assets/font.hpp"
 #include "core/settings/colors.hpp"
 #include "core/settings/screen.hpp"
 #include "core/string.hpp"
@@ -35,16 +34,6 @@ void set_integer_position(sf::Text &text,
     text.setPosition({static_cast<float>(static_cast<int>(position.x)),
                       static_cast<float>(static_cast<int>(position.y))});
 }
-
-class GenericText : public sf::Text {
-  public:
-    // Constructor with no arguments: uses the embedded font by default
-    explicit GenericText()
-        : sf::Text(core::assets::font::get_embedded_font()) {}
-
-    // Allow other constructors from sf::Text to be used
-    using sf::Text::Text;
-};
 
 }  // namespace
 
@@ -88,7 +77,7 @@ class Percentage {
     }
 
   private:
-    GenericText text_;
+    core::string::Text text_;
     std::size_t correct_answers_ = 0;
     std::size_t total_answers_ = 0;
 
@@ -99,8 +88,7 @@ class Percentage {
             percentage = (static_cast<float>(this->correct_answers_) / static_cast<float>(this->total_answers_)) * 100.f;
         }
 
-        this->text_.setString(core::string::to_sfml_string(  // Unicode fix
-            fmt::format("게임 점수: {:.1f}%", percentage)));
+        this->text_.setString(fmt::format("게임 점수: {:.1f}%", percentage));
     }
 };
 

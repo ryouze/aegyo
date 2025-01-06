@@ -13,7 +13,6 @@
 #include <fmt/core.h>
 
 #include "app.hpp"
-#include "core/assets/font.hpp"
 #include "core/rng.hpp"
 #include "core/settings/colors.hpp"
 #include "core/settings/screen.hpp"
@@ -99,14 +98,12 @@ void run()
     question_circle.setPosition({400.f, 150.f});
 
     // Create text elements for the question, memo, and percentage score
-    sf::Text question_text(core::assets::font::get_embedded_font());
-    question_text.setFont(core::assets::font::get_embedded_font());
+    core::string::Text question_text;
     question_text.setCharacterSize(48);
     question_text.setFillColor(core::settings::colors::text);
     ui::items::set_integer_position(question_text, question_circle.getPosition());
 
-    sf::Text memo_text(core::assets::font::get_embedded_font());
-    memo_text.setFont(core::assets::font::get_embedded_font());
+    core::string::Text memo_text;
     memo_text.setCharacterSize(16);
     memo_text.setFillColor(core::settings::colors::text);
     ui::items::set_integer_position(memo_text, {400.f, 270.f});
@@ -115,11 +112,7 @@ void run()
 
     // Create four circular buttons for answer choices
     std::array<sf::CircleShape, 4> button_shapes;
-    std::array<sf::Text, 4> answer_texts = {
-        sf::Text(core::assets::font::get_embedded_font()),
-        sf::Text(core::assets::font::get_embedded_font()),
-        sf::Text(core::assets::font::get_embedded_font()),
-        sf::Text(core::assets::font::get_embedded_font())};
+    std::array<core::string::Text, 4> answer_texts;
     const float button_radius = 60.f;
     for (std::size_t i = 0; i < 4; ++i) {
         button_shapes[i].setRadius(button_radius);
@@ -127,7 +120,6 @@ void run()
         button_shapes[i].setFillColor(core::settings::colors::default_button);
         button_shapes[i].setOrigin({button_radius, button_radius});
 
-        answer_texts[i].setFont(core::assets::font::get_embedded_font());
         answer_texts[i].setCharacterSize(28);
         answer_texts[i].setFillColor(core::settings::colors::text);
     }
@@ -141,11 +133,7 @@ void run()
 
     // Create four toggle buttons for toggling categories on/off
     std::array<sf::RectangleShape, 4> toggle_buttons;
-    std::array<sf::Text, 4> toggle_texts = {
-        sf::Text(core::assets::font::get_embedded_font()),
-        sf::Text(core::assets::font::get_embedded_font()),
-        sf::Text(core::assets::font::get_embedded_font()),
-        sf::Text(core::assets::font::get_embedded_font())};
+    std::array<core::string::Text, 4> toggle_texts;
     const float total_toggle_width = 4.f * 60.f;
     const float start_x = static_cast<float>(window.getSize().x) - total_toggle_width - 10.f;
     for (std::size_t i = 0; i < 4; ++i) {
@@ -161,8 +149,7 @@ void run()
         }
         toggle_buttons[i] = rect_button;
 
-        sf::Text label_text(core::assets::font::get_embedded_font());
-        label_text.setFont(core::assets::font::get_embedded_font());
+        core::string::Text label_text;
         label_text.setCharacterSize(14);
         label_text.setFillColor(core::settings::colors::text);
         label_text.setString(toggle_labels[i]);
@@ -219,16 +206,14 @@ void run()
                 }
             }
             question_text.setCharacterSize(48);
-            question_text.setString(core::string::to_sfml_string(
-                is_hangul ? correct_entry.hangul : correct_entry.latin));
+            question_text.setString(is_hangul ? correct_entry.hangul : correct_entry.latin);
             const sf::FloatRect text_bounds = question_text.getLocalBounds();
             question_text.setOrigin({text_bounds.position.x + text_bounds.size.x / 2.f,
                                      text_bounds.position.y + text_bounds.size.y / 2.f});
             memo_text.setString("");
             for (std::size_t i = 0; i < 4; ++i) {
                 button_shapes[i].setFillColor(core::settings::colors::default_button);
-                answer_texts[i].setString(core::string::to_sfml_string(
-                    is_hangul ? options[i].latin : options[i].hangul));
+                answer_texts[i].setString(is_hangul ? options[i].latin : options[i].hangul);
                 const sf::FloatRect ans_bounds = answer_texts[i].getLocalBounds();
                 answer_texts[i].setOrigin({ans_bounds.position.x + ans_bounds.size.x / 2.f,
                                            ans_bounds.position.y + ans_bounds.size.y / 2.f});
@@ -295,16 +280,14 @@ void run()
                                     }
                                 }
                                 question_text.setCharacterSize(48);
-                                question_text.setString(core::string::to_sfml_string(
-                                    is_hangul ? correct_entry.hangul : correct_entry.latin));
+                                question_text.setString(is_hangul ? correct_entry.hangul : correct_entry.latin);
                                 const sf::FloatRect tb = question_text.getLocalBounds();
                                 question_text.setOrigin({tb.position.x + tb.size.x / 2.f,
                                                          tb.position.y + tb.size.y / 2.f});
                                 memo_text.setString("");
                                 for (std::size_t j = 0; j < 4; ++j) {
                                     button_shapes[j].setFillColor(core::settings::colors::default_button);
-                                    answer_texts[j].setString(core::string::to_sfml_string(
-                                        is_hangul ? opts[j].latin : opts[j].hangul));
+                                    answer_texts[j].setString(is_hangul ? opts[j].latin : opts[j].hangul);
                                     const sf::FloatRect ans_bounds = answer_texts[j].getLocalBounds();
                                     answer_texts[j].setOrigin({ans_bounds.position.x + ans_bounds.size.x / 2.f,
                                                                ans_bounds.position.y + ans_bounds.size.y / 2.f});
@@ -373,7 +356,7 @@ void run()
                                     }
                                 }
 
-                                memo_text.setString(core::string::to_sfml_string(correct_entry.memo));
+                                memo_text.setString(correct_entry.memo);
                                 const sf::FloatRect memo_bounds = memo_text.getLocalBounds();
                                 memo_text.setOrigin({memo_bounds.position.x + memo_bounds.size.x / 2.f,
                                                      memo_bounds.position.y + memo_bounds.size.y / 2.f});
@@ -418,7 +401,7 @@ void run()
                             }
                         }
 
-                        memo_text.setString(core::string::to_sfml_string(correct_entry.memo));
+                        memo_text.setString(correct_entry.memo);
                         const sf::FloatRect memo_bounds = memo_text.getLocalBounds();
                         memo_text.setOrigin({memo_bounds.position.x + memo_bounds.size.x / 2.f,
                                              memo_bounds.position.y + memo_bounds.size.y / 2.f});
@@ -458,16 +441,14 @@ void run()
                             }
                         }
                         question_text.setCharacterSize(48);
-                        question_text.setString(core::string::to_sfml_string(
-                            is_hangul ? correct_entry.hangul : correct_entry.latin));
+                        question_text.setString(is_hangul ? correct_entry.hangul : correct_entry.latin);
                         const sf::FloatRect tb = question_text.getLocalBounds();
                         question_text.setOrigin({tb.position.x + tb.size.x / 2.f,
                                                  tb.position.y + tb.size.y / 2.f});
                         memo_text.setString("");
                         for (std::size_t i = 0; i < 4; ++i) {
                             button_shapes[i].setFillColor(core::settings::colors::default_button);
-                            answer_texts[i].setString(core::string::to_sfml_string(
-                                is_hangul ? opts[i].latin : opts[i].hangul));
+                            answer_texts[i].setString(is_hangul ? opts[i].latin : opts[i].hangul);
                             const sf::FloatRect ans_bounds = answer_texts[i].getLocalBounds();
                             answer_texts[i].setOrigin({ans_bounds.position.x + ans_bounds.size.x / 2.f,
                                                        ans_bounds.position.y + ans_bounds.size.y / 2.f});
