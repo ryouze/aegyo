@@ -35,4 +35,10 @@ void Text::setString(const std::string &utf8_str)
     sf::Text::setString(to_sfml_string(utf8_str));
 }
 
+void Text::setPosition(const sf::Vector2f &position)
+{
+    sf::Text::setPosition({static_cast<float>(static_cast<int>(position.x)),
+                           static_cast<float>(static_cast<int>(position.y))});
+}
+
 }  // namespace core::string

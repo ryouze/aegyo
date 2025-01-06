@@ -32,6 +32,15 @@ class Text : public sf::Text {
      * @param utf8_str String to set (e.g., "こんにちは").
      */
     void setString(const std::string &utf8_str);
+
+    /**
+     * @brief Set the position of the text object using integer coordinates.
+     *
+     * The provided coordinate is cast to an integer before setting the position.
+     *
+     * @param position X and Y coordinates (e.g., {10.0, 123.4}).
+     */
+    void setPosition(const sf::Vector2f &position);
 };
 
 }  // namespace core::string

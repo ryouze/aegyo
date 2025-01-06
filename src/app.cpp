@@ -97,7 +97,7 @@ void run()
     core::string::Text memo_text;
     memo_text.setCharacterSize(16);
     memo_text.setFillColor(core::settings::colors::text);
-    ui::items::set_integer_position(memo_text, {400.f, 270.f});
+    memo_text.setPosition({400.f, 270.f});
 
     ui::items::Percentage percentage_display;
 
@@ -133,7 +133,7 @@ void run()
         const sf::FloatRect text_bounds = label_text.getLocalBounds();
         label_text.setOrigin({text_bounds.position.x + text_bounds.size.x / 2.f,
                               text_bounds.position.y + text_bounds.size.y / 2.f});
-        ui::items::set_integer_position(label_text, rect_button.getPosition() + sf::Vector2f(25.f, 17.5f));
+        label_text.setPosition(rect_button.getPosition() + sf::Vector2f(25.f, 17.5f));
         toggle_texts[i] = label_text;
     }
 

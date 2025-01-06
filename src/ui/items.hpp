@@ -17,26 +17,6 @@
 
 namespace ui::items {
 
-namespace {
-
-/**
- * @brief Private helper to set the position of an SFML text object using integer coordinates.
- *
- * The provided coordinate is cast to an integer before setting the position.
- *
- * @param text SFML text object to set the position for.
- * @param position X and Y coordinates (e.g., {10.0, 123.4}).
- */
-void set_integer_position(sf::Text &text,
-                          const sf::Vector2f &position)
-{
-    // Cast to integer, then back to float
-    text.setPosition({static_cast<float>(static_cast<int>(position.x)),
-                      static_cast<float>(static_cast<int>(position.y))});
-}
-
-}  // namespace
-
 class Percentage {
   public:
     explicit Percentage()
@@ -49,7 +29,7 @@ class Percentage {
         const float top_left_offset = 10.f;  // Offset from the top-left corner
         const sf::Vector2f pos = sf::Vector2f(core::settings::screen::TOP_LEFT.x + top_left_offset,
                                               core::settings::screen::TOP_LEFT.y + top_left_offset);
-        set_integer_position(this->text_, pos);
+        this->text_.setPosition(pos);
         this->update_score_display();
     }
 
@@ -117,7 +97,7 @@ class QuestionCircle {
         // Setup text
         this->text_.setCharacterSize(48);
         this->text_.setFillColor(core::settings::colors::text);
-        set_integer_position(this->text_, position);
+        this->text_.setPosition( position);
     }
 
     void set_invalid()
@@ -184,7 +164,7 @@ class AnswerCircle {
         // Setup text
         this->text_.setCharacterSize(28);
         this->text_.setFillColor(core::settings::colors::text);
-        set_integer_position(this->text_, position);
+        this->text_.setPosition( position);
     }
 
     void set_invalid()
