@@ -82,7 +82,7 @@ class Memo {
         this->text_.setCharacterSize(16);
         this->text_.setFillColor(core::settings::colors::text);
         const sf::Vector2f position = sf::Vector2f(core::settings::screen::CENTER.x + 0.f,
-                                                   core::settings::screen::CENTER.y + 30.f);
+                                                   core::settings::screen::CENTER.y - 30.f);
         this->text_.setPosition(position);
     }
 
