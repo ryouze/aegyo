@@ -83,7 +83,7 @@ class Percentage {
 
     void update_score_display()
     {
-        float percentage = 0.f;  // If no answers yet, default to 0%
+        float percentage = 100.f;  // If no answers yet, default to 100%
         if (this->total_answers_ > 0) {
             percentage = (static_cast<float>(this->correct_answers_) / static_cast<float>(this->total_answers_)) * 100.f;
         }
