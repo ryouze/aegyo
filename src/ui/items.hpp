@@ -27,9 +27,9 @@ class Percentage {
         this->text_.setFillColor(core::settings::colors::text);
 
         const float top_left_offset = 10.f;  // Offset from the top-left corner
-        const sf::Vector2f pos = sf::Vector2f(core::settings::screen::TOP_LEFT.x + top_left_offset,
-                                              core::settings::screen::TOP_LEFT.y + top_left_offset);
-        this->text_.setPosition(pos);
+        const sf::Vector2f position = sf::Vector2f(core::settings::screen::TOP_LEFT.x + top_left_offset,
+                                                   core::settings::screen::TOP_LEFT.y + top_left_offset);
+        this->text_.setPosition(position);
         this->update_score_display();
     }
 
@@ -74,6 +74,37 @@ class Percentage {
     }
 };
 
+class Memo {
+  public:
+    explicit Memo()
+    {
+        this->text_.setCharacterSize(16);
+        this->text_.setFillColor(core::settings::colors::text);
+        const sf::Vector2f position = sf::Vector2f(core::settings::screen::CENTER.x + 0.f,
+                                                   core::settings::screen::CENTER.y + 30.f);
+        this->text_.setPosition(position);
+    }
+
+    void hide()
+    {
+        this->text_.setString("");
+    }
+
+    void set(const std::string &memo)
+    {
+        this->text_.setString(memo);
+        this->text_.resetOrigin();
+    }
+
+    void draw(sf::RenderWindow &window) const
+    {
+        window.draw(this->text_);
+    }
+
+  private:
+    core::string::Text text_;
+};
+
 class Circle : public sf::CircleShape {
   public:
     explicit Circle(const float radius)
@@ -104,14 +135,16 @@ class QuestionCircle {
     {
         this->text_.setString("X");
         this->text_.setCharacterSize(72);
-        this->reset_text_origin();
+        this->text_.resetOrigin();
+        ;
     }
 
     void set_question(const std::string &latin_or_hangul)
     {
         this->text_.setCharacterSize(48);
         this->text_.setString(latin_or_hangul);
-        this->reset_text_origin();
+        this->text_.resetOrigin();
+        ;
     }
 
     void draw(sf::RenderWindow &window) const
@@ -121,13 +154,6 @@ class QuestionCircle {
     }
 
   private:
-    void reset_text_origin()
-    {
-        const sf::FloatRect tb = this->text_.getLocalBounds();
-        this->text_.setOrigin({tb.position.x + tb.size.x / 2.f,
-                               tb.position.y + tb.size.y / 2.f});
-    }
-
     Circle circle_;
     core::string::Text text_;
 };
@@ -182,7 +208,8 @@ class AnswerCircle {
         this->text_.setString(latin_or_hangul);
 
         // TODO: Find out why we have to do this every time we set a new string instead of doing it once in the constructor
-        this->reset_text_origin();
+        this->text_.resetOrigin();
+        ;
     }
 
     bool is_hovering(const sf::Vector2f mouse_pos) const
@@ -224,13 +251,6 @@ class AnswerCircle {
   private:
     Circle circle_;
     core::string::Text text_;
-
-    void reset_text_origin()
-    {
-        const sf::FloatRect tb = this->text_.getLocalBounds();
-        this->text_.setOrigin({tb.position.x + tb.size.x / 2.f,
-                               tb.position.y + tb.size.y / 2.f});
-    }
 };
 
 }  // namespace ui::items

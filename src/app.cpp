@@ -94,10 +94,7 @@ void run()
     // Create a circle for displaying the current question
     ui::items::QuestionCircle question_circle;
 
-    core::string::Text memo_text;
-    memo_text.setCharacterSize(16);
-    memo_text.setFillColor(core::settings::colors::text);
-    memo_text.setPosition({400.f, 270.f});
+    ui::items::Memo memo_text;
 
     ui::items::Percentage percentage_display;
 
@@ -163,7 +160,7 @@ void run()
                 circle.set_invalid();
             }
             current_game_state = game_state_t::no_entries_enabled;
-            memo_text.setString("");
+            memo_text.hide();
         }
         else {
             correct_entry = maybe_entry.value();
@@ -176,7 +173,7 @@ void run()
                 }
             }
             question_circle.set_question(is_hangul ? correct_entry.hangul : correct_entry.latin);
-            memo_text.setString("");
+            memo_text.hide();
             for (std::size_t i = 0; i < 4; ++i) {
                 answer_circles[i].set_available(is_hangul ? options[i].latin : options[i].hangul);
             }
@@ -220,7 +217,7 @@ void run()
                                 for (auto &circle : answer_circles) {
                                     circle.set_invalid();
                                 }
-                                memo_text.setString("");
+                                memo_text.hide();
                             }
                             else {
                                 correct_entry = new_entry.value();
@@ -234,7 +231,7 @@ void run()
                                     }
                                 }
                                 question_circle.set_question(is_hangul ? correct_entry.hangul : correct_entry.latin);
-                                memo_text.setString("");
+                                memo_text.hide();
                                 for (std::size_t j = 0; j < 4; ++j) {
                                     answer_circles[j].set_available(is_hangul ? opts[j].latin : opts[j].hangul);
                                 }
@@ -296,10 +293,7 @@ void run()
                                     }
                                 }
 
-                                memo_text.setString(correct_entry.memo);
-                                const sf::FloatRect memo_bounds = memo_text.getLocalBounds();
-                                memo_text.setOrigin({memo_bounds.position.x + memo_bounds.size.x / 2.f,
-                                                     memo_bounds.position.y + memo_bounds.size.y / 2.f});
+                                memo_text.set(correct_entry.memo);
                                 current_game_state = game_state_t::show_result;
                                 break;
                             }
@@ -341,10 +335,7 @@ void run()
                             }
                         }
 
-                        memo_text.setString(correct_entry.memo);
-                        const sf::FloatRect memo_bounds = memo_text.getLocalBounds();
-                        memo_text.setOrigin({memo_bounds.position.x + memo_bounds.size.x / 2.f,
-                                             memo_bounds.position.y + memo_bounds.size.y / 2.f});
+                        memo_text.set(correct_entry.memo);
                         current_game_state = game_state_t::show_result;
                     }
                 }
@@ -352,7 +343,7 @@ void run()
             else if (current_game_state == game_state_t::show_result) {
                 // Any mouse click or key press proceeds to the next question
                 if ((event->is<sf::Event::MouseButtonReleased>()) || event->is<sf::Event::KeyPressed>()) {
-                    memo_text.setString("");
+                    memo_text.hide();
                     // Re-initialize a new question inline
                     const auto maybe_entry = vocabulary_obj.get_random_enabled_entry(toggle_states);
                     if (!maybe_entry.has_value()) {
@@ -361,7 +352,7 @@ void run()
                         for (auto &circle : answer_circles) {
                             circle.set_invalid();
                         }
-                        memo_text.setString("");
+                        memo_text.hide();
                     }
                     else {
                         correct_entry = maybe_entry.value();
@@ -374,7 +365,7 @@ void run()
                             }
                         }
                         question_circle.set_question(is_hangul ? correct_entry.hangul : correct_entry.latin);
-                        memo_text.setString("");
+                        memo_text.hide();
                         for (std::size_t i = 0; i < 4; ++i) {
                             answer_circles[i].set_available(is_hangul ? opts[i].latin : opts[i].hangul);
                         }
@@ -392,7 +383,7 @@ void run()
 
         question_circle.draw(window);
         if (current_game_state == game_state_t::show_result) {
-            window.draw(memo_text);
+            memo_text.draw(window);
         }
         for (std::size_t i = 0; i < 4; ++i) {
             answer_circles[i].draw(window);
