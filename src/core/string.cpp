@@ -41,4 +41,11 @@ void Text::setPosition(const sf::Vector2f &position)
                            static_cast<float>(static_cast<int>(position.y))});
 }
 
+void Text::resetOrigin()
+{
+    const sf::FloatRect tb = this->getLocalBounds();
+    sf::Text::setOrigin({tb.position.x + tb.size.x / 2.f,
+                         tb.position.y + tb.size.y / 2.f});
+}
+
 }  // namespace core::string

@@ -41,6 +41,13 @@ class Text : public sf::Text {
      * @param position X and Y coordinates (e.g., {10.0, 123.4}).
      */
     void setPosition(const sf::Vector2f &position);
+
+    /**
+     * @brief Reset the origin of the text object.
+     *
+     * The origin is set to the center of the object.
+     */
+    void resetOrigin();
 };
 
 }  // namespace core::string
