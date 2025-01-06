@@ -35,7 +35,7 @@ namespace test_rng {
 }  // namespace test_rng
 
 namespace test_string {
-[[nodiscard]] int to_sfml_string();
+[[nodiscard]] int text();
 }
 
 namespace test_vocabulary {
@@ -81,7 +81,7 @@ int main(int argc,
         {"test_rng::instance", test_rng::instance},
         {"test_rng::get_random_number", test_rng::get_random_number},
         {"test_rng::get_random_bool", test_rng::get_random_bool},
-        {"test_string::to_sfml_string", test_string::to_sfml_string},
+        {"test_string::text", test_string::text},
         {"test_vocabulary::entry", test_vocabulary::entry},
         {"test_vocabulary::category_count", test_vocabulary::category_count},
     };
@@ -204,20 +204,22 @@ int test_rng::get_random_bool()
     }
 }
 
-int test_string::to_sfml_string()
+int test_string::text()
 {
     try {
+        core::string::Text text;
+
         // Convert a UTF-8 string to an SFML string
         const std::string utf8_str = "Dzień dobry";
-        const sf::String sfml_str = core::string::to_sfml_string(utf8_str);
-        if (sfml_str.isEmpty()) {
+        text.setString(utf8_str);
+        if (text.getString().isEmpty()) {
             throw std::runtime_error("The SFML string is empty");
         }
-        fmt::print("core::string::to_sfml_string() passed.\n");
+        fmt::print("core::string::text() passed.\n");
         return EXIT_SUCCESS;
     }
     catch (const std::exception &e) {
-        fmt::print(stderr, "core::string::to_sfml_string() failed: {}\n", e.what());
+        fmt::print(stderr, "core::string::text() failed: {}\n", e.what());
         return EXIT_FAILURE;
     }
 }

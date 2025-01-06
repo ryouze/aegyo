@@ -174,7 +174,7 @@ if(BUILD_TESTS)
   register_test("test_rng::instance")
   register_test("test_rng::get_random_number")
   register_test("test_rng::get_random_bool")
-  register_test("test_string::to_sfml_string")
+  register_test("test_string::text")
   register_test("test_vocabulary::entry")
   register_test("test_vocabulary::category_count")
 
