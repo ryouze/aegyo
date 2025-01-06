@@ -97,25 +97,21 @@ class QuestionCircle {
         // Setup text
         this->text_.setCharacterSize(48);
         this->text_.setFillColor(core::settings::colors::text);
-        this->text_.setPosition( position);
+        this->text_.setPosition(position);
     }
 
     void set_invalid()
     {
         this->text_.setString("X");
         this->text_.setCharacterSize(72);
-        const sf::FloatRect tb = this->text_.getLocalBounds();
-        this->text_.setOrigin({tb.position.x + tb.size.x / 2.f,
-                               tb.position.y + tb.size.y / 2.f});
+        this->reset_text_origin();
     }
 
     void set_question(const std::string &latin_or_hangul)
     {
         this->text_.setCharacterSize(48);
         this->text_.setString(latin_or_hangul);
-        const sf::FloatRect tb = this->text_.getLocalBounds();
-        this->text_.setOrigin({tb.position.x + tb.size.x / 2.f,
-                               tb.position.y + tb.size.y / 2.f});
+        this->reset_text_origin();
     }
 
     void draw(sf::RenderWindow &window) const
@@ -125,6 +121,13 @@ class QuestionCircle {
     }
 
   private:
+    void reset_text_origin()
+    {
+        const sf::FloatRect tb = this->text_.getLocalBounds();
+        this->text_.setOrigin({tb.position.x + tb.size.x / 2.f,
+                               tb.position.y + tb.size.y / 2.f});
+    }
+
     Circle circle_;
     core::string::Text text_;
 };
@@ -164,7 +167,7 @@ class AnswerCircle {
         // Setup text
         this->text_.setCharacterSize(28);
         this->text_.setFillColor(core::settings::colors::text);
-        this->text_.setPosition( position);
+        this->text_.setPosition(position);
     }
 
     void set_invalid()
@@ -178,9 +181,8 @@ class AnswerCircle {
         this->circle_.setFillColor(core::settings::colors::default_button);
         this->text_.setString(latin_or_hangul);
 
-        const sf::FloatRect tb = this->text_.getLocalBounds();
-        this->text_.setOrigin({tb.position.x + tb.size.x / 2.f,
-                               tb.position.y + tb.size.y / 2.f});
+        // TODO: Find out why we have to do this every time we set a new string instead of doing it once in the constructor
+        this->reset_text_origin();
     }
 
     bool is_hovering(const sf::Vector2f mouse_pos) const
@@ -222,6 +224,13 @@ class AnswerCircle {
   private:
     Circle circle_;
     core::string::Text text_;
+
+    void reset_text_origin()
+    {
+        const sf::FloatRect tb = this->text_.getLocalBounds();
+        this->text_.setOrigin({tb.position.x + tb.size.x / 2.f,
+                               tb.position.y + tb.size.y / 2.f});
+    }
 };
 
 }  // namespace ui::items
