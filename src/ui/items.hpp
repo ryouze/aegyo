@@ -106,9 +106,9 @@ class Memo {
     core::string::Text text_;
 };
 
-class Circle : public sf::CircleShape {
+class ICircle : public sf::CircleShape {
   public:
-    explicit Circle(const float radius)
+    explicit ICircle(const float radius)
         : sf::CircleShape(radius, 100)  // Use 100 points for a smooth circle
     {
         // Set origin to the center of the circle instead of the default top-left corner
@@ -155,7 +155,7 @@ class QuestionCircle {
     }
 
   private:
-    Circle circle_;
+    ICircle circle_;
     core::string::Text text_;
 };
 
@@ -250,7 +250,7 @@ class AnswerCircle {
     }
 
   private:
-    Circle circle_;
+    ICircle circle_;
     core::string::Text text_;
 };
 
