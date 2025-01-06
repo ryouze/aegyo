@@ -18,8 +18,10 @@
 
 namespace ui::items {
 
+namespace {
+
 /**
- * @brief Set the position of an SFML text object using integer coordinates.
+ * @brief Private helper to set the position of an SFML text object using integer coordinates.
  *
  * The provided coordinate is cast to an integer before setting the position.
  *
@@ -34,11 +36,22 @@ void set_integer_position(sf::Text &text,
                       static_cast<float>(static_cast<int>(position.y))});
 }
 
+class GenericText : public sf::Text {
+  public:
+    // Constructor with no arguments: uses the embedded font by default
+    explicit GenericText()
+        : sf::Text(core::assets::font::get_embedded_font()) {}
+
+    // Allow other constructors from sf::Text to be used
+    using sf::Text::Text;
+};
+
+}  // namespace
+
 class Percentage {
   public:
     explicit Percentage(const float top_left_offset = 10.f)  // Offset from the top-left corner
-        : text_(core::assets::font::get_embedded_font()),
-          correct_answers_(0),
+        : correct_answers_(0),
           total_answers_(0)
     {
         this->text_.setCharacterSize(18);
@@ -75,7 +88,7 @@ class Percentage {
     }
 
   private:
-    sf::Text text_;
+    GenericText text_;
     std::size_t correct_answers_ = 0;
     std::size_t total_answers_ = 0;
 
