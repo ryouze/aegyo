@@ -39,12 +39,14 @@ void set_integer_position(sf::Text &text,
 
 class Percentage {
   public:
-    explicit Percentage(const float top_left_offset = 10.f)  // Offset from the top-left corner
+    explicit Percentage()
         : correct_answers_(0),
           total_answers_(0)
     {
         this->text_.setCharacterSize(18);
         this->text_.setFillColor(core::settings::colors::text);
+
+        const float top_left_offset = 10.f;  // Offset from the top-left corner
         const sf::Vector2f pos = sf::Vector2f(core::settings::screen::TOP_LEFT.x + top_left_offset,
                                               core::settings::screen::TOP_LEFT.y + top_left_offset);
         set_integer_position(this->text_, pos);
@@ -90,6 +92,42 @@ class Percentage {
 
         this->text_.setString(fmt::format("게임 점수: {:.1f}%", percentage));
     }
+};
+
+class QuestionText {
+  public:
+    explicit QuestionText(const sf::Vector2f position)
+    {
+        this->text_.setCharacterSize(48);
+        this->text_.setFillColor(core::settings::colors::text);
+        set_integer_position(this->text_, position);
+    }
+
+    void set_invalid()
+    {
+        this->text_.setString("X");
+        this->text_.setCharacterSize(72);
+        const sf::FloatRect tb = this->text_.getLocalBounds();
+        this->text_.setOrigin({tb.position.x + tb.size.x / 2.f,
+                               tb.position.y + tb.size.y / 2.f});
+    }
+
+    void set_question(const std::string &latin_or_hangul)
+    {
+        this->text_.setCharacterSize(48);
+        this->text_.setString(latin_or_hangul);
+        const sf::FloatRect tb = this->text_.getLocalBounds();
+        this->text_.setOrigin({tb.position.x + tb.size.x / 2.f,
+                               tb.position.y + tb.size.y / 2.f});
+    }
+
+    void draw(sf::RenderWindow &window) const
+    {
+        window.draw(this->text_);
+    }
+
+  private:
+    core::string::Text text_;
 };
 
 }  // namespace ui::items

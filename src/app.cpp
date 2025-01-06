@@ -98,10 +98,7 @@ void run()
     question_circle.setPosition({400.f, 150.f});
 
     // Create text elements for the question, memo, and percentage score
-    core::string::Text question_text;
-    question_text.setCharacterSize(48);
-    question_text.setFillColor(core::settings::colors::text);
-    ui::items::set_integer_position(question_text, question_circle.getPosition());
+    ui::items::QuestionText question_text(question_circle.getPosition());
 
     core::string::Text memo_text;
     memo_text.setCharacterSize(16);
@@ -181,11 +178,7 @@ void run()
         const auto maybe_entry = vocabulary_obj.get_random_enabled_entry(toggle_states);
         if (!maybe_entry.has_value()) {
             // If no categories are enabled, display an 'X' to indicate no entries
-            question_text.setString("X");
-            question_text.setCharacterSize(72);
-            const sf::FloatRect text_bounds = question_text.getLocalBounds();
-            question_text.setOrigin({text_bounds.position.x + text_bounds.size.x / 2.f,
-                                     text_bounds.position.y + text_bounds.size.y / 2.f});
+            question_text.set_invalid();
             current_game_state = game_state_t::no_entries_enabled;
             for (auto &shape : button_shapes) {
                 shape.setFillColor(core::settings::colors::disabled_toggle);
@@ -205,11 +198,7 @@ void run()
                     break;
                 }
             }
-            question_text.setCharacterSize(48);
-            question_text.setString(is_hangul ? correct_entry.hangul : correct_entry.latin);
-            const sf::FloatRect text_bounds = question_text.getLocalBounds();
-            question_text.setOrigin({text_bounds.position.x + text_bounds.size.x / 2.f,
-                                     text_bounds.position.y + text_bounds.size.y / 2.f});
+            question_text.set_question(is_hangul ? correct_entry.hangul : correct_entry.latin);
             memo_text.setString("");
             for (std::size_t i = 0; i < 4; ++i) {
                 button_shapes[i].setFillColor(core::settings::colors::default_button);
@@ -254,11 +243,7 @@ void run()
                             // Re-initialize a new question inline (same code as above)
                             const auto new_entry = vocabulary_obj.get_random_enabled_entry(toggle_states);
                             if (!new_entry.has_value()) {
-                                question_text.setString("X");
-                                question_text.setCharacterSize(72);
-                                const sf::FloatRect tb = question_text.getLocalBounds();
-                                question_text.setOrigin({tb.position.x + tb.size.x / 2.f,
-                                                         tb.position.y + tb.size.y / 2.f});
+                                question_text.set_invalid();
                                 current_game_state = game_state_t::no_entries_enabled;
                                 for (auto &shape : button_shapes) {
                                     shape.setFillColor(core::settings::colors::disabled_toggle);
@@ -279,11 +264,7 @@ void run()
                                         break;
                                     }
                                 }
-                                question_text.setCharacterSize(48);
-                                question_text.setString(is_hangul ? correct_entry.hangul : correct_entry.latin);
-                                const sf::FloatRect tb = question_text.getLocalBounds();
-                                question_text.setOrigin({tb.position.x + tb.size.x / 2.f,
-                                                         tb.position.y + tb.size.y / 2.f});
+                                question_text.set_question(is_hangul ? correct_entry.hangul : correct_entry.latin);
                                 memo_text.setString("");
                                 for (std::size_t j = 0; j < 4; ++j) {
                                     button_shapes[j].setFillColor(core::settings::colors::default_button);
@@ -416,11 +397,7 @@ void run()
                     // Re-initialize a new question inline
                     const auto maybe_entry = vocabulary_obj.get_random_enabled_entry(toggle_states);
                     if (!maybe_entry.has_value()) {
-                        question_text.setString("X");
-                        question_text.setCharacterSize(72);
-                        const sf::FloatRect tb = question_text.getLocalBounds();
-                        question_text.setOrigin({tb.position.x + tb.size.x / 2.f,
-                                                 tb.position.y + tb.size.y / 2.f});
+                        question_text.set_invalid();
                         current_game_state = game_state_t::no_entries_enabled;
                         for (auto &shape : button_shapes) {
                             shape.setFillColor(core::settings::colors::disabled_toggle);
@@ -440,11 +417,7 @@ void run()
                                 break;
                             }
                         }
-                        question_text.setCharacterSize(48);
-                        question_text.setString(is_hangul ? correct_entry.hangul : correct_entry.latin);
-                        const sf::FloatRect tb = question_text.getLocalBounds();
-                        question_text.setOrigin({tb.position.x + tb.size.x / 2.f,
-                                                 tb.position.y + tb.size.y / 2.f});
+                        question_text.set_question(is_hangul ? correct_entry.hangul : correct_entry.latin);
                         memo_text.setString("");
                         for (std::size_t i = 0; i < 4; ++i) {
                             button_shapes[i].setFillColor(core::settings::colors::default_button);
@@ -467,7 +440,7 @@ void run()
         window.clear(core::settings::colors::background);
 
         window.draw(question_circle);
-        window.draw(question_text);
+        question_text.draw(window);
         if (current_game_state == game_state_t::show_result) {
             window.draw(memo_text);
         }
