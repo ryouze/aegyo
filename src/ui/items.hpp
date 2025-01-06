@@ -149,4 +149,99 @@ class QuestionCircle {
     core::string::Text text_;
 };
 
+enum class AnswerCirclePosition {
+    TOP_LEFT,
+    TOP_RIGHT,
+    BOTTOM_LEFT,
+    BOTTOM_RIGHT
+};
+
+class AnswerCircle {
+  public:
+    explicit AnswerCircle(const AnswerCirclePosition coordinate)
+        : circle_(60.f)
+    {
+        // Setup circle
+        this->circle_.setFillColor(core::settings::colors::default_button);
+        sf::Vector2f position;
+        switch (coordinate) {
+        case AnswerCirclePosition::TOP_LEFT:
+            position = core::settings::screen::CENTER + sf::Vector2f(-150.f, 50.f);
+            break;
+        case AnswerCirclePosition::TOP_RIGHT:
+            position = core::settings::screen::CENTER + sf::Vector2f(150.f, 50.f);
+            break;
+        case AnswerCirclePosition::BOTTOM_LEFT:
+            position = core::settings::screen::CENTER + sf::Vector2f(-150.f, 200.f);
+            break;
+        case AnswerCirclePosition::BOTTOM_RIGHT:
+            position = core::settings::screen::CENTER + sf::Vector2f(150.f, 200.f);
+            break;
+        }
+
+        this->circle_.setPosition(position);
+
+        // Setup text
+        this->text_.setCharacterSize(28);
+        this->text_.setFillColor(core::settings::colors::text);
+        set_integer_position(this->text_, position);
+    }
+
+    void set_invalid()
+    {
+        this->circle_.setFillColor(core::settings::colors::disabled_toggle);
+        this->text_.setString("");
+    }
+
+    void set_available(const std::string &latin_or_hangul)
+    {
+        this->circle_.setFillColor(core::settings::colors::default_button);
+        this->text_.setString(latin_or_hangul);
+
+        const sf::FloatRect tb = this->text_.getLocalBounds();
+        this->text_.setOrigin({tb.position.x + tb.size.x / 2.f,
+                               tb.position.y + tb.size.y / 2.f});
+    }
+
+    bool is_hovering(const sf::Vector2f mouse_pos) const
+    {
+        return this->circle_.getGlobalBounds().contains(mouse_pos);
+    }
+
+    void toggle_hover(const sf::Vector2f mouse_pos)
+    {
+        if (this->is_hovering(mouse_pos)) {
+            this->circle_.setFillColor(core::settings::colors::hover_button);
+        }
+        else {
+            this->circle_.setFillColor(core::settings::colors::default_button);
+        }
+    }
+
+    void set_correct_answer()
+    {
+        this->circle_.setFillColor(core::settings::colors::correct_answer);
+    }
+
+    void set_incorrect_answer()
+    {
+        this->circle_.setFillColor(core::settings::colors::incorrect_answer);
+    }
+
+    void set_selected_wrong_answer()
+    {
+        this->circle_.setFillColor(core::settings::colors::selected_wrong_answer);
+    }
+
+    void draw(sf::RenderWindow &window) const
+    {
+        window.draw(this->circle_);
+        window.draw(this->text_);
+    }
+
+  private:
+    Circle circle_;
+    core::string::Text text_;
+};
+
 }  // namespace ui::items

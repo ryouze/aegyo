@@ -102,25 +102,11 @@ void run()
     ui::items::Percentage percentage_display;
 
     // Create four circular buttons for answer choices
-    std::array<sf::CircleShape, 4> button_shapes;
-    std::array<core::string::Text, 4> answer_texts;
-    const float button_radius = 60.f;
-    for (std::size_t i = 0; i < 4; ++i) {
-        button_shapes[i].setRadius(button_radius);
-        button_shapes[i].setPointCount(100);
-        button_shapes[i].setFillColor(core::settings::colors::default_button);
-        button_shapes[i].setOrigin({button_radius, button_radius});
-
-        answer_texts[i].setCharacterSize(28);
-        answer_texts[i].setFillColor(core::settings::colors::text);
-    }
-    button_shapes[0].setPosition({250.f, 350.f});
-    button_shapes[1].setPosition({550.f, 350.f});
-    button_shapes[2].setPosition({250.f, 500.f});
-    button_shapes[3].setPosition({550.f, 500.f});
-    for (std::size_t i = 0; i < 4; ++i) {
-        ui::items::set_integer_position(answer_texts[i], button_shapes[i].getPosition());
-    }
+    std::array<ui::items::AnswerCircle, 4> answer_circles{
+        ui::items::AnswerCircle(ui::items::AnswerCirclePosition::TOP_LEFT),
+        ui::items::AnswerCircle(ui::items::AnswerCirclePosition::TOP_RIGHT),
+        ui::items::AnswerCircle(ui::items::AnswerCirclePosition::BOTTOM_LEFT),
+        ui::items::AnswerCircle(ui::items::AnswerCirclePosition::BOTTOM_RIGHT)};
 
     // Create four toggle buttons for toggling categories on/off
     std::array<sf::RectangleShape, 4> toggle_buttons;
@@ -173,13 +159,10 @@ void run()
         if (!maybe_entry.has_value()) {
             // If no categories are enabled, display an 'X' to indicate no entries
             question_circle.set_invalid();
+            for (auto &circle : answer_circles) {
+                circle.set_invalid();
+            }
             current_game_state = game_state_t::no_entries_enabled;
-            for (auto &shape : button_shapes) {
-                shape.setFillColor(core::settings::colors::disabled_toggle);
-            }
-            for (auto &text : answer_texts) {
-                text.setString("");
-            }
             memo_text.setString("");
         }
         else {
@@ -195,12 +178,7 @@ void run()
             question_circle.set_question(is_hangul ? correct_entry.hangul : correct_entry.latin);
             memo_text.setString("");
             for (std::size_t i = 0; i < 4; ++i) {
-                button_shapes[i].setFillColor(core::settings::colors::default_button);
-                answer_texts[i].setString(is_hangul ? options[i].latin : options[i].hangul);
-                const sf::FloatRect ans_bounds = answer_texts[i].getLocalBounds();
-                answer_texts[i].setOrigin({ans_bounds.position.x + ans_bounds.size.x / 2.f,
-                                           ans_bounds.position.y + ans_bounds.size.y / 2.f});
-                ui::items::set_integer_position(answer_texts[i], button_shapes[i].getPosition());
+                answer_circles[i].set_available(is_hangul ? options[i].latin : options[i].hangul);
             }
             current_game_state = game_state_t::waiting_for_answer;
         }
@@ -239,11 +217,8 @@ void run()
                             if (!new_entry.has_value()) {
                                 question_circle.set_invalid();
                                 current_game_state = game_state_t::no_entries_enabled;
-                                for (auto &shape : button_shapes) {
-                                    shape.setFillColor(core::settings::colors::disabled_toggle);
-                                }
-                                for (auto &txt : answer_texts) {
-                                    txt.setString("");
+                                for (auto &circle : answer_circles) {
+                                    circle.set_invalid();
                                 }
                                 memo_text.setString("");
                             }
@@ -261,12 +236,7 @@ void run()
                                 question_circle.set_question(is_hangul ? correct_entry.hangul : correct_entry.latin);
                                 memo_text.setString("");
                                 for (std::size_t j = 0; j < 4; ++j) {
-                                    button_shapes[j].setFillColor(core::settings::colors::default_button);
-                                    answer_texts[j].setString(is_hangul ? opts[j].latin : opts[j].hangul);
-                                    const sf::FloatRect ans_bounds = answer_texts[j].getLocalBounds();
-                                    answer_texts[j].setOrigin({ans_bounds.position.x + ans_bounds.size.x / 2.f,
-                                                               ans_bounds.position.y + ans_bounds.size.y / 2.f});
-                                    ui::items::set_integer_position(answer_texts[j], button_shapes[j].getPosition());
+                                    answer_circles[j].set_available(is_hangul ? opts[j].latin : opts[j].hangul);
                                 }
                                 current_game_state = game_state_t::waiting_for_answer;
                             }
@@ -300,12 +270,7 @@ void run()
                         static_cast<float>(mouseMove->position.x),
                         static_cast<float>(mouseMove->position.y));
                     for (std::size_t i = 0; i < 4; ++i) {
-                        if (button_shapes[i].getGlobalBounds().contains(checkPos)) {
-                            button_shapes[i].setFillColor(core::settings::colors::hover_button);
-                        }
-                        else {
-                            button_shapes[i].setFillColor(core::settings::colors::default_button);
-                        }
+                        answer_circles[i].toggle_hover(checkPos);
                     }
                 }
                 // If the user releases the mouse, check if they clicked an answer
@@ -315,19 +280,19 @@ void run()
                             static_cast<float>(mouseUp->position.x),
                             static_cast<float>(mouseUp->position.y));
                         for (std::size_t i = 0; i < 4; ++i) {
-                            if (button_shapes[i].getGlobalBounds().contains(checkPos)) {
+                            if (answer_circles[i].is_hovering(checkPos)) {
                                 if (i == correct_index) {
                                     percentage_display.add_correct_answer();
-                                    button_shapes[i].setFillColor(core::settings::colors::correct_answer);
+                                    answer_circles[i].set_correct_answer();
                                 }
                                 else {
                                     percentage_display.add_incorrect_answer();
-                                    button_shapes[i].setFillColor(core::settings::colors::selected_wrong_answer);
-                                    button_shapes[correct_index].setFillColor(core::settings::colors::correct_answer);
+                                    answer_circles[i].set_selected_wrong_answer();
+                                    answer_circles[correct_index].set_correct_answer();
                                 }
                                 for (std::size_t j = 0; j < 4; ++j) {
                                     if (j != i && j != correct_index) {
-                                        button_shapes[j].setFillColor(core::settings::colors::incorrect_answer);
+                                        answer_circles[j].set_incorrect_answer();
                                     }
                                 }
 
@@ -363,16 +328,16 @@ void run()
                     if (selected_idx) {
                         if (selected_idx == correct_index) {
                             percentage_display.add_correct_answer();
-                            button_shapes[*selected_idx].setFillColor(core::settings::colors::correct_answer);
+                            answer_circles[*selected_idx].set_correct_answer();
                         }
                         else {
                             percentage_display.add_incorrect_answer();
-                            button_shapes[*selected_idx].setFillColor(core::settings::colors::selected_wrong_answer);
-                            button_shapes[correct_index].setFillColor(core::settings::colors::correct_answer);
+                            answer_circles[*selected_idx].set_selected_wrong_answer();
+                            answer_circles[correct_index].set_correct_answer();
                         }
                         for (std::size_t j = 0; j < 4; ++j) {
                             if (j != selected_idx && j != correct_index) {
-                                button_shapes[j].setFillColor(core::settings::colors::incorrect_answer);
+                                answer_circles[j].set_incorrect_answer();
                             }
                         }
 
@@ -393,11 +358,8 @@ void run()
                     if (!maybe_entry.has_value()) {
                         question_circle.set_invalid();
                         current_game_state = game_state_t::no_entries_enabled;
-                        for (auto &shape : button_shapes) {
-                            shape.setFillColor(core::settings::colors::disabled_toggle);
-                        }
-                        for (auto &text : answer_texts) {
-                            text.setString("");
+                        for (auto &circle : answer_circles) {
+                            circle.set_invalid();
                         }
                         memo_text.setString("");
                     }
@@ -414,12 +376,7 @@ void run()
                         question_circle.set_question(is_hangul ? correct_entry.hangul : correct_entry.latin);
                         memo_text.setString("");
                         for (std::size_t i = 0; i < 4; ++i) {
-                            button_shapes[i].setFillColor(core::settings::colors::default_button);
-                            answer_texts[i].setString(is_hangul ? opts[i].latin : opts[i].hangul);
-                            const sf::FloatRect ans_bounds = answer_texts[i].getLocalBounds();
-                            answer_texts[i].setOrigin({ans_bounds.position.x + ans_bounds.size.x / 2.f,
-                                                       ans_bounds.position.y + ans_bounds.size.y / 2.f});
-                            ui::items::set_integer_position(answer_texts[i], button_shapes[i].getPosition());
+                            answer_circles[i].set_available(is_hangul ? opts[i].latin : opts[i].hangul);
                         }
                         current_game_state = game_state_t::waiting_for_answer;
                     }
@@ -438,8 +395,7 @@ void run()
             window.draw(memo_text);
         }
         for (std::size_t i = 0; i < 4; ++i) {
-            window.draw(button_shapes[i]);
-            window.draw(answer_texts[i]);
+            answer_circles[i].draw(window);
         }
         percentage_display.draw(window);
         for (std::size_t i = 0; i < toggle_buttons.size(); ++i) {
