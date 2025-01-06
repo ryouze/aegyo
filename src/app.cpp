@@ -92,13 +92,7 @@ void run()
         {modules::vocabulary::Category::CompoundVowel, true}};
 
     // Create a circle for displaying the current question
-    sf::CircleShape question_circle(80.f, 100);
-    question_circle.setFillColor(core::settings::colors::question_circle);
-    question_circle.setOrigin({80.f, 80.f});
-    question_circle.setPosition({400.f, 150.f});
-
-    // Create text elements for the question, memo, and percentage score
-    ui::items::QuestionText question_text(question_circle.getPosition());
+    ui::items::QuestionCircle question_circle;
 
     core::string::Text memo_text;
     memo_text.setCharacterSize(16);
@@ -178,7 +172,7 @@ void run()
         const auto maybe_entry = vocabulary_obj.get_random_enabled_entry(toggle_states);
         if (!maybe_entry.has_value()) {
             // If no categories are enabled, display an 'X' to indicate no entries
-            question_text.set_invalid();
+            question_circle.set_invalid();
             current_game_state = game_state_t::no_entries_enabled;
             for (auto &shape : button_shapes) {
                 shape.setFillColor(core::settings::colors::disabled_toggle);
@@ -198,7 +192,7 @@ void run()
                     break;
                 }
             }
-            question_text.set_question(is_hangul ? correct_entry.hangul : correct_entry.latin);
+            question_circle.set_question(is_hangul ? correct_entry.hangul : correct_entry.latin);
             memo_text.setString("");
             for (std::size_t i = 0; i < 4; ++i) {
                 button_shapes[i].setFillColor(core::settings::colors::default_button);
@@ -243,7 +237,7 @@ void run()
                             // Re-initialize a new question inline (same code as above)
                             const auto new_entry = vocabulary_obj.get_random_enabled_entry(toggle_states);
                             if (!new_entry.has_value()) {
-                                question_text.set_invalid();
+                                question_circle.set_invalid();
                                 current_game_state = game_state_t::no_entries_enabled;
                                 for (auto &shape : button_shapes) {
                                     shape.setFillColor(core::settings::colors::disabled_toggle);
@@ -264,7 +258,7 @@ void run()
                                         break;
                                     }
                                 }
-                                question_text.set_question(is_hangul ? correct_entry.hangul : correct_entry.latin);
+                                question_circle.set_question(is_hangul ? correct_entry.hangul : correct_entry.latin);
                                 memo_text.setString("");
                                 for (std::size_t j = 0; j < 4; ++j) {
                                     button_shapes[j].setFillColor(core::settings::colors::default_button);
@@ -397,7 +391,7 @@ void run()
                     // Re-initialize a new question inline
                     const auto maybe_entry = vocabulary_obj.get_random_enabled_entry(toggle_states);
                     if (!maybe_entry.has_value()) {
-                        question_text.set_invalid();
+                        question_circle.set_invalid();
                         current_game_state = game_state_t::no_entries_enabled;
                         for (auto &shape : button_shapes) {
                             shape.setFillColor(core::settings::colors::disabled_toggle);
@@ -417,7 +411,7 @@ void run()
                                 break;
                             }
                         }
-                        question_text.set_question(is_hangul ? correct_entry.hangul : correct_entry.latin);
+                        question_circle.set_question(is_hangul ? correct_entry.hangul : correct_entry.latin);
                         memo_text.setString("");
                         for (std::size_t i = 0; i < 4; ++i) {
                             button_shapes[i].setFillColor(core::settings::colors::default_button);
@@ -439,8 +433,7 @@ void run()
         // Clear the render window and draw the entire interface
         window.clear(core::settings::colors::background);
 
-        window.draw(question_circle);
-        question_text.draw(window);
+        question_circle.draw(window);
         if (current_game_state == game_state_t::show_result) {
             window.draw(memo_text);
         }

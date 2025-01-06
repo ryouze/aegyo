@@ -94,10 +94,27 @@ class Percentage {
     }
 };
 
-class QuestionText {
+class Circle : public sf::CircleShape {
   public:
-    explicit QuestionText(const sf::Vector2f position)
+    explicit Circle(const float radius)
+        : sf::CircleShape(radius, 100)  // Use 100 points for a smooth circle
     {
+        // Set origin to the center of the circle instead of the default top-left corner
+        sf::CircleShape::setOrigin({radius, radius});
+    }
+};
+
+class QuestionCircle {
+  public:
+    explicit QuestionCircle()
+        : circle_(80.f)
+    {
+        // Setup circle
+        this->circle_.setFillColor(core::settings::colors::question_circle);
+        const sf::Vector2f position = core::settings::screen::CENTER + sf::Vector2f(0.f, -150.f);
+        this->circle_.setPosition(position);
+
+        // Setup text
         this->text_.setCharacterSize(48);
         this->text_.setFillColor(core::settings::colors::text);
         set_integer_position(this->text_, position);
@@ -123,10 +140,12 @@ class QuestionText {
 
     void draw(sf::RenderWindow &window) const
     {
+        window.draw(this->circle_);
         window.draw(this->text_);
     }
 
   private:
+    Circle circle_;
     core::string::Text text_;
 };
 
