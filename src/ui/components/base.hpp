@@ -16,6 +16,35 @@
 namespace ui::components::base {
 
 /**
+ * @brief Class that represents a text item.
+ *
+ * On construction, the class initializes a text object with the default font and color.
+ */
+class BareText {
+  public:
+    explicit BareText()
+    {
+        this->text_.setFillColor(core::settings::colors::text);
+    }
+
+    /**
+     * @brief Draw the text to the window.
+     *
+     * @param window Window to draw to.
+     */
+    void draw(sf::RenderWindow &window) const
+    {
+        window.draw(this->text_);
+    }
+
+  protected:
+    /**
+     * @brief Text object.
+     */
+    core::string::Text text_;
+};
+
+/**
  * @brief Class that represents a circle item with a text label inside it.
  *
  * On construction, the class initializes a shape and text pair, then sets the origin to the center of the circle instead of the top-left corner.
@@ -49,7 +78,14 @@ class TextInCircle {
     }
 
   protected:
+    /**
+     * @brief Centered circle shape.
+     */
     sf::CircleShape circle_;
+
+    /**
+     * @brief Text object.
+     */
     core::string::Text text_;
 };
 
