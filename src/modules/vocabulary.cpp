@@ -88,18 +88,21 @@ std::optional<Entry> Vocabulary::get_random_enabled_entry(const std::unordered_m
         return std::nullopt;
     }
 
-    const auto index = core::rng::get_random_number<std::size_t>(0, enabled_entries.size() - 1);
-    return enabled_entries.at(index);
+    const std::size_t index = core::rng::get_random_number<std::size_t>(0, enabled_entries.size() - 1);
+    return enabled_entries[index];
 }
 
 std::vector<Entry> Vocabulary::generate_enabled_question_options(const Entry &correct_entry,
                                                                  const std::unordered_map<Category, bool> &category_enabled,
                                                                  const std::size_t num_options)
 {
-    std::vector<Entry> options = {correct_entry};
+    std::vector<Entry> options;
+    options.reserve(num_options);
+    options.emplace_back(correct_entry);
 
     // Collect possible wrong entries
     std::vector<Entry> wrong_entries;
+    wrong_entries.reserve(this->entries_.size());
     for (const auto &entry : this->entries_) {
         if (category_enabled.at(entry.category) && entry.hangul != correct_entry.hangul) {
             wrong_entries.emplace_back(entry);
