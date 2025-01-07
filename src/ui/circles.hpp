@@ -10,12 +10,10 @@
 #include <string>   // for std::string
 
 #include <SFML/Graphics.hpp>
-#include <fmt/core.h>
 
 #include "components/base.hpp"
 #include "core/settings/colors.hpp"
 #include "core/settings/screen.hpp"
-#include "core/string.hpp"
 
 namespace ui::circles {
 

@@ -13,13 +13,15 @@
 #include <fmt/core.h>
 
 #include "app.hpp"
+#include "core/assets/font.hpp"
 #include "core/rng.hpp"
 #include "core/settings/antialiasing.hpp"
 #include "core/settings/colors.hpp"
 #include "core/settings/screen.hpp"
-#include "core/string.hpp"
 #include "modules/vocabulary.hpp"
-#include "ui/items.hpp"
+#include "ui/circles.hpp"
+#include "ui/memo.hpp"
+#include "ui/percentage.hpp"
 #include "version.hpp"
 #if defined(_WIN32)
 #include "core/windows.hpp"
@@ -68,7 +70,7 @@ void run()
         modules::vocabulary::Category::CompoundVowel};
 
     std::array<sf::RectangleShape, 4> toggle_buttons;
-    std::array<core::string::Text, 4> toggle_texts;
+    std::array<core::assets::font::Text, 4> toggle_texts;
     {
         const float total_toggle_width = 4.f * 60.f;
         const float start_x = static_cast<float>(window.getSize().x) - total_toggle_width - 10.f;
@@ -85,7 +87,7 @@ void run()
             }
             toggle_buttons[i] = btn;
 
-            core::string::Text lbl;
+            core::assets::font::Text lbl;
             lbl.setCharacterSize(14);
             lbl.setFillColor(core::settings::colors::text);
             lbl.setString(toggle_labels[i]);
@@ -96,14 +98,14 @@ void run()
         }
     }
 
-    ui::items::QuestionCircle question_circle;
-    ui::items::Memo memo_text;
-    ui::items::Percentage percentage_display;
-    std::array<ui::items::AnswerCircle, 4> answer_circles{
-        ui::items::AnswerCircle(ui::items::AnswerCirclePosition::TOP_LEFT),
-        ui::items::AnswerCircle(ui::items::AnswerCirclePosition::TOP_RIGHT),
-        ui::items::AnswerCircle(ui::items::AnswerCirclePosition::BOTTOM_LEFT),
-        ui::items::AnswerCircle(ui::items::AnswerCirclePosition::BOTTOM_RIGHT)};
+    ui::circles::Question question_circle;
+    ui::memo::Memo memo_text;
+    ui::percentage::Percentage percentage_display;
+    std::array<ui::circles::Answer, 4> answer_circles{
+        ui::circles::Answer(ui::circles::AnswerPosition::TopLeft),
+        ui::circles::Answer(ui::circles::AnswerPosition::TopRight),
+        ui::circles::Answer(ui::circles::AnswerPosition::BottomLeft),
+        ui::circles::Answer(ui::circles::AnswerPosition::BottomRight)};
 
     enum class GameState { Waiting,
                            ShowingResult,
@@ -143,7 +145,7 @@ void run()
         question_circle.set_question(is_hangul ? correct_entry.hangul : correct_entry.latin);
         memo_text.hide();
         for (std::size_t i = 0; i < 4; ++i) {
-            answer_circles[i].set_available(is_hangul ? opts[i].latin : opts[i].hangul);
+            answer_circles[i].set_answer(is_hangul ? opts[i].latin : opts[i].hangul);
         }
         current_state = GameState::Waiting;
     };
