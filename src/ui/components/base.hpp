@@ -9,7 +9,6 @@
 #include <SFML/Graphics.hpp>
 
 #include "core/assets/font.hpp"
-#include "core/settings/colors.hpp"
 
 namespace ui::components::base {
 
@@ -25,26 +24,14 @@ class TextInCircle {
      *
      * @param radius Radius of the circle (e.g., "80.f").
      */
-    explicit TextInCircle(const float radius)
-        : circle_(radius, 100)  // Use 100 points for a smooth circle
-    {
-        // Circle
-        this->circle_.setOrigin({radius, radius});  // Set the origin to the center of the circle
-
-        // Text
-        this->text_.setFillColor(core::settings::colors::text);
-    }
+    explicit TextInCircle(const float radius);
 
     /**
      * @brief Draw the circle and text to the window.
      *
      * @param window Window to draw to.
      */
-    void draw(sf::RenderWindow &window) const
-    {
-        window.draw(this->circle_);
-        window.draw(this->text_);
-    }
+    void draw(sf::RenderWindow &window) const;
 
   protected:
     /**

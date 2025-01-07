@@ -87,7 +87,7 @@ add_library(${PROJECT_NAME}-lib STATIC
   src/core/windows.cpp
   src/main.cpp
   src/modules/vocabulary.cpp
-  # src/ui/components/base.cpp
+  src/ui/components/base.cpp
 )
 
 # Include headers relatively to the src directory
