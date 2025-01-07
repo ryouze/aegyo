@@ -73,211 +73,136 @@ void run()
 
     // Request focus on the window
     window.requestFocus();
-
-    // Prepare a vocabulary object to manage game entries
+    // Prepare vocabulary and interface items
     modules::vocabulary::Vocabulary vocabulary_obj;
-
-    // Define category toggles
-    // These allow enabling or disabling certain question types
-    const std::array<std::string, 4> toggle_labels = {"Vow", "Con", "DCon", "CompV"};
-    const std::array<modules::vocabulary::Category, 4> toggle_categories = {
-        modules::vocabulary::Category::BasicVowel,
-        modules::vocabulary::Category::BasicConsonant,
-        modules::vocabulary::Category::DoubleConsonant,
-        modules::vocabulary::Category::CompoundVowel};
     std::unordered_map<modules::vocabulary::Category, bool> toggle_states = {
         {modules::vocabulary::Category::BasicVowel, true},
         {modules::vocabulary::Category::BasicConsonant, true},
         {modules::vocabulary::Category::DoubleConsonant, true},
         {modules::vocabulary::Category::CompoundVowel, true}};
 
-    // Create a circle for displaying the current question
+    const std::array<std::string, 4> toggle_labels = {"Vow", "Con", "DCon", "CompV"};
+    const std::array<modules::vocabulary::Category, 4> toggle_categories = {
+        modules::vocabulary::Category::BasicVowel,
+        modules::vocabulary::Category::BasicConsonant,
+        modules::vocabulary::Category::DoubleConsonant,
+        modules::vocabulary::Category::CompoundVowel};
+
+    std::array<sf::RectangleShape, 4> toggle_buttons;
+    std::array<core::string::Text, 4> toggle_texts;
+    {
+        const float total_toggle_width = 4.f * 60.f;
+        const float start_x = static_cast<float>(window.getSize().x) - total_toggle_width - 10.f;
+        for (std::size_t i = 0; i < 4; ++i) {
+            sf::RectangleShape btn(sf::Vector2f(50.f, 35.f));
+            btn.setOutlineColor(core::settings::colors::text);
+            btn.setOutlineThickness(1.f);
+            btn.setPosition(sf::Vector2f(start_x + static_cast<float>(i) * 60.f, 10.f));
+            if (toggle_states.at(toggle_categories[i])) {
+                btn.setFillColor(core::settings::colors::enabled_toggle);
+            }
+            else {
+                btn.setFillColor(core::settings::colors::disabled_toggle);
+            }
+            toggle_buttons[i] = btn;
+
+            core::string::Text lbl;
+            lbl.setCharacterSize(14);
+            lbl.setFillColor(core::settings::colors::text);
+            lbl.setString(toggle_labels[i]);
+            const sf::FloatRect b = lbl.getLocalBounds();
+            lbl.setOrigin(sf::Vector2f(b.position.x + b.size.x / 2.f, b.position.y + b.size.y / 2.f));
+            lbl.setPosition(btn.getPosition() + sf::Vector2f(25.f, 17.5f));
+            toggle_texts[i] = lbl;
+        }
+    }
+
     ui::items::QuestionCircle question_circle;
-
     ui::items::Memo memo_text;
-
     ui::items::Percentage percentage_display;
-
-    // Create four circular buttons for answer choices
     std::array<ui::items::AnswerCircle, 4> answer_circles{
         ui::items::AnswerCircle(ui::items::AnswerCirclePosition::TOP_LEFT),
         ui::items::AnswerCircle(ui::items::AnswerCirclePosition::TOP_RIGHT),
         ui::items::AnswerCircle(ui::items::AnswerCirclePosition::BOTTOM_LEFT),
         ui::items::AnswerCircle(ui::items::AnswerCirclePosition::BOTTOM_RIGHT)};
 
-    // Create four toggle buttons for toggling categories on/off
-    std::array<sf::RectangleShape, 4> toggle_buttons;
-    std::array<core::string::Text, 4> toggle_texts;
-    const float total_toggle_width = 4.f * 60.f;
-    const float start_x = static_cast<float>(window.getSize().x) - total_toggle_width - 10.f;
-    for (std::size_t i = 0; i < 4; ++i) {
-        sf::RectangleShape rect_button(sf::Vector2f(50.f, 35.f));
-        rect_button.setOutlineColor(core::settings::colors::text);
-        rect_button.setOutlineThickness(1.f);
-        rect_button.setPosition({start_x + static_cast<float>(i) * 60.f, 10.f});
-        if (toggle_states[toggle_categories[i]]) {
-            rect_button.setFillColor(core::settings::colors::enabled_toggle);
-        }
-        else {
-            rect_button.setFillColor(core::settings::colors::disabled_toggle);
-        }
-        toggle_buttons[i] = rect_button;
+    enum class GameState { Waiting,
+                           ShowingResult,
+                           NoEntries };
+    GameState current_state = GameState::Waiting;
 
-        core::string::Text label_text;
-        label_text.setCharacterSize(14);
-        label_text.setFillColor(core::settings::colors::text);
-        label_text.setString(toggle_labels[i]);
-        const sf::FloatRect text_bounds = label_text.getLocalBounds();
-        label_text.setOrigin({text_bounds.position.x + text_bounds.size.x / 2.f,
-                              text_bounds.position.y + text_bounds.size.y / 2.f});
-        label_text.setPosition(rect_button.getPosition() + sf::Vector2f(25.f, 17.5f));
-        toggle_texts[i] = label_text;
-    }
-
-    // Define an enum for the different states of the game
-    enum class game_state_t {
-        waiting_for_answer,
-        show_result,
-        no_entries_enabled
-    };
-    game_state_t current_game_state = game_state_t::waiting_for_answer;
-
-    // Keep track of the correct entry and how often the user is correct
     modules::vocabulary::Entry correct_entry;
     std::size_t correct_index = 0;
     bool is_hangul = true;
 
-    // Update the score display whenever a question is answered
-
-    // Immediately set up the first question
-    // Placing logic inline for clarity
-    {
-        const auto maybe_entry = vocabulary_obj.get_random_enabled_entry(toggle_states);
+    // Helper to start or reset a question
+    const auto initialize_question = [&](const bool reset_score) {
+        if (reset_score) {
+            percentage_display.reset();
+        }
+        const std::optional<modules::vocabulary::Entry> maybe_entry =
+            vocabulary_obj.get_random_enabled_entry(toggle_states);
         if (!maybe_entry.has_value()) {
-            // If no categories are enabled, display an 'X' to indicate no entries
             question_circle.set_invalid();
-            for (auto &circle : answer_circles) {
-                circle.set_invalid();
+            current_state = GameState::NoEntries;
+            for (auto &c : answer_circles) {
+                c.set_invalid();
             }
-            current_game_state = game_state_t::no_entries_enabled;
             memo_text.hide();
+            return;
         }
-        else {
-            correct_entry = maybe_entry.value();
-            is_hangul = core::rng::get_random_bool();
-            const auto options = vocabulary_obj.generate_enabled_question_options(correct_entry, toggle_states);
-            for (std::size_t i = 0; i < 4; ++i) {
-                if (options[i].hangul == correct_entry.hangul) {
-                    correct_index = i;
-                    break;
-                }
+        correct_entry = maybe_entry.value();
+        is_hangul = core::rng::get_random_bool();
+        const std::vector<modules::vocabulary::Entry> opts =
+            vocabulary_obj.generate_enabled_question_options(correct_entry, toggle_states);
+        for (std::size_t i = 0; i < 4; ++i) {
+            if (opts[i].hangul == correct_entry.hangul) {
+                correct_index = i;
+                break;
             }
-            question_circle.set_question(is_hangul ? correct_entry.hangul : correct_entry.latin);
-            memo_text.hide();
-            for (std::size_t i = 0; i < 4; ++i) {
-                answer_circles[i].set_available(is_hangul ? options[i].latin : options[i].hangul);
-            }
-            current_game_state = game_state_t::waiting_for_answer;
         }
-    }
+        question_circle.set_question(is_hangul ? correct_entry.hangul : correct_entry.latin);
+        memo_text.hide();
+        for (std::size_t i = 0; i < 4; ++i) {
+            answer_circles[i].set_available(is_hangul ? opts[i].latin : opts[i].hangul);
+        }
+        current_state = GameState::Waiting;
+    };
 
-    // Start the main event loop
+    initialize_question(false);
+
+    // Main loop
     while (window.isOpen()) {
-        // Close the window if the user requests it
-        while (const std::optional event = window.pollEvent()) {
+        while (const std::optional<sf::Event> event = window.pollEvent()) {
             if (event->is<sf::Event::Closed>()) {
                 window.close();
             }
-
-            // Handle category toggles when the user releases the mouse button
-            // Ensure it's the left mouse button
-            else if (const auto *mouseUp = event->getIf<sf::Event::MouseButtonReleased>()) {
+            else if (const sf::Event::MouseButtonReleased *mouseUp =
+                         event->getIf<sf::Event::MouseButtonReleased>()) {
                 if (mouseUp->button == sf::Mouse::Button::Left) {
-                    const sf::Vector2f checkPos(
+                    const sf::Vector2f pos(
                         static_cast<float>(mouseUp->position.x),
                         static_cast<float>(mouseUp->position.y));
+                    // Handle toggles
                     for (std::size_t i = 0; i < toggle_buttons.size(); ++i) {
-                        if (toggle_buttons[i].getGlobalBounds().contains(checkPos)) {
-                            const bool old_state = toggle_states[toggle_categories[i]];
-                            toggle_states[toggle_categories[i]] = !old_state;
-                            if (toggle_states[toggle_categories[i]]) {
+                        const sf::FloatRect tb = toggle_buttons[i].getGlobalBounds();
+                        if (sf::FloatRect(tb.position, tb.size).contains(pos)) {
+                            const bool old = toggle_states.at(toggle_categories[i]);
+                            toggle_states[toggle_categories[i]] = !old;
+                            if (toggle_states.at(toggle_categories[i])) {
                                 toggle_buttons[i].setFillColor(core::settings::colors::enabled_toggle);
                             }
                             else {
                                 toggle_buttons[i].setFillColor(core::settings::colors::disabled_toggle);
                             }
-                            // Reset game state and counters whenever toggles change
-                            percentage_display.reset();
-
-                            // Re-initialize a new question inline (same code as above)
-                            const auto new_entry = vocabulary_obj.get_random_enabled_entry(toggle_states);
-                            if (!new_entry.has_value()) {
-                                question_circle.set_invalid();
-                                current_game_state = game_state_t::no_entries_enabled;
-                                for (auto &circle : answer_circles) {
-                                    circle.set_invalid();
-                                }
-                                memo_text.hide();
-                            }
-                            else {
-                                correct_entry = new_entry.value();
-                                is_hangul = core::rng::get_random_bool();
-                                const auto opts =
-                                    vocabulary_obj.generate_enabled_question_options(correct_entry, toggle_states);
-                                for (std::size_t j = 0; j < 4; ++j) {
-                                    if (opts[j].hangul == correct_entry.hangul) {
-                                        correct_index = j;
-                                        break;
-                                    }
-                                }
-                                question_circle.set_question(is_hangul ? correct_entry.hangul : correct_entry.latin);
-                                memo_text.hide();
-                                for (std::size_t j = 0; j < 4; ++j) {
-                                    answer_circles[j].set_available(is_hangul ? opts[j].latin : opts[j].hangul);
-                                }
-                                current_game_state = game_state_t::waiting_for_answer;
-                            }
+                            initialize_question(true);
                             break;
                         }
                     }
-                }
-            }
-
-            // Adjust toggle button outlines based on mouse position
-            else if (const auto *mouseMove = event->getIf<sf::Event::MouseMoved>()) {
-                for (std::size_t i = 0; i < toggle_buttons.size(); ++i) {
-                    sf::Vector2f checkPos(
-                        static_cast<float>(mouseMove->position.x),
-                        static_cast<float>(mouseMove->position.y));
-                    if (toggle_buttons[i].getGlobalBounds().contains(checkPos)) {
-                        toggle_buttons[i].setOutlineThickness(2.f);
-                    }
-                    else {
-                        toggle_buttons[i].setOutlineThickness(1.f);
-                    }
-                }
-            }
-
-            // Main game state handling
-            if (current_game_state == game_state_t::waiting_for_answer) {
-
-                // Change button color when the mouse moves over them
-                if (const auto *mouseMove = event->getIf<sf::Event::MouseMoved>()) {
-                    sf::Vector2f checkPos(
-                        static_cast<float>(mouseMove->position.x),
-                        static_cast<float>(mouseMove->position.y));
-                    for (std::size_t i = 0; i < 4; ++i) {
-                        answer_circles[i].toggle_hover(checkPos);
-                    }
-                }
-                // If the user releases the mouse, check if they clicked an answer
-                else if (const auto *mouseUp = event->getIf<sf::Event::MouseButtonReleased>()) {
-                    if (mouseUp->button == sf::Mouse::Button::Left) {
-                        sf::Vector2f checkPos(
-                            static_cast<float>(mouseUp->position.x),
-                            static_cast<float>(mouseUp->position.y));
+                    // Handle answers (Waiting state only)
+                    if (current_state == GameState::Waiting) {
                         for (std::size_t i = 0; i < 4; ++i) {
-                            if (answer_circles[i].is_hovering(checkPos)) {
+                            if (answer_circles[i].is_hovering(pos)) {
                                 if (i == correct_index) {
                                     percentage_display.add_correct_answer();
                                     answer_circles[i].set_correct_answer();
@@ -292,109 +217,101 @@ void run()
                                         answer_circles[j].set_incorrect_answer();
                                     }
                                 }
-
                                 memo_text.set(correct_entry.memo);
-                                current_game_state = game_state_t::show_result;
+                                current_state = GameState::ShowingResult;
                                 break;
                             }
                         }
                     }
+                    // Next question if result shown
+                    else if (current_state == GameState::ShowingResult) {
+                        memo_text.hide();
+                        initialize_question(false);
+                    }
                 }
-                // If the user presses a key, check if they selected a numeric shortcut
-                else if (const auto *keyPressed = event->getIf<sf::Event::KeyPressed>()) {
-                    std::optional<std::size_t> selected_idx;
+            }
+            else if (const sf::Event::MouseMoved *mouseMove = event->getIf<sf::Event::MouseMoved>()) {
+                // Toggle button hover
+                for (std::size_t i = 0; i < toggle_buttons.size(); ++i) {
+                    const sf::FloatRect tb = toggle_buttons[i].getGlobalBounds();
+                    if (sf::FloatRect(tb.position, tb.size)
+                            .contains(sf::Vector2f(static_cast<float>(mouseMove->position.x),
+                                                   static_cast<float>(mouseMove->position.y)))) {
+                        toggle_buttons[i].setOutlineThickness(2.f);
+                    }
+                    else {
+                        toggle_buttons[i].setOutlineThickness(1.f);
+                    }
+                }
+                // Answer circle hover
+                if (current_state == GameState::Waiting) {
+                    const sf::Vector2f pos(
+                        static_cast<float>(mouseMove->position.x),
+                        static_cast<float>(mouseMove->position.y));
+                    for (auto &circle : answer_circles) {
+                        circle.toggle_hover(pos);
+                    }
+                }
+            }
+            else if (const sf::Event::KeyPressed *keyPressed = event->getIf<sf::Event::KeyPressed>()) {
+                if (current_state == GameState::Waiting) {
+                    std::optional<std::size_t> sel;
                     switch (keyPressed->scancode) {
-                    case sf::Keyboard::Scan::Num1:
-                        selected_idx = 0;
+                    case sf::Keyboard::Scancode::Num1:
+                        sel = 0;
                         break;
-                    case sf::Keyboard::Scan::Num2:
-                        selected_idx = 1;
+                    case sf::Keyboard::Scancode::Num2:
+                        sel = 1;
                         break;
-                    case sf::Keyboard::Scan::Num3:
-                        selected_idx = 2;
+                    case sf::Keyboard::Scancode::Num3:
+                        sel = 2;
                         break;
-                    case sf::Keyboard::Scan::Num4:
-                        selected_idx = 3;
+                    case sf::Keyboard::Scancode::Num4:
+                        sel = 3;
                         break;
                     default:
                         break;
                     }
-                    if (selected_idx) {
-                        if (selected_idx == correct_index) {
+                    if (sel.has_value()) {
+                        if (*sel == correct_index) {
                             percentage_display.add_correct_answer();
-                            answer_circles[*selected_idx].set_correct_answer();
+                            answer_circles[*sel].set_correct_answer();
                         }
                         else {
                             percentage_display.add_incorrect_answer();
-                            answer_circles[*selected_idx].set_selected_wrong_answer();
+                            answer_circles[*sel].set_selected_wrong_answer();
                             answer_circles[correct_index].set_correct_answer();
                         }
                         for (std::size_t j = 0; j < 4; ++j) {
-                            if (j != selected_idx && j != correct_index) {
+                            if (j != *sel && j != correct_index) {
                                 answer_circles[j].set_incorrect_answer();
                             }
                         }
-
                         memo_text.set(correct_entry.memo);
-                        current_game_state = game_state_t::show_result;
+                        current_state = GameState::ShowingResult;
                     }
                 }
-            }
-            else if (current_game_state == game_state_t::show_result) {
-                // Any mouse click or key press proceeds to the next question
-                if ((event->is<sf::Event::MouseButtonReleased>()) || event->is<sf::Event::KeyPressed>()) {
+                else if (current_state == GameState::ShowingResult) {
                     memo_text.hide();
-                    // Re-initialize a new question inline
-                    const auto maybe_entry = vocabulary_obj.get_random_enabled_entry(toggle_states);
-                    if (!maybe_entry.has_value()) {
-                        question_circle.set_invalid();
-                        current_game_state = game_state_t::no_entries_enabled;
-                        for (auto &circle : answer_circles) {
-                            circle.set_invalid();
-                        }
-                        memo_text.hide();
-                    }
-                    else {
-                        correct_entry = maybe_entry.value();
-                        is_hangul = core::rng::get_random_bool();
-                        const auto opts = vocabulary_obj.generate_enabled_question_options(correct_entry, toggle_states);
-                        for (std::size_t i = 0; i < 4; ++i) {
-                            if (opts[i].hangul == correct_entry.hangul) {
-                                correct_index = i;
-                                break;
-                            }
-                        }
-                        question_circle.set_question(is_hangul ? correct_entry.hangul : correct_entry.latin);
-                        memo_text.hide();
-                        for (std::size_t i = 0; i < 4; ++i) {
-                            answer_circles[i].set_available(is_hangul ? opts[i].latin : opts[i].hangul);
-                        }
-                        current_game_state = game_state_t::waiting_for_answer;
-                    }
+                    initialize_question(false);
                 }
-            }
-            else if (current_game_state == game_state_t::no_entries_enabled) {
-                // Do nothing until categories are toggled back on
             }
         }
 
-        // Clear the render window and draw the entire interface
+        // Draw everything
         window.clear(core::settings::colors::background);
-
         question_circle.draw(window);
-        if (current_game_state == game_state_t::show_result) {
+        if (current_state == GameState::ShowingResult) {
             memo_text.draw(window);
         }
-        for (std::size_t i = 0; i < 4; ++i) {
-            answer_circles[i].draw(window);
+        for (const auto &circle : answer_circles) {
+            circle.draw(window);
         }
         percentage_display.draw(window);
         for (std::size_t i = 0; i < toggle_buttons.size(); ++i) {
             window.draw(toggle_buttons[i]);
             window.draw(toggle_texts[i]);
         }
-
-        // Display the newly drawn frame
         window.display();
     }
 }
