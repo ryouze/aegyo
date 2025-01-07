@@ -87,6 +87,7 @@ add_library(${PROJECT_NAME}-lib STATIC
   src/core/windows.cpp
   src/main.cpp
   src/modules/vocabulary.cpp
+  src/ui/circles.cpp
   src/ui/components/base.cpp
 )
 

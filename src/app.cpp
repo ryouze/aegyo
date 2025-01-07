@@ -158,8 +158,7 @@ void run()
             if (event->is<sf::Event::Closed>()) {
                 window.close();
             }
-            else if (const sf::Event::MouseButtonReleased *mouseUp =
-                         event->getIf<sf::Event::MouseButtonReleased>()) {
+            else if (const sf::Event::MouseButtonReleased *mouseUp = event->getIf<sf::Event::MouseButtonReleased>()) {
                 if (mouseUp->button == sf::Mouse::Button::Left) {
                     const sf::Vector2f pos(
                         static_cast<float>(mouseUp->position.x),
@@ -186,16 +185,16 @@ void run()
                             if (answer_circles[i].is_hovering(pos)) {
                                 if (i == correct_index) {
                                     percentage_display.add_correct_answer();
-                                    answer_circles[i].set_correct_answer();
+                                    answer_circles[i].set_correct_answer_highlight();
                                 }
                                 else {
                                     percentage_display.add_incorrect_answer();
-                                    answer_circles[i].set_selected_wrong_answer();
-                                    answer_circles[correct_index].set_correct_answer();
+                                    answer_circles[i].set_selected_wrong_answer_highlight();
+                                    answer_circles[correct_index].set_correct_answer_highlight();
                                 }
                                 for (std::size_t j = 0; j < 4; ++j) {
                                     if (j != i && j != correct_index) {
-                                        answer_circles[j].set_incorrect_answer();
+                                        answer_circles[j].set_incorrect_answer_highlight();
                                     }
                                 }
                                 memo_text.set(correct_entry.memo);
@@ -230,7 +229,7 @@ void run()
                         static_cast<float>(mouseMove->position.x),
                         static_cast<float>(mouseMove->position.y));
                     for (auto &circle : answer_circles) {
-                        circle.toggle_hover(pos);
+                        circle.toggle_hover_highlight(pos);
                     }
                 }
             }
@@ -256,16 +255,16 @@ void run()
                     if (sel.has_value()) {
                         if (*sel == correct_index) {
                             percentage_display.add_correct_answer();
-                            answer_circles[*sel].set_correct_answer();
+                            answer_circles[*sel].set_correct_answer_highlight();
                         }
                         else {
                             percentage_display.add_incorrect_answer();
-                            answer_circles[*sel].set_selected_wrong_answer();
-                            answer_circles[correct_index].set_correct_answer();
+                            answer_circles[*sel].set_selected_wrong_answer_highlight();
+                            answer_circles[correct_index].set_correct_answer_highlight();
                         }
                         for (std::size_t j = 0; j < 4; ++j) {
                             if (j != *sel && j != correct_index) {
-                                answer_circles[j].set_incorrect_answer();
+                                answer_circles[j].set_incorrect_answer_highlight();
                             }
                         }
                         memo_text.set(correct_entry.memo);
