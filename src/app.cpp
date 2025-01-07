@@ -14,6 +14,7 @@
 
 #include "app.hpp"
 #include "core/rng.hpp"
+#include "core/settings/antialiasing.hpp"
 #include "core/settings/colors.hpp"
 #include "core/settings/screen.hpp"
 #include "core/string.hpp"
@@ -26,28 +27,6 @@
 
 namespace app {
 
-namespace {
-
-/**
- * @brief Private helper function to get improved context settings for the SFML window.
- *
- * This overwrites the default context settings to improve the rendering quality by enabling anti-aliasing.
- *
- * @param antialiasing Anti-aliasing level (default: 8).
- *
- * @return Improved context settings.
- *
- * @note According to the SFML documentation, "if any of these settings is not supported by the graphics card, SFML tries to find the closest valid match. For example, if 4x anti-aliasing is too high, it tries 2x and then falls back to 0."
- */
-[[nodiscard]] sf::ContextSettings get_improved_context_settings(const unsigned int antialiasing = 8)
-{
-    sf::ContextSettings settings;
-    settings.antiAliasingLevel = antialiasing;
-    return settings;
-}
-
-}  // namespace
-
 void run()
 {
     sf::RenderWindow window(
@@ -55,7 +34,7 @@ void run()
         fmt::format("aegyo ({})", PROJECT_VERSION),
         sf::Style::Titlebar | sf::Style::Close,
         sf::State::Windowed,
-        get_improved_context_settings());
+        core::settings::antialiasing::get_improved_context_settings());
 
     // Enable V-Sync to limit the frame rate to the refresh rate of the monitor
     window.setVerticalSyncEnabled(true);

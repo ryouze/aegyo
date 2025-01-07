@@ -83,6 +83,7 @@ add_library(${PROJECT_NAME}-lib STATIC
   src/app.cpp
   src/core/assets/font.cpp
   src/core/rng.cpp
+  src/core/settings/antialiasing.cpp
   src/core/string.cpp
   src/core/windows.cpp
   src/main.cpp
