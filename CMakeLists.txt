@@ -89,6 +89,7 @@ add_library(${PROJECT_NAME}-lib STATIC
   src/modules/vocabulary.cpp
   src/ui/circles.cpp
   src/ui/components/base.cpp
+  src/ui/widgets.cpp
 )
 
 # Include headers relatively to the src directory

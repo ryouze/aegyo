@@ -28,44 +28,26 @@ class Memo {
     /**
      * @brief Construct a new Memo object.
      */
-    explicit Memo()
-    {
-        // Appearance
-        this->text_.setCharacterSize(16);
-        this->text_.setFillColor(core::settings::colors::text);
-
-        // Position
-        this->text_.setPosition({core::settings::screen::CENTER.x,
-                                 core::settings::screen::CENTER.y - 30.f});
-    }
+    explicit Memo();
 
     /**
      * @brief Hide the memo text.
      */
-    void hide()
-    {
-        this->text_.setString("");
-    }
+    void hide();
 
     /**
      * @brief Set the memo text to a string.
      *
      * @param str Text to set (e.g., "This is a memo").
      */
-    void set(const std::string &str)
-    {
-        this->text_.setString(str);
-        this->text_.resetOrigin();
-    }
+    void set(const std::string &str);
+
     /**
      * @brief Draw the text to the window.
      *
      * @param window Window to draw to.
      */
-    void draw(sf::RenderWindow &window) const
-    {
-        window.draw(this->text_);
-    }
+    void draw(sf::RenderWindow &window) const;
 
   private:
     /**
@@ -84,74 +66,37 @@ class Percentage {
     /**
      * @brief Construct a new Percentage object.
      */
-    explicit Percentage()
-        : correct_answers_(0),
-          total_answers_(0)
-    {
-        // Appearance
-        this->text_.setCharacterSize(18);
-        this->text_.setFillColor(core::settings::colors::text);
-
-        // Position
-        constexpr float top_left_offset = 10.f;  // Offset from the top-left corner
-        this->text_.setPosition({core::settings::screen::TOP_LEFT.x + top_left_offset,
-                                 core::settings::screen::TOP_LEFT.y + top_left_offset});
-        this->update_text();
-    }
+    explicit Percentage();
 
     /**
      * @brief Add a correct answer to the total and update the text.
      */
-    void add_correct_answer()
-    {
-        ++this->correct_answers_;
-        ++this->total_answers_;
-        this->update_text();
-    }
+    void add_correct_answer();
 
     /**
      * @brief Add an incorrect answer to the total and update the text.
      */
-    void add_incorrect_answer()
-    {
-        ++this->total_answers_;
-        this->update_text();
-    }
+    void add_incorrect_answer();
 
     /**
      * @brief Reset the correct/total answers to zero and update the text.
      */
-    void reset()
-    {
-        this->correct_answers_ = 0;
-        this->total_answers_ = 0;
-        this->update_text();
-    }
+    void reset();
 
     /**
      * @brief Draw the text to the window.
      *
      * @param window Window to draw to.
      */
-    void draw(sf::RenderWindow &window) const
-    {
-        window.draw(this->text_);
-    }
+    void draw(sf::RenderWindow &window) const;
 
   private:
     /**
      * @brief Update the text to show the current percentage of correct answers.
+     *
+     * If no answers have been given yet, the percentage defaults to 100%.
      */
-    void update_text()
-    {
-        float percent = 100.f;  // If no answers yet, default to 100%
-        if (this->total_answers_ > 0) {
-            percent = (static_cast<float>(this->correct_answers_) /
-                       static_cast<float>(this->total_answers_)) *
-                      100.f;
-        }
-        this->text_.setString(fmt::format("게임 점수: {:.1f}%", percent));
-    }
+    void update_text();
 
     /**
      * @brief Text object.
