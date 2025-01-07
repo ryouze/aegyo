@@ -29,6 +29,28 @@
 
 namespace app {
 
+/**
+ * @brief Enum that represents the current state of the game.
+ */
+enum class GameState {
+    /**
+     * @brief Waiting for the user to select an answer.
+     */
+    Waiting,
+
+    /**
+     * @brief Showing the result of the user's answer.
+     */
+    ShowingResult,
+
+    /**
+     * @brief No entries are available to ask questions.
+     *
+     * This typically occurs when all categories are disabled.
+     */
+    NoEntries
+};
+
 void run()
 {
     sf::RenderWindow window(
@@ -72,7 +94,7 @@ void run()
     std::array<sf::RectangleShape, 4> toggle_buttons;
     std::array<core::assets::font::Text, 4> toggle_texts;
     {
-        const float total_toggle_width = 4.f * 60.f;
+        constexpr float total_toggle_width = 4.f * 60.f;
         const float start_x = static_cast<float>(window.getSize().x) - total_toggle_width - 10.f;
         for (std::size_t i = 0; i < 4; ++i) {
             sf::RectangleShape btn(sf::Vector2f(50.f, 35.f));
@@ -107,9 +129,6 @@ void run()
         ui::circles::Answer(ui::circles::AnswerPosition::BottomLeft),
         ui::circles::Answer(ui::circles::AnswerPosition::BottomRight)};
 
-    enum class GameState { Waiting,
-                           ShowingResult,
-                           NoEntries };
     GameState current_state = GameState::Waiting;
 
     modules::vocabulary::Entry correct_entry;
