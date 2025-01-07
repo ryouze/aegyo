@@ -21,8 +21,7 @@
 #include "core/settings/screen.hpp"
 #include "modules/vocabulary.hpp"
 #include "ui/circles.hpp"
-#include "ui/memo.hpp"
-#include "ui/percentage.hpp"
+#include "ui/widgets.hpp"
 #include "version.hpp"
 #if defined(_WIN32)
 #include "core/windows.hpp"
@@ -100,8 +99,8 @@ void run()
     }
 
     ui::circles::Question question_circle;
-    ui::memo::Memo memo_text;
-    ui::percentage::Percentage percentage_display;
+    ui::widgets::Memo memo_text;
+    ui::widgets::Percentage percentage_display;
     std::array<ui::circles::Answer, 4> answer_circles{
         ui::circles::Answer(ui::circles::AnswerPosition::TopLeft),
         ui::circles::Answer(ui::circles::AnswerPosition::TopRight),
