@@ -16,7 +16,7 @@ TextInCircle::TextInCircle(const float radius)
     this->circle_.setOrigin({radius, radius});  // Set the origin to the center of the circle
 
     // Text
-    this->text_.setFillColor(core::settings::colors::text);
+    this->text_.setFillColor(core::settings::colors::text::normal);
 }
 
 void TextInCircle::draw(sf::RenderWindow &window) const

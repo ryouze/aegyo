@@ -17,7 +17,7 @@ Memo::Memo()
 {
     // Appearance
     this->text_.setCharacterSize(16);
-    this->text_.setFillColor(core::settings::colors::text);
+    this->text_.setFillColor(core::settings::colors::text::normal);
 
     // Position
     this->text_.setPosition({core::settings::screen::CENTER.x,
@@ -46,7 +46,7 @@ Percentage::Percentage()
 {
     // Appearance
     this->text_.setCharacterSize(18);
-    this->text_.setFillColor(core::settings::colors::text);
+    this->text_.setFillColor(core::settings::colors::text::normal);
 
     // Position
     constexpr float top_left_offset = 10.f;  // Offset from the top-left corner

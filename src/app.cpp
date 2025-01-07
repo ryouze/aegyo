@@ -76,20 +76,20 @@ void run()
         const float start_x = static_cast<float>(window.getSize().x) - total_toggle_width - 10.f;
         for (std::size_t i = 0; i < 4; ++i) {
             sf::RectangleShape btn(sf::Vector2f(50.f, 35.f));
-            btn.setOutlineColor(core::settings::colors::text);
+            btn.setOutlineColor(core::settings::colors::text::normal);
             btn.setOutlineThickness(1.f);
             btn.setPosition(sf::Vector2f(start_x + static_cast<float>(i) * 60.f, 10.f));
             if (toggle_states.at(toggle_categories[i])) {
-                btn.setFillColor(core::settings::colors::enabled_toggle);
+                btn.setFillColor(core::settings::colors::category::enabled);
             }
             else {
-                btn.setFillColor(core::settings::colors::disabled_toggle);
+                btn.setFillColor(core::settings::colors::category::disabled);
             }
             toggle_buttons[i] = btn;
 
             core::assets::font::Text lbl;
             lbl.setCharacterSize(14);
-            lbl.setFillColor(core::settings::colors::text);
+            lbl.setFillColor(core::settings::colors::text::normal);
             lbl.setString(toggle_labels[i]);
             const sf::FloatRect b = lbl.getLocalBounds();
             lbl.setOrigin(sf::Vector2f(b.position.x + b.size.x / 2.f, b.position.y + b.size.y / 2.f));
@@ -170,10 +170,10 @@ void run()
                             const bool old = toggle_states.at(toggle_categories[i]);
                             toggle_states[toggle_categories[i]] = !old;
                             if (toggle_states.at(toggle_categories[i])) {
-                                toggle_buttons[i].setFillColor(core::settings::colors::enabled_toggle);
+                                toggle_buttons[i].setFillColor(core::settings::colors::category::enabled);
                             }
                             else {
-                                toggle_buttons[i].setFillColor(core::settings::colors::disabled_toggle);
+                                toggle_buttons[i].setFillColor(core::settings::colors::category::disabled);
                             }
                             initialize_question(true);
                             break;
@@ -279,7 +279,7 @@ void run()
         }
 
         // Draw everything
-        window.clear(core::settings::colors::background);
+        window.clear(core::settings::colors::background::normal);
         question_circle.draw(window);
         if (current_state == GameState::ShowingResult) {
             memo_text.draw(window);
