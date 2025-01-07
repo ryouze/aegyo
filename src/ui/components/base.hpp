@@ -10,8 +10,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "core/assets/font.hpp"
 #include "core/settings/colors.hpp"
-#include "core/string.hpp"
 
 namespace ui::components::base {
 
@@ -41,7 +41,7 @@ class BareText {
     /**
      * @brief Text object.
      */
-    core::string::Text text_;
+    core::assets::font::Text text_;
 };
 
 /**
@@ -86,7 +86,7 @@ class TextInCircle {
     /**
      * @brief Text object.
      */
-    core::string::Text text_;
+    core::assets::font::Text text_;
 };
 
 }  // namespace ui::components::base
