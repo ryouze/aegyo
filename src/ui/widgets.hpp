@@ -18,8 +18,16 @@
 
 namespace ui::widgets {
 
+/**
+ * @brief Class that represents a memo hint below the question circle.
+ *
+ * On construction, the class positions itself and sets up its appearance.
+ */
 class Memo {
   public:
+    /**
+     * @brief Construct a new Memo object.
+     */
     explicit Memo()
     {
         // Appearance
@@ -31,11 +39,19 @@ class Memo {
                                  core::settings::screen::CENTER.y - 30.f});
     }
 
+    /**
+     * @brief Hide the memo text.
+     */
     void hide()
     {
         this->text_.setString("");
     }
 
+    /**
+     * @brief Set the memo text to a string.
+     *
+     * @param str Text to set (e.g., "This is a memo").
+     */
     void set(const std::string &str)
     {
         this->text_.setString(str);
@@ -52,11 +68,22 @@ class Memo {
     }
 
   private:
+    /**
+     * @brief Text object.
+     */
     core::assets::font::Text text_;
 };
 
+/**
+ * @brief Class that represents the percentage of correct answers.
+ *
+ * On construction, the class positions itself and sets up its appearance.
+ */
 class Percentage {
   public:
+    /**
+     * @brief Construct a new Percentage object.
+     */
     explicit Percentage()
         : correct_answers_(0),
           total_answers_(0)
@@ -72,6 +99,9 @@ class Percentage {
         this->update_text();
     }
 
+    /**
+     * @brief Add a correct answer to the total and update the text.
+     */
     void add_correct_answer()
     {
         ++this->correct_answers_;
@@ -79,12 +109,18 @@ class Percentage {
         this->update_text();
     }
 
+    /**
+     * @brief Add an incorrect answer to the total and update the text.
+     */
     void add_incorrect_answer()
     {
         ++this->total_answers_;
         this->update_text();
     }
 
+    /**
+     * @brief Reset the correct/total answers to zero and update the text.
+     */
     void reset()
     {
         this->correct_answers_ = 0;
@@ -103,6 +139,9 @@ class Percentage {
     }
 
   private:
+    /**
+     * @brief Update the text to show the current percentage of correct answers.
+     */
     void update_text()
     {
         float percent = 100.f;  // If no answers yet, default to 100%
@@ -114,8 +153,19 @@ class Percentage {
         this->text_.setString(fmt::format("게임 점수: {:.1f}%", percent));
     }
 
+    /**
+     * @brief Text object.
+     */
     core::assets::font::Text text_;
+
+    /**
+     * @brief Number of correct answers (e.g., "10").
+     */
     std::size_t correct_answers_;
+
+    /**
+     * @brief Total number of answers (e.g., "15").
+     */
     std::size_t total_answers_;
 };
 
