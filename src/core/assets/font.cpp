@@ -4,6 +4,7 @@
 
 #include <optional>   // for std::optional
 #include <stdexcept>  // for std::runtime_error
+#include <string>     // for std::string
 #include <utility>    // for std::move
 
 #include <SFML/Graphics.hpp>

@@ -7,6 +7,7 @@
 #include <optional>       // for std::optional
 #include <string>         // for std::string
 #include <unordered_map>  // for std::unordered_map
+#include <vector>         // for std::vector
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>

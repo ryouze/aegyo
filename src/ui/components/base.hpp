@@ -6,8 +6,6 @@
 
 #pragma once
 
-#include <string>  // for std::string
-
 #include <SFML/Graphics.hpp>
 
 #include "core/assets/font.hpp"

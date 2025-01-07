@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include <cstddef>  // for std::size_t
-#include <string>   // for std::string
+#include <exception>  // for std::runtime_error
+#include <string>     // for std::string
 
 #include <SFML/Graphics.hpp>
 
