@@ -18,7 +18,33 @@
 
 namespace ui::items {
 
-class Percentage {
+class IDrawable {
+  public:
+    virtual ~IDrawable() = default;
+    virtual void draw(sf::RenderWindow &window) const = 0;
+};
+
+class CenteredCircleShape : public sf::CircleShape {
+  public:
+    explicit CenteredCircleShape(const float radius)
+        : sf::CircleShape(radius, 100)  // Use 100 points for a smooth circle
+    {
+        this->sf::CircleShape::setOrigin(sf::Vector2f(radius, radius));
+    }
+};
+
+class TextItem : public IDrawable {
+  public:
+    virtual void draw(sf::RenderWindow &window) const override
+    {
+        window.draw(this->text_);
+    }
+
+  protected:
+    core::string::Text text_;
+};
+
+class Percentage : public TextItem {
   public:
     explicit Percentage()
         : correct_answers_(0),
@@ -28,61 +54,60 @@ class Percentage {
         this->text_.setFillColor(core::settings::colors::text);
 
         const float top_left_offset = 10.f;  // Offset from the top-left corner
-        const sf::Vector2f position = sf::Vector2f(core::settings::screen::TOP_LEFT.x + top_left_offset,
-                                                   core::settings::screen::TOP_LEFT.y + top_left_offset);
+        const sf::Vector2f position = {
+            core::settings::screen::TOP_LEFT.x + top_left_offset,
+            core::settings::screen::TOP_LEFT.y + top_left_offset};
         this->text_.setPosition(position);
-        this->update_score_display();
+
+        this->update_text_();
     }
 
     void add_correct_answer()
     {
         ++this->correct_answers_;
         ++this->total_answers_;
-        this->update_score_display();
+        this->update_text_();
     }
 
     void add_incorrect_answer()
     {
         ++this->total_answers_;
-        this->update_score_display();
+        this->update_text_();
     }
 
     void reset()
     {
         this->correct_answers_ = 0;
         this->total_answers_ = 0;
-        this->update_score_display();
-    }
-
-    void draw(sf::RenderWindow &window) const
-    {
-        window.draw(this->text_);
+        this->update_text_();
     }
 
   private:
-    core::string::Text text_;
-    std::size_t correct_answers_ = 0;
-    std::size_t total_answers_ = 0;
+    std::size_t correct_answers_;
+    std::size_t total_answers_;
 
-    void update_score_display()
+    void update_text_()
     {
-        float percentage = 100.f;  // If no answers yet, default to 100%
+        float percent = 100.f;  // If no answers yet, default to 100%
         if (this->total_answers_ > 0) {
-            percentage = (static_cast<float>(this->correct_answers_) / static_cast<float>(this->total_answers_)) * 100.f;
+            percent = (static_cast<float>(this->correct_answers_) /
+                       static_cast<float>(this->total_answers_)) *
+                      100.f;
         }
-
-        this->text_.setString(fmt::format("게임 점수: {:.1f}%", percentage));
+        this->text_.setString(fmt::format("게임 점수: {:.1f}%", percent));
     }
 };
 
-class Memo {
+class Memo : public TextItem {
   public:
     explicit Memo()
     {
         this->text_.setCharacterSize(16);
         this->text_.setFillColor(core::settings::colors::text);
-        const sf::Vector2f position = sf::Vector2f(core::settings::screen::CENTER.x + 0.f,
-                                                   core::settings::screen::CENTER.y - 30.f);
+
+        const sf::Vector2f position = {
+            core::settings::screen::CENTER.x,
+            core::settings::screen::CENTER.y - 30.f};
         this->text_.setPosition(position);
     }
 
@@ -91,72 +116,61 @@ class Memo {
         this->text_.setString("");
     }
 
-    void set(const std::string &memo)
+    void set(const std::string &str)
     {
-        this->text_.setString(memo);
+        this->text_.setString(str);
         this->text_.resetOrigin();
-    }
-
-    void draw(sf::RenderWindow &window) const
-    {
-        window.draw(this->text_);
-    }
-
-  private:
-    core::string::Text text_;
-};
-
-class ICircle : public sf::CircleShape {
-  public:
-    explicit ICircle(const float radius)
-        : sf::CircleShape(radius, 100)  // Use 100 points for a smooth circle
-    {
-        // Set origin to the center of the circle instead of the default top-left corner
-        sf::CircleShape::setOrigin({radius, radius});
     }
 };
 
-class QuestionCircle {
+class CircleItem : public IDrawable {
   public:
-    explicit QuestionCircle()
-        : circle_(80.f)
-    {
-        // Setup circle
-        this->circle_.setFillColor(core::settings::colors::question_circle);
-        const sf::Vector2f position = core::settings::screen::CENTER + sf::Vector2f(0.f, -150.f);
-        this->circle_.setPosition(position);
-
-        // Setup text
-        this->text_.setCharacterSize(48);
-        this->text_.setFillColor(core::settings::colors::text);
-        this->text_.setPosition(position);
-    }
-
-    void set_invalid()
-    {
-        this->text_.setString("X");
-        this->text_.setCharacterSize(72);
-        this->text_.resetOrigin();
-        ;
-    }
-
-    void set_question(const std::string &latin_or_hangul)
-    {
-        this->text_.setCharacterSize(48);
-        this->text_.setString(latin_or_hangul);
-        this->text_.resetOrigin();
-        ;
-    }
-
-    void draw(sf::RenderWindow &window) const
+    virtual void draw(sf::RenderWindow &window) const override
     {
         window.draw(this->circle_);
         window.draw(this->text_);
     }
 
-  private:
-    ICircle circle_;
+  protected:
+    CircleItem(const float radius,
+               const sf::Color &fill_color)
+        : circle_(radius)
+    {
+        this->circle_.setFillColor(fill_color);
+        this->text_.setFillColor(core::settings::colors::text);
+    }
+
+    CenteredCircleShape circle_;
     core::string::Text text_;
+};
+
+class QuestionCircle : public CircleItem {
+  public:
+    QuestionCircle()
+        : CircleItem(80.f, core::settings::colors::question_circle)
+    {
+        const sf::Vector2f position = {
+            core::settings::screen::CENTER.x,
+            core::settings::screen::CENTER.y - 150.f};
+        this->circle_.setPosition(position);
+
+        this->text_.setCharacterSize(48);
+        this->text_.setPosition(position);
+    }
+
+    void set_invalid()
+    {
+        this->text_.setCharacterSize(72);
+        this->text_.setString("X");
+        this->text_.resetOrigin();
+    }
+
+    void set_question(const std::string &str)
+    {
+        this->text_.setCharacterSize(48);
+        this->text_.setString(str);
+        this->text_.resetOrigin();
+    }
 };
 
 enum class AnswerCirclePosition {
@@ -166,15 +180,13 @@ enum class AnswerCirclePosition {
     BOTTOM_RIGHT
 };
 
-class AnswerCircle {
+class AnswerCircle : public CircleItem {
   public:
-    explicit AnswerCircle(const AnswerCirclePosition coordinate)
-        : circle_(60.f)
+    explicit AnswerCircle(const AnswerCirclePosition pos)
+        : CircleItem(60.f, core::settings::colors::default_button)
     {
-        // Setup circle
-        this->circle_.setFillColor(core::settings::colors::default_button);
         sf::Vector2f position;
-        switch (coordinate) {
+        switch (pos) {
         case AnswerCirclePosition::TOP_LEFT:
             position = core::settings::screen::CENTER + sf::Vector2f(-150.f, 50.f);
             break;
@@ -190,10 +202,7 @@ class AnswerCircle {
         }
 
         this->circle_.setPosition(position);
-
-        // Setup text
         this->text_.setCharacterSize(28);
-        this->text_.setFillColor(core::settings::colors::text);
         this->text_.setPosition(position);
     }
 
@@ -210,7 +219,6 @@ class AnswerCircle {
 
         // TODO: Find out why we have to do this every time we set a new string instead of doing it once in the constructor
         this->text_.resetOrigin();
-        ;
     }
 
     bool is_hovering(const sf::Vector2f mouse_pos) const
@@ -242,16 +250,6 @@ class AnswerCircle {
     {
         this->circle_.setFillColor(core::settings::colors::selected_wrong_answer);
     }
-
-    void draw(sf::RenderWindow &window) const
-    {
-        window.draw(this->circle_);
-        window.draw(this->text_);
-    }
-
-  private:
-    ICircle circle_;
-    core::string::Text text_;
 };
 
 }  // namespace ui::items
