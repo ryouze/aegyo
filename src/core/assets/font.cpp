@@ -6,7 +6,7 @@
 #include <stdexcept>  // for std::runtime_error
 #include <utility>    // for std::move
 
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Font.hpp>
 
 #include "font.hpp"
 #include "raw/NanumGothic.hpp"

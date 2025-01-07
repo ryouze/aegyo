@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Font.hpp>
 
 namespace core::assets::font {
 
