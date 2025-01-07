@@ -164,7 +164,7 @@ void run()
         }
         else {
             correct_entry = maybe_entry.value();
-            is_hangul = core::rng::RNG::get_random_bool();
+            is_hangul = core::rng::get_random_bool();
             const auto options = vocabulary_obj.generate_enabled_question_options(correct_entry, toggle_states);
             for (std::size_t i = 0; i < 4; ++i) {
                 if (options[i].hangul == correct_entry.hangul) {
@@ -221,7 +221,7 @@ void run()
                             }
                             else {
                                 correct_entry = new_entry.value();
-                                is_hangul = core::rng::RNG::get_random_bool();
+                                is_hangul = core::rng::get_random_bool();
                                 const auto opts =
                                     vocabulary_obj.generate_enabled_question_options(correct_entry, toggle_states);
                                 for (std::size_t j = 0; j < 4; ++j) {
@@ -356,7 +356,7 @@ void run()
                     }
                     else {
                         correct_entry = maybe_entry.value();
-                        is_hangul = core::rng::RNG::get_random_bool();
+                        is_hangul = core::rng::get_random_bool();
                         const auto opts = vocabulary_obj.generate_enabled_question_options(correct_entry, toggle_states);
                         for (std::size_t i = 0; i < 4; ++i) {
                             if (opts[i].hangul == correct_entry.hangul) {

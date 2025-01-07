@@ -10,29 +10,30 @@
 
 namespace core::rng {
 
-std::mt19937 &RNG::instance()
+std::mt19937 &instance()
 {
-    static std::mt19937 rng{std::random_device{}()};
-    return rng;
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    return gen;
+}
+
+bool get_random_bool(const double probability)
+{
+    std::bernoulli_distribution dist(probability);
+    return dist(instance());
 }
 
 template <typename T>
-T RNG::get_random_number(const T min,
-                         const T max)
+T get_random_number(const T min,
+                    const T max)
 {
     static_assert(std::is_integral_v<T>, "get_random_number requires an integral or unsigned type.");
     std::uniform_int_distribution<T> dist(min, max);
-    return dist(RNG::instance());
+    return dist(instance());
 }
 
-bool RNG::get_random_bool(const double probability)
-{
-    std::bernoulli_distribution dist(probability);
-    return dist(RNG::instance());
-}
-
-// Explicit template instantiations
-template int RNG::get_random_number<int>(int, int);
-template std::size_t RNG::get_random_number<std::size_t>(std::size_t, std::size_t);
+// Explicit template instantiation
+// template int get_random_number<int>(const int min, const int max);
+template std::size_t get_random_number<std::size_t>(const std::size_t min, const std::size_t max);
 
 }  // namespace core::rng

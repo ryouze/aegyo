@@ -158,13 +158,13 @@ int test_rng::instance()
         std::vector<std::string> cars = {"Nissan Skyline GT-R R32", "Toyota Supra Mk4", "Mazda RX-7 FD", "Honda NSX"};
 
         // Shuffle the cars using the random number generator
-        std::mt19937 &rng = core::rng::RNG::instance();
+        std::mt19937 &rng = core::rng::instance();
         std::shuffle(cars.begin(), cars.end(), rng);
-        fmt::print("core::rng::RNG::instance() passed.\n");
+        fmt::print("core::rng::instance() passed.\n");
         return EXIT_SUCCESS;
     }
     catch (const std::exception &e) {
-        fmt::print(stderr, "core::rng::RNG::instance() failed: {}\n", e.what());
+        fmt::print(stderr, "core::rng::instance() failed: {}\n", e.what());
         return EXIT_FAILURE;
     }
 }
@@ -173,17 +173,17 @@ int test_rng::get_random_number()
 {
     try {
         // Generate random numbers
-        constexpr int min = 0;
-        constexpr int max = 10;
-        const int random_number = core::rng::RNG::get_random_number<int>(min, max);
+        constexpr std::size_t min = 0;
+        constexpr std::size_t max = 10;
+        const std::size_t random_number = core::rng::get_random_number<std::size_t>(min, max);
         if (random_number < min || random_number > max) {
             throw std::runtime_error(fmt::format("The actual random number '{}' is not in the range [{}, {}]", random_number, min, max));
         }
-        fmt::print("core::rng::RNG::get_random_number() passed.\n");
+        fmt::print("core::rng::get_random_number() passed.\n");
         return EXIT_SUCCESS;
     }
     catch (const std::exception &e) {
-        fmt::print(stderr, "core::rng::RNG::get_random_number() failed: {}\n", e.what());
+        fmt::print(stderr, "core::rng::get_random_number() failed: {}\n", e.what());
         return EXIT_FAILURE;
     }
 }
@@ -193,13 +193,13 @@ int test_rng::get_random_bool()
     try {
         // Generate random boolean values
         constexpr double probability = 0.5;
-        const bool random_bool = core::rng::RNG::get_random_bool(probability);
+        const bool random_bool = core::rng::get_random_bool(probability);
         static_cast<void>(random_bool);  // Ignore [[nodiscard]] attribute
-        fmt::print("core::rng::RNG::get_random_bool() passed.\n");
+        fmt::print("core::rng::get_random_bool() passed.\n");
         return EXIT_SUCCESS;
     }
     catch (const std::exception &e) {
-        fmt::print(stderr, "core::rng::RNG::get_random_bool() failed: {}\n", e.what());
+        fmt::print(stderr, "core::rng::get_random_bool() failed: {}\n", e.what());
         return EXIT_FAILURE;
     }
 }
