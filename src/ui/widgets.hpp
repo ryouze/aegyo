@@ -13,8 +13,6 @@
 #include <fmt/core.h>
 
 #include "core/assets/font.hpp"
-#include "core/settings/colors.hpp"
-#include "core/settings/screen.hpp"
 
 namespace ui::widgets {
 

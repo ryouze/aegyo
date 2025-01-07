@@ -2,9 +2,13 @@
  * @file widets.cpp
  */
 
+#include <string>  // for std::string
+
 #include <SFML/Graphics.hpp>
 
+#include "core/assets/font.hpp"
 #include "core/settings/colors.hpp"
+#include "core/settings/screen.hpp"
 #include "widgets.hpp"
 
 namespace ui::widgets {

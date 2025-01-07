@@ -2,10 +2,14 @@
  * @file circles.cpp
  */
 
+#include <exception>  // for std::runtime_error
+#include <string>     // for std::string
+
 #include <SFML/Graphics.hpp>
 
 #include "circles.hpp"
 #include "core/settings/colors.hpp"
+#include "core/settings/screen.hpp"
 
 namespace ui::circles {
 
