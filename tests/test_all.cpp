@@ -17,7 +17,6 @@
 
 #include "core/assets/font.hpp"
 #include "core/rng.hpp"
-#include "core/string.hpp"
 #include "modules/vocabulary.hpp"
 #if defined(_WIN32)
 #define WIN32_LEAN_AND_MEAN  // Exclude rarely-used stuff from Windows headers
@@ -130,7 +129,8 @@ int main(int argc,
 int test_assets::load_font()
 {
     try {
-        const sf::Font &font = core::assets::font::get_embedded_font();
+        const core::assets::font::Text text;
+        const sf::Font &font = text.getFont();
         // Get font properties
         const std::string family = font.getInfo().family;
         const std::string expected_family = "NanumGothic";
@@ -207,7 +207,7 @@ int test_rng::get_random_bool()
 int test_string::text()
 {
     try {
-        core::string::Text text;
+        core::assets::font::Text text;
 
         // Convert a UTF-8 string to an SFML string
         const std::string utf8_str = "Dzień dobry";
