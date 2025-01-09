@@ -1,6 +1,6 @@
 function(apply_compile_flags target)
   if(NOT TARGET ${target})
-    message(FATAL_ERROR "[ERROR] Target '${target}' does not exist. Cannot apply compile flags.")
+    message(FATAL_ERROR "Target '${target}' does not exist. Cannot apply compile flags.")
   endif()
 
   # The scope is set to PUBLIC to propagate the flags to all targets that link to this target
@@ -33,5 +33,5 @@ function(apply_compile_flags target)
       /utf-8  # Use UTF-8 encoding for source and execution
     )
   endif()
-  message(STATUS "[INFO] Compile flags applied to target '${target}'.")
+  message(STATUS "Compile flags applied to target '${target}'.")
 endfunction()

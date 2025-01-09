@@ -16,9 +16,9 @@ include(CheckIPOSupported)
 check_ipo_supported(RESULT lto_supported OUTPUT lto_error)
 if(lto_supported)
   set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELEASE ON)
-  message(STATUS "[INFO] Link Time Optimization (LTO) enabled for Release builds.")
+  message(STATUS "Link Time Optimization (LTO) enabled for Release builds.")
 else()
-  message(WARNING "[WARNING] Link Time Optimization (LTO) not supported: ${lto_error}")
+  message(WARNING "Link Time Optimization (LTO) not supported: ${lto_error}")
 endif()
 
 # Project options
@@ -27,12 +27,12 @@ option(ENABLE_COMPILE_FLAGS "Enable compile flags" ON)
 
 # Enforce out-of-source builds
 if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
-  message(FATAL_ERROR "[ERROR] In-source builds are not allowed. Use a separate build directory.")
+  message(FATAL_ERROR "In-source builds are not allowed. Use a separate build directory.")
 endif()
 
 # Set default build type to Release
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
-  message(STATUS "[INFO] Defaulting to 'Release' build type.")
+  message(STATUS "Defaulting to 'Release' build type.")
   set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the build type." FORCE)
   set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 endif()
@@ -47,10 +47,10 @@ include(External)
 # Optionally enable global ccache
 find_program(CCACHE ccache)
 if(CCACHE)
-  message(STATUS "[INFO] Ccache enabled for faster builds.")
+  message(STATUS "Ccache enabled for faster builds.")
   set(CMAKE_CXX_COMPILER_LAUNCHER ${CCACHE})
 else()
-  message(WARNING "[WARNING] Ccache not found. Consider installing it to speed up rebuilds.")
+  message(WARNING "Ccache not found. Consider installing it to speed up rebuilds.")
 endif()
 
 # Get the project version using Git tags if available, else default to "unknown"
@@ -65,12 +65,12 @@ if(EXISTS "${CMAKE_SOURCE_DIR}/.git")
   )
   if(GIT_TAG)
     set(PROJECT_VERSION ${GIT_TAG})
-    message(STATUS "[INFO] Project version set to ${PROJECT_VERSION} from Git.")
+    message(STATUS "Project version set to ${PROJECT_VERSION} from Git.")
   else()
-    message(WARNING "[WARNING] Failed to retrieve Git tag. Using fallback version: ${PROJECT_VERSION}.")
+    message(WARNING "Failed to retrieve Git tag. Using fallback version: ${PROJECT_VERSION}.")
   endif()
 else()
-  message(WARNING "[WARNING] Git repository not found. Using fallback version: ${PROJECT_VERSION}.")
+  message(WARNING "Git repository not found. Using fallback version: ${PROJECT_VERSION}.")
 endif()
 
 # Generate the version header using the inferred Git tag version
@@ -181,8 +181,8 @@ if(BUILD_TESTS)
   register_test("test_vocabulary::entry")
   register_test("test_vocabulary::category_count")
 
-  message(STATUS "[INFO] Tests enabled.")
+  message(STATUS "Tests enabled.")
 endif()
 
 # Print the build type
-message(STATUS "[INFO] Build type: ${CMAKE_BUILD_TYPE}.")
+message(STATUS "Build type: ${CMAKE_BUILD_TYPE}.")
