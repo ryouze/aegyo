@@ -90,7 +90,8 @@ Follow these steps to build the project:
 
 After successful compilation, you can run the program using `./aegyo` (`open aegyo.app` on macOS). However, it is highly recommended to install the program, so that it can be run from any directory. Refer to the [Install](#install) section below.
 
-**Note:** The mode is set to `Release` by default. To build in `Debug` mode, use `cmake .. -DCMAKE_BUILD_TYPE=Debug`.
+> [!TIP]
+> The mode is set to `Release` by default. To build in `Debug` mode, use `cmake .. -DCMAKE_BUILD_TYPE=Debug`.
 
 
 ## Install
@@ -124,7 +125,8 @@ The buttons in the top right corner toggle the vocabulary category:
 
 All categories are enabled by default. You can disable a category by clicking on the corresponding button.
 
-If you're a beginner, start with the `Vow` categories and gradually enable the other categories as you continue to learn.
+> [!TIP]
+> If you're a beginner, start with the `Vow` categories and gradually enable the other categories as you continue to learn.
 
 
 ## Testing
