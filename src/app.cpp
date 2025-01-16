@@ -56,9 +56,9 @@ void run()
     sf::RenderWindow window(
         sf::VideoMode({core::settings::screen::WIDTH, core::settings::screen::HEIGHT}),
         fmt::format("aegyo ({})", PROJECT_VERSION),
-        sf::Style::Titlebar | sf::Style::Close,
+        sf::Style::Titlebar | sf::Style::Close,  // No resize, no fullscreen (too much work to handle, especially on macOS)
         sf::State::Windowed,
-        core::settings::antialiasing::get_improved_context_settings());
+        core::settings::antialiasing::get_improved_context_settings());  // Enable anti-aliasing
 
     // Enable V-Sync to limit the frame rate to the refresh rate of the monitor
     window.setVerticalSyncEnabled(true);
