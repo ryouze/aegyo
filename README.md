@@ -14,6 +14,15 @@ aegyo is a cross-platform GUI app for learning Korean Hangul.
 When I was learning Japanese kana, I liked the idea of drilling the characters into my memory through pure brute-force repetition. I found an iOS app called [Kana School](https://apps.apple.com/us/app/kana-school-japanese-letters/id1214626499) that did exactly that. Unfortunately, no similar app existed for Korean Hangul, so I decided to create one myself.
 
 
+### To-Do
+
+- [x] Upgrade to SFML v3.0.
+  - [ ] Wait for v3.x release.
+- [ ] Move the categories' code from `app.cpp` to the `ui` directory.
+- [ ] Research why normal exit on macOS causes `libc++abi: terminating due to uncaught exception of type std::__1::system_error: mutex lock failed: Invalid argument`.
+  - [ ] Possibly open an issue on SFML's GitHub.
+
+
 ## Features
 
 - Written in modern C++ (C++17).
