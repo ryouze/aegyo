@@ -31,6 +31,9 @@ When I was learning Japanese kana, I liked the idea of drilling the characters i
     - ~~[ ] Possibly open an issue on SFML's GitHub.~~
     - [ ] Refactor font loading code to make it less ugly.
 - [ ] Move the ugly categories' code from `app.cpp` to the `ui` directory.
+- [ ] Create a hint button in the middle of the answer buttons that displays hint on click or on space press.
+- [ ] Find out how to properly package macOS binaries instead of copying icons and resources via `add_custom_command`.
+- [ ] Add version information to Windows binary.
 
 
 ## Tested Systems
