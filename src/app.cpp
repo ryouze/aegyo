@@ -76,6 +76,7 @@ void run()
 
     // Request focus on the window
     window.requestFocus();
+
     // Prepare vocabulary and interface items
     modules::vocabulary::Vocabulary vocabulary_obj;
     std::unordered_map<modules::vocabulary::Category, bool> toggle_states = {
@@ -173,7 +174,7 @@ void run()
 
     // Main loop
     while (window.isOpen()) {
-        while (const std::optional<sf::Event> event = window.pollEvent()) {
+        while (const std::optional event = window.pollEvent()) {
             if (event->is<sf::Event::Closed>()) {
                 window.close();
             }
