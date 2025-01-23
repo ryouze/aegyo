@@ -27,8 +27,9 @@ When I was learning Japanese kana, I liked the idea of drilling the characters i
 
 - [x] Upgrade to SFML v3.0.
   - [ ] Wait for v3.0.x release for potential bug fixes.
-  - [ ] Research why normal exit on macOS causes `libc++abi: terminating due to uncaught exception of type std::__1::system_error: mutex lock failed: Invalid argument`.
-    - [ ] Possibly open an issue on SFML's GitHub.
+  - [x] Research why normal exit on macOS causes `libc++abi: terminating due to uncaught exception of type std::__1::system_error: mutex lock failed: Invalid argument`.
+    - ~~[ ] Possibly open an issue on SFML's GitHub.~~
+    - [ ] Refactor font loading code to make it less ugly.
 - [ ] Move the ugly categories' code from `app.cpp` to the `ui` directory.
 
 
