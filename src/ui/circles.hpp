@@ -23,8 +23,10 @@ class Question : public ui::components::base::TextInCircle {
   public:
     /**
      * @brief Construct a new Question object.
+     *
+     * @param font Font to use for the question circle.
      */
-    explicit Question();
+    explicit Question(const sf::Font &font);
 
     /**
      * @brief Set the question circle to an invalid state.
@@ -78,11 +80,13 @@ class Answer : public ui::components::base::TextInCircle {
     /**
      * @brief Construct a new Answer object.
      *
+     * @param font Font to use for the answer circle.
      * @param pos Position of the answer circle (e.g., AnswerPosition::TopLeft).
      *
      * Each answer should be positioned in one of the four corners of the screen, with no repetition. The order doesn't matter.
      */
-    explicit Answer(const AnswerPosition pos);
+    explicit Answer(const sf::Font &font,
+                    const AnswerPosition pos);
 
     /**
      * @brief Set the answer circle to an invalid state.

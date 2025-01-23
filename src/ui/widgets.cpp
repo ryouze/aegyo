@@ -6,14 +6,15 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "core/assets/font.hpp"
+#include "components/base.hpp"
 #include "core/settings/colors.hpp"
 #include "core/settings/screen.hpp"
 #include "widgets.hpp"
 
 namespace ui::widgets {
 
-Memo::Memo()
+Memo::Memo(const sf::Font &font)
+    : text_(font)
 {
     // Appearance
     this->text_.setCharacterSize(16);
@@ -40,8 +41,9 @@ void Memo::draw(sf::RenderWindow &window) const
     window.draw(this->text_);
 }
 
-Percentage::Percentage()
-    : correct_answers_(0),
+Percentage::Percentage(const sf::Font &font)
+    : text_(font),
+      correct_answers_(0),
       total_answers_(0)
 {
     // Appearance

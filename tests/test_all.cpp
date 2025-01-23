@@ -15,9 +15,10 @@
 #include <SFML/Graphics.hpp>
 #include <fmt/core.h>
 
-#include "core/assets/font.hpp"
+#include "core/assets/raw/NanumGothic.hpp"
 #include "core/rng.hpp"
 #include "modules/vocabulary.hpp"
+#include "ui/components/base.hpp"
 #if defined(_WIN32)
 #define WIN32_LEAN_AND_MEAN  // Exclude rarely-used stuff from Windows headers
 #include <windows.h>         // for SetConsoleCP, SetConsoleOutputCP, CP_UTF8
@@ -129,8 +130,11 @@ int main(int argc,
 int test_assets::load_font()
 {
     try {
-        const core::assets::font::Text text;
-        const sf::Font &font = text.getFont();
+        sf::Font font;
+        if (!font.openFromMemory(NanumGothic::data, NanumGothic::size)) {
+            throw std::runtime_error("Failed to load embedded font data");
+        }
+        const ui::components::base::Text text(font);
         // Get font properties
         const std::string family = font.getInfo().family;
         const std::string expected_family = "NanumGothic";
@@ -207,7 +211,11 @@ int test_rng::get_random_bool()
 int test_string::text()
 {
     try {
-        core::assets::font::Text text;
+        sf::Font font;
+        if (!font.openFromMemory(NanumGothic::data, NanumGothic::size)) {
+            throw std::runtime_error("Failed to load embedded font data");
+        }
+        ui::components::base::Text text(font);
 
         // Convert a UTF-8 string to an SFML string
         const std::string utf8_str = "Dzień dobry";

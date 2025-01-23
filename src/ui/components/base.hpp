@@ -6,11 +6,49 @@
 
 #pragma once
 
+#include <string>  // for std::string
+
 #include <SFML/Graphics.hpp>
 
-#include "core/assets/font.hpp"
-
 namespace ui::components::base {
+
+/**
+ * @brief Class that provides a generic text object with sane defaults and UTF-8 support.
+ */
+class Text : public sf::Text {
+  public:
+    /**
+     * @brief Construct a new Text object.
+     *
+     * @param font Font to use for the text object.
+     */
+    Text(const sf::Font &font);
+
+    /**
+     * @brief Set the string's text.
+     *
+     * To ensure unicode support, the string is converted to an SFML string before setting.
+     *
+     * @param utf8_str String to set (e.g., "こんにちは").
+     */
+    void setString(const std::string &utf8_str);
+
+    /**
+     * @brief Set the position of the text object using integer coordinates.
+     *
+     * The provided coordinate is cast to an integer before setting the position.
+     *
+     * @param position X and Y coordinates (e.g., {10.0, 123.4}).
+     */
+    void setPosition(const sf::Vector2f &position);
+
+    /**
+     * @brief Reset the origin of the text object.
+     *
+     * The origin is set to the center of the object.
+     */
+    void resetOrigin();
+};
 
 /**
  * @brief Class that represents a circle item with a text label inside it.
@@ -22,9 +60,11 @@ class TextInCircle {
     /**
      * @brief Construct a new TextInCircle object.
      *
+     * @param font Font to use for the text object.
      * @param radius Radius of the circle (e.g., "80.f").
      */
-    explicit TextInCircle(const float radius);
+    explicit TextInCircle(const sf::Font &font,
+                          const float radius);
 
     /**
      * @brief Draw the circle and text to the window.
@@ -42,7 +82,7 @@ class TextInCircle {
     /**
      * @brief Text object.
      */
-    core::assets::font::Text text_;
+    Text text_;
 };
 
 }  // namespace ui::components::base

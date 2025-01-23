@@ -12,7 +12,7 @@
 #include <SFML/Graphics.hpp>
 #include <fmt/core.h>
 
-#include "core/assets/font.hpp"
+#include "components/base.hpp"
 
 namespace ui::widgets {
 
@@ -25,8 +25,10 @@ class Memo {
   public:
     /**
      * @brief Construct a new Memo object.
+     *
+     * @param font Font to use for the memo text.
      */
-    explicit Memo();
+    explicit Memo(const sf::Font &font);
 
     /**
      * @brief Hide the memo text.
@@ -51,7 +53,7 @@ class Memo {
     /**
      * @brief Text object.
      */
-    core::assets::font::Text text_;
+    ui::components::base::Text text_;
 };
 
 /**
@@ -63,8 +65,10 @@ class Percentage {
   public:
     /**
      * @brief Construct a new Percentage object.
+     *
+     * @param font Font to use for the percentage text.
      */
-    explicit Percentage();
+    explicit Percentage(const sf::Font &font);
 
     /**
      * @brief Add a correct answer to the total and update the text.
@@ -99,7 +103,7 @@ class Percentage {
     /**
      * @brief Text object.
      */
-    core::assets::font::Text text_;
+    ui::components::base::Text text_;
 
     /**
      * @brief Number of correct answers (e.g., "10").

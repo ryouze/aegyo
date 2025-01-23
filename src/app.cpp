@@ -14,7 +14,7 @@
 #include <fmt/core.h>
 
 #include "app.hpp"
-#include "core/assets/font.hpp"
+#include "core/assets/raw/NanumGothic.hpp"
 #include "core/rng.hpp"
 #include "core/settings/antialiasing.hpp"
 #include "core/settings/colors.hpp"
@@ -77,6 +77,12 @@ void run()
     // Request focus on the window
     window.requestFocus();
 
+    // Load embedded NanumGothic font
+    sf::Font font;
+    if (!font.openFromMemory(NanumGothic::data, NanumGothic::size)) {
+        throw std::runtime_error("Failed to load embedded font data");
+    }
+
     // Prepare vocabulary and interface items
     modules::vocabulary::Vocabulary vocabulary_obj;
     std::unordered_map<modules::vocabulary::Category, bool> toggle_states = {
@@ -93,7 +99,11 @@ void run()
         modules::vocabulary::Category::CompoundVowel};
 
     std::array<sf::RectangleShape, 4> toggle_buttons;
-    std::array<core::assets::font::Text, 4> toggle_texts;
+    std::array<ui::components::base::Text, 4> toggle_texts = {
+        ui::components::base::Text(font),
+        ui::components::base::Text(font),
+        ui::components::base::Text(font),
+        ui::components::base::Text(font)};
     {
         constexpr float total_toggle_width = 4.f * 60.f;
         const float start_x = static_cast<float>(window.getSize().x) - total_toggle_width - 10.f;
@@ -110,7 +120,7 @@ void run()
             }
             toggle_buttons[i] = btn;
 
-            core::assets::font::Text lbl;
+            ui::components::base::Text lbl(font);
             lbl.setCharacterSize(14);
             lbl.setFillColor(core::settings::colors::text::normal);
             lbl.setString(toggle_labels[i]);
@@ -121,14 +131,14 @@ void run()
         }
     }
 
-    ui::circles::Question question_circle;
-    ui::widgets::Memo memo_text;
-    ui::widgets::Percentage percentage_display;
+    ui::circles::Question question_circle(font);
+    ui::widgets::Memo memo_text(font);
+    ui::widgets::Percentage percentage_display(font);
     std::array<ui::circles::Answer, 4> answer_circles{
-        ui::circles::Answer(ui::circles::AnswerPosition::TopLeft),
-        ui::circles::Answer(ui::circles::AnswerPosition::TopRight),
-        ui::circles::Answer(ui::circles::AnswerPosition::BottomLeft),
-        ui::circles::Answer(ui::circles::AnswerPosition::BottomRight)};
+        ui::circles::Answer(font, ui::circles::AnswerPosition::TopLeft),
+        ui::circles::Answer(font, ui::circles::AnswerPosition::TopRight),
+        ui::circles::Answer(font, ui::circles::AnswerPosition::BottomLeft),
+        ui::circles::Answer(font, ui::circles::AnswerPosition::BottomRight)};
 
     GameState current_state = GameState::Waiting;
 
