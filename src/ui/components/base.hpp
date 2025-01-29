@@ -13,16 +13,11 @@
 namespace ui::components::base {
 
 /**
- * @brief Class that provides a generic text object with sane defaults and UTF-8 support.
+ * @brief Class that provides a generic text object with UTF-8 support, integer positioning, and origin resetting.
  */
 class Text : public sf::Text {
   public:
-    /**
-     * @brief Construct a new Text object.
-     *
-     * @param font Font to use for the text object.
-     */
-    Text(const sf::Font &font);
+    using sf::Text::Text;  // Inherit all constructors from sf::Text
 
     /**
      * @brief Set the string's text.

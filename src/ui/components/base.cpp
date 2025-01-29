@@ -27,9 +27,6 @@ namespace {
 
 }  // namespace
 
-Text::Text(const sf::Font &font)
-    : sf::Text(font, "", 30) {}
-
 void Text::setString(const std::string &utf8_str)
 {
     sf::Text::setString(to_sfml_string(utf8_str));
