@@ -75,7 +75,9 @@ Follow these steps to build the project:
 
 1. **Clone the repository**:
 
-    ```sh
+    ```
+
+```sh
     git clone https://github.com/ryouze/aegyo.git
     ```
 

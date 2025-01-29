@@ -24,6 +24,7 @@ endif()
 # Project options
 option(BUILD_TESTS "Build tests" OFF)
 option(ENABLE_COMPILE_FLAGS "Enable compile flags" ON)
+option(ENABLE_STRIP "Enable symbol stripping for Release builds" ON)
 
 # Enforce out-of-source builds
 if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
@@ -105,6 +106,36 @@ fetch_and_link_external_dependencies(${PROJECT_NAME}-lib)
 # Add the main executable and link the library
 add_executable(${PROJECT_NAME} src/main.cpp)
 target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}-lib)
+
+# Strip symbols for Release builds
+if(CMAKE_BUILD_TYPE STREQUAL "Release" AND ENABLE_STRIP)
+  if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    # macOS
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+      COMMAND strip -x $<TARGET_FILE:${PROJECT_NAME}>
+      COMMENT "Stripping local symbols for Release builds on macOS."
+    )
+    message(STATUS "Stripping local symbols for Release builds on macOS.")
+  elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    # GNU/Linux
+    target_link_options(${PROJECT_NAME} PRIVATE $<$<CONFIG:Release>:-s>)
+    message(STATUS "Stripping symbols for Release builds on GNU/Linux.")
+  elseif(MSVC)
+    # Windows (MSVC)
+    # I use MSVC in CI/CD, so this is good enough for me
+    target_link_options(${PROJECT_NAME} PRIVATE /DEBUG:NONE /OPT:REF /OPT:ICF)
+    message(STATUS "Stripping symbols for Release builds on MSVC.")
+  else()
+    # Other platforms, probably Windows (MinGW) or FreeBSD
+    message(WARNING "Stripping not configured for this platform.")
+  endif()
+else()
+  if(NOT ENABLE_STRIP)
+    message(STATUS "Symbol stripping is disabled by user.")
+  else()
+    message(STATUS "No stripping applied (non-Release builds).")
+  endif()
+endif()
 
 # Prevent the creation of a console window on Windows and create an application bundle on macOS
 # If "WIN32_EXECUTABLE" is set to ON, the "SFML::Main" library must be linked to the target, which is done in "cmake/External.cmake"
