@@ -1,7 +1,7 @@
 /**
  * @file antialiasing.hpp
  *
- * @brief Default antialiasing level.
+ * @brief Default antialiasing level for the SFML window.
  */
 
 #pragma once

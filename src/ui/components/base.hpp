@@ -34,6 +34,8 @@ class Text : public sf::Text {
      * The provided coordinate is cast to an integer before setting the position.
      *
      * @param position X and Y coordinates (e.g., {10.0, 123.4}).
+     *
+     * @note The default "setPosition" method in SFML uses float coordinates, which may result in blurry text,
      */
     void setPosition(const sf::Vector2f &position);
 

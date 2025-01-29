@@ -2,6 +2,8 @@
  * @file colors.hpp
  *
  * @brief Colors inspired by the macOS dark theme.
+ *
+ * @note Before SFML3, we couldn't make "sf::Color" constexpr, it had to be const, and deal with destructors.
  */
 
 #pragma once
