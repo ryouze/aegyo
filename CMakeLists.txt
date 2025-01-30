@@ -118,7 +118,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "Release" AND ENABLE_STRIP)
     message(STATUS "Stripping local symbols for Release builds on macOS.")
   elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     # GNU/Linux
-    target_link_options(${PROJECT_NAME} PRIVATE $<$<CONFIG:Release>:-s>)
+    target_link_options(${PROJECT_NAME} PRIVATE -s)
     message(STATUS "Stripping symbols for Release builds on GNU/Linux.")
   elseif(MSVC)
     # Windows (MSVC)
