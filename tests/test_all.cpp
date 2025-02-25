@@ -15,7 +15,7 @@
 #include <SFML/Graphics.hpp>
 #include <fmt/core.h>
 
-#include "core/assets/NanumGothic.hpp"
+#include "core/graphics/font.hpp"
 #include "core/math/rng.hpp"
 #include "modules/vocabulary.hpp"
 #include "ui/components/base.hpp"
@@ -130,18 +130,16 @@ int main(int argc,
 int test_assets::load_font()
 {
     try {
-        sf::Font font;
-        if (!font.openFromMemory(core::assets::NanumGothic::data, core::assets::NanumGothic::size)) {
-            throw std::runtime_error("Failed to load embedded font data");
-        }
-        const ui::components::base::Text text(font);
+        // Load embedded NanumGothic font
+        std::unique_ptr<sf::Font> font = core::graphics::font::load();  // Ownership is transferred here
+        const ui::components::base::Text text(*font);
         // Get font properties
-        const std::string family = font.getInfo().family;
+        const std::string family = font->getInfo().family;
         const std::string expected_family = "NanumGothic";
         if (family != expected_family) {
             throw std::runtime_error(fmt::format("The actual font family '{}' is not equal to expected '{}'", family, expected_family));
         }
-        const bool smooth = font.isSmooth();
+        const bool smooth = font->isSmooth();
         constexpr bool expected_smooth = true;
         if (smooth != expected_smooth) {
             throw std::runtime_error(fmt::format("The actual font smooth property '{}' is not equal to expected '{}'", smooth, expected_smooth));
@@ -211,11 +209,9 @@ int test_rng::get_random_bool()
 int test_string::text()
 {
     try {
-        sf::Font font;
-        if (!font.openFromMemory(core::assets::NanumGothic::data, core::assets::NanumGothic::size)) {
-            throw std::runtime_error("Failed to load embedded font data");
-        }
-        ui::components::base::Text text(font);
+        // Load embedded NanumGothic font
+        std::unique_ptr<sf::Font> font = core::graphics::font::load();  // Ownership is transferred here
+        ui::components::base::Text text(*font);
 
         // Convert a UTF-8 string to an SFML string
         const std::string utf8_str = "Dzień dobry";

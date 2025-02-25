@@ -4,6 +4,7 @@
 
 #include <array>          // for std::array
 #include <cstddef>        // for std::size_t
+#include <memory>         // for std::unique_ptr
 #include <optional>       // for std::optional
 #include <string>         // for std::string
 #include <unordered_map>  // for std::unordered_map
@@ -14,7 +15,7 @@
 #include <fmt/core.h>
 
 #include "app.hpp"
-#include "core/assets/NanumGothic.hpp"
+#include "core/graphics/font.hpp"
 #include "core/math/rng.hpp"
 #include "core/settings/antialiasing.hpp"
 #include "core/settings/colors.hpp"
@@ -78,10 +79,7 @@ void run()
     window.requestFocus();
 
     // Load embedded NanumGothic font
-    sf::Font font;
-    if (!font.openFromMemory(core::assets::NanumGothic::data, core::assets::NanumGothic::size)) {
-        throw std::runtime_error("Failed to load embedded font data");
-    }
+    std::unique_ptr<sf::Font> font = core::graphics::font::load();  // Ownership is transferred here
 
     // Prepare vocabulary and interface items
     modules::vocabulary::Vocabulary vocabulary_obj;
@@ -100,10 +98,10 @@ void run()
 
     std::array<sf::RectangleShape, 4> toggle_buttons;
     std::array<ui::components::base::Text, 4> toggle_texts = {
-        ui::components::base::Text(font),
-        ui::components::base::Text(font),
-        ui::components::base::Text(font),
-        ui::components::base::Text(font)};
+        ui::components::base::Text(*font),
+        ui::components::base::Text(*font),
+        ui::components::base::Text(*font),
+        ui::components::base::Text(*font)};
     {
         constexpr float total_toggle_width = 4.f * 60.f;
         const float start_x = static_cast<float>(window.getSize().x) - total_toggle_width - 10.f;
@@ -120,7 +118,7 @@ void run()
             }
             toggle_buttons[i] = btn;
 
-            ui::components::base::Text lbl(font);
+            ui::components::base::Text lbl(*font);
             lbl.setCharacterSize(14);
             lbl.setFillColor(core::settings::colors::text::normal);
             lbl.setString(toggle_labels[i]);
@@ -131,14 +129,14 @@ void run()
         }
     }
 
-    ui::circles::Question question_circle(font);
-    ui::widgets::Memo memo_text(font);
-    ui::widgets::Percentage percentage_display(font);
+    ui::circles::Question question_circle(*font);
+    ui::widgets::Memo memo_text(*font);
+    ui::widgets::Percentage percentage_display(*font);
     std::array<ui::circles::Answer, 4> answer_circles{
-        ui::circles::Answer(font, ui::circles::AnswerPosition::TopLeft),
-        ui::circles::Answer(font, ui::circles::AnswerPosition::TopRight),
-        ui::circles::Answer(font, ui::circles::AnswerPosition::BottomLeft),
-        ui::circles::Answer(font, ui::circles::AnswerPosition::BottomRight)};
+        ui::circles::Answer(*font, ui::circles::AnswerPosition::TopLeft),
+        ui::circles::Answer(*font, ui::circles::AnswerPosition::TopRight),
+        ui::circles::Answer(*font, ui::circles::AnswerPosition::BottomLeft),
+        ui::circles::Answer(*font, ui::circles::AnswerPosition::BottomRight)};
 
     GameState current_state = GameState::Waiting;
 

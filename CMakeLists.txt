@@ -82,6 +82,7 @@ include_directories(${CMAKE_BINARY_DIR}/generated)
 add_library(${PROJECT_NAME}-lib STATIC
   # find . -name "*.cpp"
   src/app.cpp
+  src/core/graphics/font.cpp
   src/core/math/rng.cpp
   src/core/platform/windows.cpp
   src/core/settings/antialiasing.cpp
