@@ -167,7 +167,7 @@ if(APPLE)
     COMMAND ${CMAKE_COMMAND} -E copy
       ${CMAKE_SOURCE_DIR}/cmake/assets/Icon.icns
       $<TARGET_BUNDLE_DIR:${PROJECT_NAME}>/Contents/Resources/Icon.icns
-    COMMENT "Copying icon to the app bundle"
+    COMMENT "Copying icon to the app bundle."
   )
 elseif(WIN32)
   # If on Windows, add an icon to the executable
