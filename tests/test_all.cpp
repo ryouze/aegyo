@@ -16,8 +16,8 @@
 #include <fmt/core.h>
 
 #include "core/graphics/font.hpp"
+#include "core/hangul.hpp"
 #include "core/math/rng.hpp"
-#include "modules/vocabulary.hpp"
 #include "ui/components/base.hpp"
 #if defined(_WIN32)
 #define WIN32_LEAN_AND_MEAN  // Exclude rarely-used stuff from Windows headers
@@ -232,7 +232,7 @@ int test_vocabulary::entry()
 {
     try {
         // Create a vocabulary entry
-        const modules::vocabulary::Entry entry = {"ㅏ", "a", "Looks like an 'a' without the crossbar", modules::vocabulary::Category::BasicVowel};
+        const core::hangul::Entry entry = {"ㅏ", "a", "Looks like an 'a' without the crossbar", core::hangul::Category::BasicVowel};
         if (entry.hangul != "ㅏ") {
             throw std::runtime_error(fmt::format("The actual Korean character '{}' is not equal to expected 'ㅏ'", entry.hangul));
         }
@@ -242,14 +242,14 @@ int test_vocabulary::entry()
         if (entry.memo != "Looks like an 'a' without the crossbar") {
             throw std::runtime_error(fmt::format("The actual memo '{}' is not equal to expected 'Looks like an 'a' without the crossbar'", entry.memo));
         }
-        if (entry.category != modules::vocabulary::Category::BasicVowel) {
+        if (entry.category != core::hangul::Category::BasicVowel) {
             throw std::runtime_error(fmt::format("The actual category '{}' is not equal to expected 'Category::BasicVowel'", static_cast<int>(entry.category)));
         }
-        fmt::print("modules::vocabulary::Entry passed.\n");
+        fmt::print("core::hangul::Entry passed.\n");
         return EXIT_SUCCESS;
     }
     catch (const std::exception &e) {
-        fmt::print(stderr, "modules::vocabulary::Entry failed: {}\n", e.what());
+        fmt::print(stderr, "core::hangul::Entry failed: {}\n", e.what());
         return EXIT_FAILURE;
     }
 }
@@ -258,10 +258,10 @@ int test_vocabulary::category_count()
 {
     try {
         // Create a vocabulary object
-        const modules::vocabulary::Vocabulary vocabulary;
+        const core::hangul::Vocabulary vocabulary;
 
         // Map to store the count of entries for each category
-        std::unordered_map<modules::vocabulary::Category, std::size_t> category_counts;
+        std::unordered_map<core::hangul::Category, std::size_t> category_counts;
 
         // Count the number of entries for each category
         for (const auto &entry : vocabulary.get_entries()) {
@@ -274,14 +274,14 @@ int test_vocabulary::category_count()
             if (count < min_category_entries) {
                 throw std::runtime_error(fmt::format("Category '{}' has less than {} entries (found {})", static_cast<int>(category), min_category_entries, count));
             }
-            fmt::print("modules::vocabulary::Vocabulary: Category '{}' has {} entries.\n", static_cast<int>(category), count);
+            fmt::print("core::hangul::Vocabulary: Category '{}' has {} entries.\n", static_cast<int>(category), count);
         }
 
-        fmt::print("modules::vocabulary::Vocabulary passed.\n");
+        fmt::print("core::hangul::Vocabulary passed.\n");
         return EXIT_SUCCESS;
     }
     catch (const std::exception &e) {
-        fmt::print(stderr, "modules::vocabulary::Vocabulary failed: {}\n", e.what());
+        fmt::print(stderr, "core::hangul::Vocabulary failed: {}\n", e.what());
         return EXIT_FAILURE;
     }
 }

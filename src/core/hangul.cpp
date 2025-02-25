@@ -1,5 +1,5 @@
 /**
- * @file vocabulary.cpp
+ * @file hangul.cpp
  */
 
 #include <algorithm>      // for std::shuffle
@@ -11,10 +11,10 @@
 
 #include <fmt/core.h>
 
-#include "core/math/rng.hpp"
-#include "vocabulary.hpp"
+#include "hangul.hpp"
+#include "math/rng.hpp"
 
-namespace modules::vocabulary {
+namespace core::hangul {
 
 Vocabulary::Vocabulary()
     // Transliteration reference: http://letslearnhangul.com/
@@ -139,4 +139,4 @@ const std::vector<Entry> &Vocabulary::get_entries() const
     return this->entries_;
 }
 
-}  // namespace modules::vocabulary
+}  // namespace core::hangul

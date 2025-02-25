@@ -17,8 +17,8 @@
 #include "core/graphics/font.hpp"
 #include "core/graphics/settings/colors.hpp"
 #include "core/graphics/window.hpp"
+#include "core/hangul.hpp"
 #include "core/math/rng.hpp"
-#include "modules/vocabulary.hpp"
 #include "ui/circles.hpp"
 #include "ui/widgets.hpp"
 
@@ -55,19 +55,19 @@ void run()
     std::unique_ptr<sf::Font> font = core::graphics::font::load();  // Ownership is transferred here
 
     // Prepare vocabulary and interface items
-    modules::vocabulary::Vocabulary vocabulary_obj;
-    std::unordered_map<modules::vocabulary::Category, bool> toggle_states = {
-        {modules::vocabulary::Category::BasicVowel, true},
-        {modules::vocabulary::Category::BasicConsonant, true},
-        {modules::vocabulary::Category::DoubleConsonant, true},
-        {modules::vocabulary::Category::CompoundVowel, true}};
+    core::hangul::Vocabulary vocabulary_obj;
+    std::unordered_map<core::hangul::Category, bool> toggle_states = {
+        {core::hangul::Category::BasicVowel, true},
+        {core::hangul::Category::BasicConsonant, true},
+        {core::hangul::Category::DoubleConsonant, true},
+        {core::hangul::Category::CompoundVowel, true}};
 
     const std::array<std::string, 4> toggle_labels = {"Vow", "Con", "DCon", "CompV"};
-    const std::array<modules::vocabulary::Category, 4> toggle_categories = {
-        modules::vocabulary::Category::BasicVowel,
-        modules::vocabulary::Category::BasicConsonant,
-        modules::vocabulary::Category::DoubleConsonant,
-        modules::vocabulary::Category::CompoundVowel};
+    const std::array<core::hangul::Category, 4> toggle_categories = {
+        core::hangul::Category::BasicVowel,
+        core::hangul::Category::BasicConsonant,
+        core::hangul::Category::DoubleConsonant,
+        core::hangul::Category::CompoundVowel};
 
     std::array<sf::RectangleShape, 4> toggle_buttons;
     std::array<ui::components::base::Text, 4> toggle_texts = {
@@ -113,7 +113,7 @@ void run()
 
     GameState current_state = GameState::Waiting;
 
-    modules::vocabulary::Entry correct_entry;
+    core::hangul::Entry correct_entry;
     std::size_t correct_index = 0;
     bool is_hangul = true;
 
@@ -122,7 +122,7 @@ void run()
         if (reset_score) {
             percentage_display.reset();
         }
-        const std::optional<modules::vocabulary::Entry> maybe_entry =
+        const std::optional<core::hangul::Entry> maybe_entry =
             vocabulary_obj.get_random_enabled_entry(toggle_states);
         if (!maybe_entry.has_value()) {
             question_circle.set_invalid();
@@ -135,7 +135,7 @@ void run()
         }
         correct_entry = maybe_entry.value();
         is_hangul = core::math::rng::get_random_bool();
-        const std::vector<modules::vocabulary::Entry> opts =
+        const std::vector<core::hangul::Entry> opts =
             vocabulary_obj.generate_enabled_question_options(correct_entry, toggle_states);
         for (std::size_t i = 0; i < 4; ++i) {
             if (opts[i].hangul == correct_entry.hangul) {

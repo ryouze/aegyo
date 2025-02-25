@@ -1,5 +1,5 @@
 /**
- * @file vocabulary.hpp
+ * @file hangul.hpp
  *
  * @brief Define the Korean vocabulary.
  */
@@ -12,7 +12,7 @@
 #include <unordered_map>  // for std::unordered_map
 #include <vector>         // for std::vector
 
-namespace modules::vocabulary {
+namespace core::hangul {
 
 /**
  * @brief Enum that represents the category of a Korean character.
@@ -124,4 +124,4 @@ class Vocabulary final {
     std::vector<Entry> entries_;
 };
 
-}  // namespace modules::vocabulary
+}  // namespace core::hangul
