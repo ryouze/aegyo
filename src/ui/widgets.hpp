@@ -23,6 +23,8 @@ namespace ui::widgets {
  * @brief Class that represents a memo hint below the question circle.
  *
  * On construction, the class positions itself and sets up its appearance.
+ *
+ * @note In the main event loop, the memo hint is not drawn if the GameState is not equal to "ShowingResult". Hence, hiding the memo is not necessary.
  */
 class Memo {
   public:
@@ -32,11 +34,6 @@ class Memo {
      * @param font Font to use for the memo text.
      */
     explicit Memo(const sf::Font &font);
-
-    /**
-     * @brief Hide the memo text.
-     */
-    void hide();
 
     /**
      * @brief Set the memo text to a string.

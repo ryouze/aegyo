@@ -27,11 +27,6 @@ Memo::Memo(const sf::Font &font)
                              core::graphics::settings::screen::CENTER.y - 30.f});
 }
 
-void Memo::hide()
-{
-    this->text_.setString("");
-}
-
 void Memo::set(const std::string &str)
 {
     this->text_.setString(str);

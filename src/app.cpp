@@ -97,7 +97,6 @@ void run()
             for (auto &c : answer_circles) {
                 c.set_invalid();
             }
-            memo_text.hide();
             return;
         }
         correct_entry = maybe_entry.value();
@@ -111,7 +110,6 @@ void run()
             }
         }
         question_circle.set_question(is_hangul ? correct_entry.hangul : correct_entry.latin);
-        memo_text.hide();
         for (std::size_t i = 0; i < 4; ++i) {
             answer_circles[i].set_answer(is_hangul ? opts[i].latin : opts[i].hangul);
         }
@@ -168,7 +166,6 @@ void run()
                     }
                     // Next question if result shown
                     else if (current_state == GameState::ShowingResult) {
-                        memo_text.hide();
                         initialize_question(false);
                     }
                 }
@@ -229,7 +226,6 @@ void run()
                     }
                 }
                 else if (current_state == GameState::ShowingResult) {
-                    memo_text.hide();
                     initialize_question(false);
                 }
             }
