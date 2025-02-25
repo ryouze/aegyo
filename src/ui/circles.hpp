@@ -10,7 +10,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "components/base.hpp"
+#include "core/shapes.hpp"
 
 namespace ui::circles {
 
@@ -19,7 +19,7 @@ namespace ui::circles {
  *
  * On construction, the class positions itself and sets up its appearance.
  */
-class Question : public ui::components::base::TextInCircle {
+class Question : public core::shapes::TextInCircle {
   public:
     /**
      * @brief Construct a new Question object.
@@ -75,7 +75,7 @@ enum class AnswerPosition {
  *
  * On construction, the class positions itself and sets up its appearance.
  */
-class Answer : public ui::components::base::TextInCircle {
+class Answer : public core::shapes::TextInCircle {
   public:
     /**
      * @brief Construct a new Answer object.

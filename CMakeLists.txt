@@ -87,9 +87,9 @@ add_library(${PROJECT_NAME}-lib STATIC
   src/core/graphics/window.cpp
   src/core/hangul.cpp
   src/core/math/rng.cpp
+  src/core/shapes.cpp
   src/main.cpp
   src/ui/circles.cpp
-  src/ui/components/base.cpp
   src/ui/widgets.cpp
 )
 

@@ -12,7 +12,7 @@
 #include <SFML/Graphics.hpp>
 #include <fmt/core.h>
 
-#include "components/base.hpp"
+#include "core/shapes.hpp"
 
 namespace ui::widgets {
 
@@ -53,7 +53,7 @@ class Memo {
     /**
      * @brief Text object.
      */
-    ui::components::base::Text text_;
+    core::shapes::Text text_;
 };
 
 /**
@@ -103,7 +103,7 @@ class Percentage {
     /**
      * @brief Text object.
      */
-    ui::components::base::Text text_;
+    core::shapes::Text text_;
 
     /**
      * @brief Number of correct answers (e.g., "10").

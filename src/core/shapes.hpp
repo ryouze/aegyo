@@ -1,7 +1,7 @@
 /**
- * @file base.hpp
+ * @file shapes.hpp
  *
- * @brief Base classes for UI components.
+ * @brief Base UI components for rendering text and shapes.
  */
 
 #pragma once
@@ -10,7 +10,7 @@
 
 #include <SFML/Graphics.hpp>
 
-namespace ui::components::base {
+namespace core::shapes {
 
 /**
  * @brief Class that provides a generic text object with UTF-8 support, integer positioning, and origin resetting.
@@ -82,4 +82,4 @@ class TextInCircle {
     Text text_;
 };
 
-}  // namespace ui::components::base
+}  // namespace core::shapes

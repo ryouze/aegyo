@@ -18,7 +18,7 @@
 #include "core/graphics/font.hpp"
 #include "core/hangul.hpp"
 #include "core/math/rng.hpp"
-#include "ui/components/base.hpp"
+#include "core/shapes.hpp"
 #if defined(_WIN32)
 #define WIN32_LEAN_AND_MEAN  // Exclude rarely-used stuff from Windows headers
 #include <windows.h>         // for SetConsoleCP, SetConsoleOutputCP, CP_UTF8
@@ -132,7 +132,7 @@ int test_assets::load_font()
     try {
         // Load embedded NanumGothic font
         std::unique_ptr<sf::Font> font = core::graphics::font::load();  // Ownership is transferred here
-        const ui::components::base::Text text(*font);
+        const core::shapes::Text text(*font);
         // Get font properties
         const std::string family = font->getInfo().family;
         const std::string expected_family = "NanumGothic";
@@ -211,7 +211,7 @@ int test_string::text()
     try {
         // Load embedded NanumGothic font
         std::unique_ptr<sf::Font> font = core::graphics::font::load();  // Ownership is transferred here
-        ui::components::base::Text text(*font);
+        core::shapes::Text text(*font);
 
         // Convert a UTF-8 string to an SFML string
         const std::string utf8_str = "Dzień dobry";

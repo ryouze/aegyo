@@ -1,15 +1,15 @@
 /**
- * @file base.cpp
+ * @file shapes.cpp
  */
 
 #include <string>  // for std::string
 
 #include <SFML/Graphics.hpp>
 
-#include "base.hpp"
-#include "core/graphics/settings/colors.hpp"
+#include "graphics/settings/colors.hpp"
+#include "shapes.hpp"
 
-namespace ui::components::base {
+namespace core::shapes {
 
 namespace {
 
@@ -63,4 +63,4 @@ void TextInCircle::draw(sf::RenderWindow &window) const
     window.draw(this->text_);
 }
 
-}  // namespace ui::components::base
+}  // namespace core::shapes

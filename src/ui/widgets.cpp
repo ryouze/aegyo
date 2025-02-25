@@ -6,9 +6,9 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "components/base.hpp"
 #include "core/graphics/settings/colors.hpp"
 #include "core/graphics/settings/screen.hpp"
+#include "core/shapes.hpp"
 #include "widgets.hpp"
 
 namespace ui::widgets {

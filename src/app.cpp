@@ -70,11 +70,11 @@ void run()
         core::hangul::Category::CompoundVowel};
 
     std::array<sf::RectangleShape, 4> toggle_buttons;
-    std::array<ui::components::base::Text, 4> toggle_texts = {
-        ui::components::base::Text(*font),
-        ui::components::base::Text(*font),
-        ui::components::base::Text(*font),
-        ui::components::base::Text(*font)};
+    std::array<core::shapes::Text, 4> toggle_texts = {
+        core::shapes::Text(*font),
+        core::shapes::Text(*font),
+        core::shapes::Text(*font),
+        core::shapes::Text(*font)};
     {
         constexpr float total_toggle_width = 4.f * 60.f;
         const float start_x = static_cast<float>(window->getSize().x) - total_toggle_width - 10.f;
@@ -91,7 +91,7 @@ void run()
             }
             toggle_buttons[i] = btn;
 
-            ui::components::base::Text lbl(*font);
+            core::shapes::Text lbl(*font);
             lbl.setCharacterSize(14);
             lbl.setFillColor(core::graphics::settings::colors::text::normal);
             lbl.setString(toggle_labels[i]);
