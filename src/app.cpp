@@ -25,7 +25,7 @@
 #include "ui/widgets.hpp"
 #include "version.hpp"
 #if defined(_WIN32)
-#include "core/platform/windows.cpp"
+#include "core/platform/windows.hpp"
 #endif
 
 namespace app {
