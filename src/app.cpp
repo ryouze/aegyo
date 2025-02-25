@@ -54,26 +54,26 @@ void run()
     // Load embedded NanumGothic font
     std::unique_ptr<sf::Font> font = core::graphics::font::load();
 
-    // Prepare vocabulary and interface items
-    core::hangul::Vocabulary vocabulary_obj;
+    // Prepare UI elements
+    ui::widgets::Percentage percentage_display(*font);  // Top left corner
+    std::array<ui::widgets::CategoryButton, 4>
+        category_labels{// Top right corner
+                        ui::widgets::CategoryButton(*font, 0, "Vow", core::hangul::Category::BasicVowel),
+                        ui::widgets::CategoryButton(*font, 1, "Con", core::hangul::Category::BasicConsonant),
+                        ui::widgets::CategoryButton(*font, 2, "DCon", core::hangul::Category::DoubleConsonant),
+                        ui::widgets::CategoryButton(*font, 3, "CompV", core::hangul::Category::CompoundVowel)};
+    ui::circles::Question question_circle(*font);  // Main question circle
+    ui::widgets::Memo memo_text(*font);            // Hint below the main question circle
+    std::array<ui::circles::Answer, 4>
+        answer_circles{// 4 possible answers for the question
+                       ui::circles::Answer(*font, ui::circles::AnswerPosition::TopLeft),
+                       ui::circles::Answer(*font, ui::circles::AnswerPosition::TopRight),
+                       ui::circles::Answer(*font, ui::circles::AnswerPosition::BottomLeft),
+                       ui::circles::Answer(*font, ui::circles::AnswerPosition::BottomRight)};
 
-    std::array<ui::widgets::CategoryButton, 4> category_labels{
-        ui::widgets::CategoryButton(*font, 0, "Vow", core::hangul::Category::BasicVowel),
-        ui::widgets::CategoryButton(*font, 1, "Con", core::hangul::Category::BasicConsonant),
-        ui::widgets::CategoryButton(*font, 2, "DCon", core::hangul::Category::DoubleConsonant),
-        ui::widgets::CategoryButton(*font, 3, "CompV", core::hangul::Category::CompoundVowel)};
-
-    ui::circles::Question question_circle(*font);
-    ui::widgets::Memo memo_text(*font);
-    ui::widgets::Percentage percentage_display(*font);
-    std::array<ui::circles::Answer, 4> answer_circles{
-        ui::circles::Answer(*font, ui::circles::AnswerPosition::TopLeft),
-        ui::circles::Answer(*font, ui::circles::AnswerPosition::TopRight),
-        ui::circles::Answer(*font, ui::circles::AnswerPosition::BottomLeft),
-        ui::circles::Answer(*font, ui::circles::AnswerPosition::BottomRight)};
-
+    // Prepare game objects
     GameState current_state = GameState::Waiting;
-
+    core::hangul::Vocabulary vocab;
     core::hangul::Entry correct_entry;
     std::size_t correct_index = 0;
     bool is_hangul = true;
@@ -83,7 +83,7 @@ void run()
         if (reset_score) {
             percentage_display.reset();
         }
-        // TODO: Refactor this
+        // TODO: Refactor this ugly hacky loop to fit old code
         std::unordered_map<core::hangul::Category, bool> toggle_states;
         for (std::size_t i = 0; i < 4; ++i) {
             const auto [category, enabled] = category_labels[i].get_toggle_state();
@@ -91,7 +91,7 @@ void run()
         }
 
         const std::optional<core::hangul::Entry> maybe_entry =
-            vocabulary_obj.get_random_enabled_entry(toggle_states);
+            vocab.get_random_enabled_entry(toggle_states);
         if (!maybe_entry.has_value()) {
             question_circle.set_invalid();
             current_state = GameState::NoEntries;
@@ -104,7 +104,7 @@ void run()
         correct_entry = maybe_entry.value();
         is_hangul = core::math::rng::get_random_bool();
         const std::vector<core::hangul::Entry> opts =
-            vocabulary_obj.generate_enabled_question_options(correct_entry, toggle_states);
+            vocab.generate_enabled_question_options(correct_entry, toggle_states);
         for (std::size_t i = 0; i < 4; ++i) {
             if (opts[i].hangul == correct_entry.hangul) {
                 correct_index = i;

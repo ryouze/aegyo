@@ -153,7 +153,7 @@ class CategoryButton {
         // Button position
         const sf::Vector2f button_size = this->button_.getSize();
         constexpr float padding = 10.f;
-        this->button_.setPosition({core::graphics::settings::screen::TOP_RIGHT.x - padding - (button_size.x + padding) * (4 - order),
+        this->button_.setPosition({core::graphics::settings::screen::TOP_RIGHT.x - padding - (button_size.x + padding) * static_cast<float>(4 - order),
                                    core::graphics::settings::screen::TOP_RIGHT.y + padding});
 
         // Text appearance
