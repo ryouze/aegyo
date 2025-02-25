@@ -88,7 +88,7 @@ std::optional<Entry> Vocabulary::get_random_enabled_entry(const std::unordered_m
         return std::nullopt;
     }
 
-    const std::size_t index = core::rng::get_random_number<std::size_t>(0, enabled_entries.size() - 1);
+    const std::size_t index = core::math::rng::get_random_number<std::size_t>(0, enabled_entries.size() - 1);
     return enabled_entries[index];
 }
 
@@ -110,7 +110,7 @@ std::vector<Entry> Vocabulary::generate_enabled_question_options(const Entry &co
     }
 
     // Shuffle wrong entries
-    std::shuffle(wrong_entries.begin(), wrong_entries.end(), core::rng::instance());
+    std::shuffle(wrong_entries.begin(), wrong_entries.end(), core::math::rng::instance());
 
     // Add unique wrong entries until we have the desired number of options
     for (const auto &wrong_entry : wrong_entries) {
@@ -127,7 +127,7 @@ std::vector<Entry> Vocabulary::generate_enabled_question_options(const Entry &co
     }
 
     // Shuffle the options
-    std::shuffle(options.begin(), options.end(), core::rng::instance());
+    std::shuffle(options.begin(), options.end(), core::math::rng::instance());
 
     // Return shrunk vector (RVO)
     options.shrink_to_fit();

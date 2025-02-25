@@ -20,7 +20,7 @@
 
 #include "windows.hpp"
 
-namespace core::windows {
+namespace core::platform::windows {
 
 std::optional<std::string> setup_titlebar_icon(const sf::Window &window)
 {
@@ -43,6 +43,6 @@ std::optional<std::string> setup_titlebar_icon(const sf::Window &window)
     return std::nullopt;
 }
 
-}  // namespace core::windows
+}  // namespace core::platform::windows
 
 #endif

@@ -8,7 +8,7 @@
 
 #include <random>  // for std::mt19937
 
-namespace core::rng {
+namespace core::math::rng {
 
 /**
  * @brief Get the static random number generator instance.
@@ -40,4 +40,4 @@ template <typename T>
  * @return Random boolean value (e.g., "true").
  */
 [[nodiscard]] bool get_random_bool(const double probability = 0.5);
-}  // namespace core::rng
+}  // namespace core::math::rng

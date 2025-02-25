@@ -8,7 +8,7 @@
 
 #include "rng.hpp"
 
-namespace core::rng {
+namespace core::math::rng {
 
 std::mt19937 &instance()
 {
@@ -36,4 +36,4 @@ T get_random_number(const T min,
 // template int get_random_number<int>(const int min, const int max);
 template std::size_t get_random_number<std::size_t>(const std::size_t min, const std::size_t max);
 
-}  // namespace core::rng
+}  // namespace core::math::rng

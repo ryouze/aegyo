@@ -79,7 +79,7 @@ void run()
 
     // Load embedded NanumGothic font
     sf::Font font;
-    if (!font.openFromMemory(NanumGothic::data, NanumGothic::size)) {
+    if (!font.openFromMemory(core::assets::NanumGothic::data, core::assets::NanumGothic::size)) {
         throw std::runtime_error("Failed to load embedded font data");
     }
 
@@ -163,7 +163,7 @@ void run()
             return;
         }
         correct_entry = maybe_entry.value();
-        is_hangul = core::rng::get_random_bool();
+        is_hangul = core::math::rng::get_random_bool();
         const std::vector<modules::vocabulary::Entry> opts =
             vocabulary_obj.generate_enabled_question_options(correct_entry, toggle_states);
         for (std::size_t i = 0; i < 4; ++i) {

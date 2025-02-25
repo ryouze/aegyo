@@ -131,7 +131,7 @@ int test_assets::load_font()
 {
     try {
         sf::Font font;
-        if (!font.openFromMemory(NanumGothic::data, NanumGothic::size)) {
+        if (!font.openFromMemory(core::assets::NanumGothic::data, core::assets::NanumGothic::size)) {
             throw std::runtime_error("Failed to load embedded font data");
         }
         const ui::components::base::Text text(font);
@@ -162,7 +162,7 @@ int test_rng::instance()
         std::vector<std::string> cars = {"Nissan Skyline GT-R R32", "Toyota Supra Mk4", "Mazda RX-7 FD", "Honda NSX"};
 
         // Shuffle the cars using the random number generator
-        std::mt19937 &rng = core::rng::instance();
+        std::mt19937 &rng = core::math::rng::instance();
         std::shuffle(cars.begin(), cars.end(), rng);
         fmt::print("core::rng::instance() passed.\n");
         return EXIT_SUCCESS;
@@ -179,7 +179,7 @@ int test_rng::get_random_number()
         // Generate random numbers
         constexpr std::size_t min = 0;
         constexpr std::size_t max = 10;
-        const std::size_t random_number = core::rng::get_random_number<std::size_t>(min, max);
+        const std::size_t random_number = core::math::rng::get_random_number<std::size_t>(min, max);
         if (random_number < min || random_number > max) {
             throw std::runtime_error(fmt::format("The actual random number '{}' is not in the range [{}, {}]", random_number, min, max));
         }
@@ -197,7 +197,7 @@ int test_rng::get_random_bool()
     try {
         // Generate random boolean values
         constexpr double probability = 0.5;
-        const bool random_bool = core::rng::get_random_bool(probability);
+        const bool random_bool = core::math::rng::get_random_bool(probability);
         static_cast<void>(random_bool);  // Ignore [[nodiscard]] attribute
         fmt::print("core::rng::get_random_bool() passed.\n");
         return EXIT_SUCCESS;
@@ -212,7 +212,7 @@ int test_string::text()
 {
     try {
         sf::Font font;
-        if (!font.openFromMemory(NanumGothic::data, NanumGothic::size)) {
+        if (!font.openFromMemory(core::assets::NanumGothic::data, core::assets::NanumGothic::size)) {
             throw std::runtime_error("Failed to load embedded font data");
         }
         ui::components::base::Text text(font);
