@@ -11,7 +11,7 @@
 #include "version.hpp"
 #include "window.hpp"
 #if defined(_WIN32)
-#include "core/platform/windows.hpp"
+#include "platform/windows.hpp"
 #endif
 
 namespace core::graphics::window {
