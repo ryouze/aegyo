@@ -22,7 +22,7 @@
 
 namespace core::platform::windows {
 
-std::optional<std::string> setup_titlebar_icon(const sf::Window &window)
+std::optional<std::string> set_titlebar_icon(const sf::Window &window)
 {
     // Get the native window handle from the SFML window
     const HWND hwnd = window.getNativeHandle();
