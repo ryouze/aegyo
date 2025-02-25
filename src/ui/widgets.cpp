@@ -93,4 +93,72 @@ void Percentage::update_text()
     this->text_.setString(fmt::format("게임 점수: {:.1f}%", percent));
 }
 
+CategoryButton::CategoryButton(const sf::Font &font,
+                               const std::size_t order,
+                               const std::string &label,
+                               const core::hangul::Category category,
+                               const bool enabled)
+    : button_(sf::Vector2f(50.f, 35.f)),
+      text_(font, label),
+      enabled_(enabled),
+      category_(category)
+{
+    // Button appearance
+    this->button_.setOutlineColor(core::graphics::settings::colors::text::normal);
+    this->button_.setOutlineThickness(1.f);
+    this->button_.setFillColor(enabled ? core::graphics::settings::colors::category::enabled : core::graphics::settings::colors::category::disabled);
+
+    // Button position
+    const sf::Vector2f button_size = this->button_.getSize();
+    constexpr float padding = 10.f;
+    this->button_.setPosition({core::graphics::settings::screen::TOP_RIGHT.x - padding - (button_size.x + padding) * static_cast<float>(4 - order),
+                               core::graphics::settings::screen::TOP_RIGHT.y + padding});
+
+    // Text appearance
+    this->text_.setCharacterSize(14);
+    this->text_.setFillColor(core::graphics::settings::colors::text::normal);
+    this->text_.setString(label);
+
+    // Text position
+    this->text_.resetOrigin();
+    this->text_.setPosition(this->button_.getPosition() + button_size / 2.f);
+}
+
+
+
+bool CategoryButton::get_enabled() const
+    {
+        return this->enabled_;
+    }
+
+void CategoryButton::set_enabled(const bool enabled)
+{
+    this->enabled_ = enabled;
+    this->button_.setFillColor(
+        enabled
+            // If enabled, then enabled color, otherwise disabled color
+            ? core::graphics::settings::colors::category::enabled
+            : core::graphics::settings::colors::category::disabled);
+}
+
+bool CategoryButton::is_hovering(const sf::Vector2f mouse_pos) const
+{
+    return this->button_.getGlobalBounds().contains(mouse_pos);
+}
+
+void CategoryButton::set_hover(const sf::Vector2f mouse_pos)
+{
+    this->button_.setOutlineThickness(
+        this->is_hovering(mouse_pos)
+            // If hovering, make thicker
+            ? 2.f
+            : 1.f);
+}
+
+void CategoryButton::draw(sf::RenderWindow &window) const
+{
+    window.draw(this->button_);
+    window.draw(this->text_);
+}
+
 }  // namespace ui::widgets

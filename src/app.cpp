@@ -138,14 +138,8 @@ void run()
                     // Handle toggles
                     for (auto &button : category_labels) {
                         if (button.is_hovering(pos)) {
-                            // Get the current state
-                            auto [category, cs] = button.get_toggle_state();
-
-                            // Toggle the state
-                            const bool new_state = !cs;
-                            button.set(new_state);
-
-                            initialize_question(true);
+                            button.set_enabled(!button.get_enabled());
+                            initialize_question(true);  // Always reset
                             break;
                         }
                     }
@@ -183,12 +177,9 @@ void run()
             else if (const sf::Event::MouseMoved *mouseMove = event->getIf<sf::Event::MouseMoved>()) {
                 // Toggle button hover
                 for (auto &button : category_labels) {
-                    const bool is_hovering = button.is_hovering(
-                        sf::Vector2f(
-                            static_cast<float>(mouseMove->position.x),
-                            static_cast<float>(mouseMove->position.y)));
-
-                    button.set_thickness(is_hovering);
+                    button.set_hover(sf::Vector2f(
+                        static_cast<float>(mouseMove->position.x),
+                        static_cast<float>(mouseMove->position.y)));
                 }
                 // Answer circle hover
                 if (current_state == GameState::Waiting) {

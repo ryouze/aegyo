@@ -139,49 +139,20 @@ class CategoryButton {
                             const std::size_t order,
                             const std::string &label,
                             const core::hangul::Category category,
-                            const bool enabled = true)
-        : button_(sf::Vector2f(50.f, 35.f)),
-          text_(font, label),
-          enabled_(enabled),
-          category_(category)
-    {
-        // Button appearance
-        this->button_.setOutlineColor(core::graphics::settings::colors::text::normal);
-        this->button_.setOutlineThickness(1.f);
-        this->button_.setFillColor(enabled ? core::graphics::settings::colors::category::enabled : core::graphics::settings::colors::category::disabled);
+                            const bool enabled = true);
 
-        // Button position
-        const sf::Vector2f button_size = this->button_.getSize();
-        constexpr float padding = 10.f;
-        this->button_.setPosition({core::graphics::settings::screen::TOP_RIGHT.x - padding - (button_size.x + padding) * static_cast<float>(4 - order),
-                                   core::graphics::settings::screen::TOP_RIGHT.y + padding});
-
-        // Text appearance
-        this->text_.setCharacterSize(14);
-        this->text_.setFillColor(core::graphics::settings::colors::text::normal);
-        this->text_.setString(label);
-
-        // Text position
-        this->text_.resetOrigin();
-        this->text_.setPosition(this->button_.getPosition() + button_size / 2.f);
-    }
-
+    // TODO: Get rid of this ugly function, was only needed for old code
     std::tuple<core::hangul::Category, bool> get_toggle_state()
     {
         return std::make_tuple(this->category_, this->enabled_);
     }
 
     /**
-     * @brief Check if the mouse is hovering over the category button.
+     * @brief Get the state of the category button (enabled or disabled).
      *
-     * @param mouse_pos Mouse position.
-     *
-     * @return True if the mouse is hovering over the category button, false otherwise.
+     * @return True if the button is enabled, false otherwise.
      */
-    [[nodiscard]] bool is_hovering(const sf::Vector2f mouse_pos) const
-    {
-        return this->button_.getGlobalBounds().contains(mouse_pos);
-    }
+    [[nodiscard]] bool get_enabled() const;
 
     /**
      * @brief Set the state of the category button to enabled or disabled.
@@ -190,28 +161,32 @@ class CategoryButton {
      *
      * @param enabled Whether the button should be enabled (e.g., "true").
      */
-    void set(const bool enabled)  // TODO: Rename
-    {
-        this->enabled_ = enabled;
-        this->button_.setFillColor(enabled ? core::graphics::settings::colors::category::enabled : core::graphics::settings::colors::category::disabled);
-    }
+    void set_enabled(const bool enabled);
 
-    // TODO: Use is_hovering
-    void set_thickness(const bool hover)
-    {
-        this->button_.setOutlineThickness(hover ? 2.f : 1.f);
-    }
+    /**
+     * @brief Check if the mouse is hovering over the category button.
+     *
+     * @param mouse_pos Mouse position.
+     *
+     * @return True if the mouse is hovering over the category button, false otherwise.
+     */
+    [[nodiscard]] bool is_hovering(const sf::Vector2f mouse_pos) const;
+
+    /**
+     * @brief Set the hover state of the button.
+     *
+     * If the mouse is hovering over the button, the outline thickness is increased. Otherwise, it is set to the default value.
+     *
+     * @param mouse_pos Mouse position.
+     */
+    void set_hover(const sf::Vector2f mouse_pos);
 
     /**
      * @brief Draw the button to the window.
      *
      * @param window Window to draw to.
      */
-    void draw(sf::RenderWindow &window) const
-    {
-        window.draw(this->button_);
-        window.draw(this->text_);
-    }
+    void draw(sf::RenderWindow &window) const;
 
   private:
     /**
