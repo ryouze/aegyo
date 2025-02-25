@@ -57,11 +57,11 @@ void run()
     // Prepare vocabulary and interface items
     core::hangul::Vocabulary vocabulary_obj;
 
-    std::array<ui::widgets::CategoryLabel, 4> category_labels{
-        ui::widgets::CategoryLabel(*font, 0, "Vow", core::hangul::Category::BasicVowel),
-        ui::widgets::CategoryLabel(*font, 1, "Con", core::hangul::Category::BasicConsonant),
-        ui::widgets::CategoryLabel(*font, 2, "DCon", core::hangul::Category::DoubleConsonant),
-        ui::widgets::CategoryLabel(*font, 3, "CompV", core::hangul::Category::CompoundVowel)};
+    std::array<ui::widgets::CategoryButton, 4> category_labels{
+        ui::widgets::CategoryButton(*font, 0, "Vow", core::hangul::Category::BasicVowel),
+        ui::widgets::CategoryButton(*font, 1, "Con", core::hangul::Category::BasicConsonant),
+        ui::widgets::CategoryButton(*font, 2, "DCon", core::hangul::Category::DoubleConsonant),
+        ui::widgets::CategoryButton(*font, 3, "CompV", core::hangul::Category::CompoundVowel)};
 
     ui::circles::Question question_circle(*font);
     ui::widgets::Memo memo_text(*font);
