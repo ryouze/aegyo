@@ -1,16 +1,14 @@
 /**
  * @file colors.hpp
  *
- * @brief Colors inspired by the macOS dark theme.
- *
- * @note Before SFML3, we couldn't make "sf::Color" constexpr, it had to be const, and deal with destructors.
+ * @brief Default colors inspired by the macOS dark theme.
  */
 
 #pragma once
 
 #include <SFML/Graphics/Color.hpp>
 
-namespace core::settings::colors {
+namespace core::graphics::settings::colors {
 
 /**
  * @brief Window background colors.
@@ -48,4 +46,4 @@ constexpr sf::Color enabled(100, 200, 100);   // Enabled category color
 constexpr sf::Color disabled(200, 100, 100);  // Disabled category color
 }  // namespace category
 
-}  // namespace core::settings::colors
+}  // namespace core::graphics::settings::colors

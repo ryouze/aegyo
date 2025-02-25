@@ -7,7 +7,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "base.hpp"
-#include "core/settings/colors.hpp"
+#include "core/graphics/settings/colors.hpp"
 
 namespace ui::components::base {
 
@@ -54,7 +54,7 @@ TextInCircle::TextInCircle(const sf::Font &font,
     this->circle_.setOrigin({radius, radius});  // Set the origin to the center of the circle
 
     // Text
-    this->text_.setFillColor(core::settings::colors::text::normal);
+    this->text_.setFillColor(core::graphics::settings::colors::text::normal);
 }
 
 void TextInCircle::draw(sf::RenderWindow &window) const

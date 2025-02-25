@@ -1,14 +1,14 @@
 /**
  * @file screen.hpp
  *
- * @brief Default constexpr screen settings.
+ * @brief Default screen settings.
  */
 
 #pragma once
 
 #include <SFML/System/Vector2.hpp>
 
-namespace core::settings::screen {
+namespace core::graphics::settings::screen {
 
 /**
  * @brief Default window width in pixels.
@@ -65,4 +65,4 @@ constexpr sf::Vector2f CENTER = {WIDTH / 2.0f, HEIGHT / 2.0f};
 //  */
 // constexpr sf::Vector2f BOTTOM_RIGHT = {WIDTH, HEIGHT};
 
-}  // namespace core::settings::screen
+}  // namespace core::graphics::settings::screen

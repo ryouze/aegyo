@@ -7,8 +7,8 @@
 #include <SFML/Graphics.hpp>
 
 #include "components/base.hpp"
-#include "core/settings/colors.hpp"
-#include "core/settings/screen.hpp"
+#include "core/graphics/settings/colors.hpp"
+#include "core/graphics/settings/screen.hpp"
 #include "widgets.hpp"
 
 namespace ui::widgets {
@@ -18,11 +18,11 @@ Memo::Memo(const sf::Font &font)
 {
     // Appearance
     this->text_.setCharacterSize(16);
-    this->text_.setFillColor(core::settings::colors::text::normal);
+    this->text_.setFillColor(core::graphics::settings::colors::text::normal);
 
     // Position
-    this->text_.setPosition({core::settings::screen::CENTER.x,
-                             core::settings::screen::CENTER.y - 30.f});
+    this->text_.setPosition({core::graphics::settings::screen::CENTER.x,
+                             core::graphics::settings::screen::CENTER.y - 30.f});
 }
 
 void Memo::hide()
@@ -48,12 +48,12 @@ Percentage::Percentage(const sf::Font &font)
 {
     // Appearance
     this->text_.setCharacterSize(18);
-    this->text_.setFillColor(core::settings::colors::text::normal);
+    this->text_.setFillColor(core::graphics::settings::colors::text::normal);
 
     // Position
     constexpr float top_left_offset = 10.f;  // Offset from the top-left corner
-    this->text_.setPosition({core::settings::screen::TOP_LEFT.x + top_left_offset,
-                             core::settings::screen::TOP_LEFT.y + top_left_offset});
+    this->text_.setPosition({core::graphics::settings::screen::TOP_LEFT.x + top_left_offset,
+                             core::graphics::settings::screen::TOP_LEFT.y + top_left_offset});
     this->update_text();
 }
 

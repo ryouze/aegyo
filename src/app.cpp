@@ -11,22 +11,16 @@
 #include <vector>         // for std::vector
 
 #include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
 #include <fmt/core.h>
 
 #include "app.hpp"
 #include "core/graphics/font.hpp"
+#include "core/graphics/settings/colors.hpp"
+#include "core/graphics/window.hpp"
 #include "core/math/rng.hpp"
-#include "core/settings/antialiasing.hpp"
-#include "core/settings/colors.hpp"
-#include "core/settings/screen.hpp"
 #include "modules/vocabulary.hpp"
 #include "ui/circles.hpp"
 #include "ui/widgets.hpp"
-#include "version.hpp"
-#if defined(_WIN32)
-#include "core/platform/windows.hpp"
-#endif
 
 namespace app {
 
@@ -54,29 +48,8 @@ enum class GameState {
 
 void run()
 {
-    sf::RenderWindow window(
-        sf::VideoMode({core::settings::screen::WIDTH, core::settings::screen::HEIGHT}),
-        fmt::format("aegyo ({})", PROJECT_VERSION),
-        sf::Style::Titlebar | sf::Style::Close,  // No resize, no fullscreen (too much work to handle, especially on macOS)
-        sf::State::Windowed,
-        core::settings::antialiasing::get_improved_context_settings());  // Enable anti-aliasing
-
-    // Enable V-Sync to limit the frame rate to the refresh rate of the monitor
-    window.setVerticalSyncEnabled(true);
-
-    // Disable key repeat, as we only want one key press to register
-    window.setKeyRepeatEnabled(false);
-
-#if defined(_WIN32)
-    // Set window titlebar icon (Windows-only)
-    // macOS doesn't have titlebar icons, GNU/Linux is DE-dependent
-    if (const auto e = core::platform::windows::set_titlebar_icon(window); e.has_value()) {
-        fmt::print(stderr, "Warning: {}\n", *e);
-    }
-#endif
-
-    // Request focus on the window
-    window.requestFocus();
+    // Create SFML window with sane defaults
+    auto window = core::graphics::window::create_window();
 
     // Load embedded NanumGothic font
     std::unique_ptr<sf::Font> font = core::graphics::font::load();  // Ownership is transferred here
@@ -104,23 +77,23 @@ void run()
         ui::components::base::Text(*font)};
     {
         constexpr float total_toggle_width = 4.f * 60.f;
-        const float start_x = static_cast<float>(window.getSize().x) - total_toggle_width - 10.f;
+        const float start_x = static_cast<float>(window->getSize().x) - total_toggle_width - 10.f;
         for (std::size_t i = 0; i < 4; ++i) {
             sf::RectangleShape btn(sf::Vector2f(50.f, 35.f));
-            btn.setOutlineColor(core::settings::colors::text::normal);
+            btn.setOutlineColor(core::graphics::settings::colors::text::normal);
             btn.setOutlineThickness(1.f);
             btn.setPosition(sf::Vector2f(start_x + static_cast<float>(i) * 60.f, 10.f));
             if (toggle_states.at(toggle_categories[i])) {
-                btn.setFillColor(core::settings::colors::category::enabled);
+                btn.setFillColor(core::graphics::settings::colors::category::enabled);
             }
             else {
-                btn.setFillColor(core::settings::colors::category::disabled);
+                btn.setFillColor(core::graphics::settings::colors::category::disabled);
             }
             toggle_buttons[i] = btn;
 
             ui::components::base::Text lbl(*font);
             lbl.setCharacterSize(14);
-            lbl.setFillColor(core::settings::colors::text::normal);
+            lbl.setFillColor(core::graphics::settings::colors::text::normal);
             lbl.setString(toggle_labels[i]);
             const sf::FloatRect b = lbl.getLocalBounds();
             lbl.setOrigin(sf::Vector2f(b.position.x + b.size.x / 2.f, b.position.y + b.size.y / 2.f));
@@ -180,11 +153,14 @@ void run()
 
     initialize_question(false);
 
+    // Request focus on the window
+    window->requestFocus();
+
     // Main loop
-    while (window.isOpen()) {
-        while (const std::optional event = window.pollEvent()) {
+    while (window->isOpen()) {
+        while (const std::optional event = window->pollEvent()) {
             if (event->is<sf::Event::Closed>()) {
-                window.close();
+                window->close();
             }
             else if (const sf::Event::MouseButtonReleased *mouseUp = event->getIf<sf::Event::MouseButtonReleased>()) {
                 if (mouseUp->button == sf::Mouse::Button::Left) {
@@ -198,10 +174,10 @@ void run()
                             const bool old = toggle_states.at(toggle_categories[i]);
                             toggle_states[toggle_categories[i]] = !old;
                             if (toggle_states.at(toggle_categories[i])) {
-                                toggle_buttons[i].setFillColor(core::settings::colors::category::enabled);
+                                toggle_buttons[i].setFillColor(core::graphics::settings::colors::category::enabled);
                             }
                             else {
-                                toggle_buttons[i].setFillColor(core::settings::colors::category::disabled);
+                                toggle_buttons[i].setFillColor(core::graphics::settings::colors::category::disabled);
                             }
                             initialize_question(true);
                             break;
@@ -307,20 +283,20 @@ void run()
         }
 
         // Draw everything
-        window.clear(core::settings::colors::background::normal);
-        question_circle.draw(window);
+        window->clear(core::graphics::settings::colors::background::normal);
+        question_circle.draw(*window);
         if (current_state == GameState::ShowingResult) {
-            memo_text.draw(window);
+            memo_text.draw(*window);
         }
         for (const auto &circle : answer_circles) {
-            circle.draw(window);
+            circle.draw(*window);
         }
-        percentage_display.draw(window);
+        percentage_display.draw(*window);
         for (std::size_t i = 0; i < toggle_buttons.size(); ++i) {
-            window.draw(toggle_buttons[i]);
-            window.draw(toggle_texts[i]);
+            window->draw(toggle_buttons[i]);
+            window->draw(toggle_texts[i]);
         }
-        window.display();
+        window->display();
     }
 }
 

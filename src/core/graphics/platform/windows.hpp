@@ -13,7 +13,7 @@
 
 #include <SFML/Window.hpp>
 
-namespace core::platform::windows {
+namespace core::graphics::platform::windows {
 
 /**
  * @brief Add the titlebar icon on Windows using the embedded icon data (must be embedded by CMake first).
@@ -24,6 +24,6 @@ namespace core::platform::windows {
  */
 std::optional<std::string> set_titlebar_icon(const sf::Window &window);
 
-}  // namespace core::platform::windows
+}  // namespace core::graphics::platform::windows
 
 #endif
