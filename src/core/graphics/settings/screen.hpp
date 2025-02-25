@@ -30,10 +30,10 @@ constexpr sf::Vector2f TOP_LEFT = {0.0f, 0.0f};
 //  */
 // constexpr sf::Vector2f TOP_CENTER = {WIDTH / 2.0f, 0.0f};
 
-// /**
-//  * @brief Top-right corner of the screen.
-//  */
-// constexpr sf::Vector2f TOP_RIGHT = {WIDTH, 0.0f};
+/**
+ * @brief Top-right corner of the screen.
+ */
+constexpr sf::Vector2f TOP_RIGHT = {WIDTH, 0.0f};
 
 // /**
 //  * @brief Center-left of the screen.

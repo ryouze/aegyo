@@ -56,53 +56,12 @@ void run()
 
     // Prepare vocabulary and interface items
     core::hangul::Vocabulary vocabulary_obj;
-    std::unordered_map<core::hangul::Category, bool> toggle_states = {
-        {core::hangul::Category::BasicVowel, true},
-        {core::hangul::Category::BasicConsonant, true},
-        {core::hangul::Category::DoubleConsonant, true},
-        {core::hangul::Category::CompoundVowel, true}};
 
-    const std::array<core::hangul::Category, 4> toggle_categories = {
-        core::hangul::Category::BasicVowel,
-        core::hangul::Category::BasicConsonant,
-        core::hangul::Category::DoubleConsonant,
-        core::hangul::Category::CompoundVowel};
-
-    std::array<sf::RectangleShape, 4> toggle_buttons;
-    std::array<core::shapes::Text, 4> toggle_texts = {
-        core::shapes::Text(*font),
-        core::shapes::Text(*font),
-        core::shapes::Text(*font),
-        core::shapes::Text(*font)};
-    {
-        // Prepare toggle buttons
-        const std::array<std::string, 4> toggle_labels = {"Vow", "Con", "DCon", "CompV"};
-
-        constexpr float total_toggle_width = 4.f * 60.f;
-        const float start_x = static_cast<float>(window->getSize().x) - total_toggle_width - 10.f;
-        for (std::size_t i = 0; i < 4; ++i) {
-            sf::RectangleShape btn(sf::Vector2f(50.f, 35.f));
-            btn.setOutlineColor(core::graphics::settings::colors::text::normal);
-            btn.setOutlineThickness(1.f);
-            btn.setPosition(sf::Vector2f(start_x + static_cast<float>(i) * 60.f, 10.f));
-            if (toggle_states.at(toggle_categories[i])) {
-                btn.setFillColor(core::graphics::settings::colors::category::enabled);
-            }
-            else {
-                btn.setFillColor(core::graphics::settings::colors::category::disabled);
-            }
-            toggle_buttons[i] = btn;
-
-            core::shapes::Text lbl(*font);
-            lbl.setCharacterSize(14);
-            lbl.setFillColor(core::graphics::settings::colors::text::normal);
-            lbl.setString(toggle_labels[i]);
-            const sf::FloatRect b = lbl.getLocalBounds();
-            lbl.setOrigin(sf::Vector2f(b.position.x + b.size.x / 2.f, b.position.y + b.size.y / 2.f));
-            lbl.setPosition(btn.getPosition() + sf::Vector2f(25.f, 17.5f));
-            toggle_texts[i] = lbl;
-        }
-    }
+    std::array<ui::widgets::CategoryLabel, 4> category_labels{
+        ui::widgets::CategoryLabel(*font, 0, "Vow", core::hangul::Category::BasicVowel),
+        ui::widgets::CategoryLabel(*font, 1, "Con", core::hangul::Category::BasicConsonant),
+        ui::widgets::CategoryLabel(*font, 2, "DCon", core::hangul::Category::DoubleConsonant),
+        ui::widgets::CategoryLabel(*font, 3, "CompV", core::hangul::Category::CompoundVowel)};
 
     ui::circles::Question question_circle(*font);
     ui::widgets::Memo memo_text(*font);
@@ -124,6 +83,13 @@ void run()
         if (reset_score) {
             percentage_display.reset();
         }
+        // TODO: Refactor this
+        std::unordered_map<core::hangul::Category, bool> toggle_states;
+        for (std::size_t i = 0; i < 4; ++i) {
+            const auto [category, enabled] = category_labels[i].get_toggle_state();
+            toggle_states[category] = enabled;
+        }
+
         const std::optional<core::hangul::Entry> maybe_entry =
             vocabulary_obj.get_random_enabled_entry(toggle_states);
         if (!maybe_entry.has_value()) {
@@ -170,17 +136,15 @@ void run()
                         static_cast<float>(mouseUp->position.x),
                         static_cast<float>(mouseUp->position.y));
                     // Handle toggles
-                    for (std::size_t i = 0; i < toggle_buttons.size(); ++i) {
-                        const sf::FloatRect tb = toggle_buttons[i].getGlobalBounds();
-                        if (sf::FloatRect(tb.position, tb.size).contains(pos)) {
-                            const bool old = toggle_states.at(toggle_categories[i]);
-                            toggle_states[toggle_categories[i]] = !old;
-                            if (toggle_states.at(toggle_categories[i])) {
-                                toggle_buttons[i].setFillColor(core::graphics::settings::colors::category::enabled);
-                            }
-                            else {
-                                toggle_buttons[i].setFillColor(core::graphics::settings::colors::category::disabled);
-                            }
+                    for (auto &button : category_labels) {
+                        if (button.is_hovering(pos)) {
+                            // Get the current state
+                            auto [category, cs] = button.get_toggle_state();
+
+                            // Toggle the state
+                            const bool new_state = !cs;
+                            button.set(new_state);
+
                             initialize_question(true);
                             break;
                         }
@@ -218,16 +182,13 @@ void run()
             }
             else if (const sf::Event::MouseMoved *mouseMove = event->getIf<sf::Event::MouseMoved>()) {
                 // Toggle button hover
-                for (std::size_t i = 0; i < toggle_buttons.size(); ++i) {
-                    const sf::FloatRect tb = toggle_buttons[i].getGlobalBounds();
-                    if (sf::FloatRect(tb.position, tb.size)
-                            .contains(sf::Vector2f(static_cast<float>(mouseMove->position.x),
-                                                   static_cast<float>(mouseMove->position.y)))) {
-                        toggle_buttons[i].setOutlineThickness(2.f);
-                    }
-                    else {
-                        toggle_buttons[i].setOutlineThickness(1.f);
-                    }
+                for (auto &button : category_labels) {
+                    const bool is_hovering = button.is_hovering(
+                        sf::Vector2f(
+                            static_cast<float>(mouseMove->position.x),
+                            static_cast<float>(mouseMove->position.y)));
+
+                    button.set_thickness(is_hovering);
                 }
                 // Answer circle hover
                 if (current_state == GameState::Waiting) {
@@ -294,9 +255,8 @@ void run()
             circle.draw(*window);
         }
         percentage_display.draw(*window);
-        for (std::size_t i = 0; i < toggle_buttons.size(); ++i) {
-            window->draw(toggle_buttons[i]);
-            window->draw(toggle_texts[i]);
+        for (const auto &label : category_labels) {
+            label.draw(*window);
         }
         window->display();
     }
