@@ -45,8 +45,8 @@ void Text::resetOrigin()
                          tb.position.y + tb.size.y / 2.f});
 }
 
-CircleWithText::CircleWithText(const sf::Font &font,
-                               const float radius)
+BaseCircleWithText::BaseCircleWithText(const sf::Font &font,
+                                       const float radius)
     : circle_(radius, 100),  // Use 100 points for a smooth circle
       text_(font)
 {
@@ -57,7 +57,7 @@ CircleWithText::CircleWithText(const sf::Font &font,
     this->text_.setFillColor(core::graphics::settings::colors::text::normal);
 }
 
-void CircleWithText::draw(sf::RenderWindow &window) const
+void BaseCircleWithText::draw(sf::RenderWindow &window) const
 {
     window.draw(this->circle_);
     window.draw(this->text_);

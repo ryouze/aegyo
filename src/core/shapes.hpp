@@ -51,17 +51,19 @@ class Text : public sf::Text {
  * @brief Class that represents a circle item with a text label inside it.
  *
  * On construction, the class initializes a shape and text pair, then sets the origin to the center of the circle instead of the top-left corner.
+ *
+ * @note This class is designed to be used as a base class for other shapes that require a text label inside them. Using it on its own is probably not very useful.
  */
-class CircleWithText {
+class BaseCircleWithText {
   public:
     /**
-     * @brief Construct a new CircleWithText object.
+     * @brief Construct a new BaseCircleWithText object.
      *
      * @param font Font to use for the text object.
      * @param radius Radius of the circle (e.g., "80.f").
      */
-    explicit CircleWithText(const sf::Font &font,
-                            const float radius);
+    explicit BaseCircleWithText(const sf::Font &font,
+                                const float radius);
 
     /**
      * @brief Draw the circle and text to the window.
@@ -70,7 +72,7 @@ class CircleWithText {
      */
     void draw(sf::RenderWindow &window) const;
 
-  protected:
+  protected:  // These will be available to derived classes
     /**
      * @brief Centered circle shape.
      */
