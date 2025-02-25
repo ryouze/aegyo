@@ -16,7 +16,8 @@ std::unique_ptr<sf::Font> load()
 {
     std::unique_ptr<sf::Font> font = std::make_unique<sf::Font>();
     // Load the embedded char array into the font object
-    if (!font->openFromMemory(core::graphics::assets::NanumGothic::data, core::graphics::assets::NanumGothic::size)) {
+    if (!font->openFromMemory(core::graphics::assets::NanumGothic::data,
+                              core::graphics::assets::NanumGothic::size)) {
         throw std::runtime_error("Failed to load embedded font data");
     }
     return font;

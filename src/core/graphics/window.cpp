@@ -46,7 +46,7 @@ std::unique_ptr<sf::RenderWindow> create_window()
         fmt::format("aegyo ({})", PROJECT_VERSION),
         sf::Style::Titlebar | sf::Style::Close,  // No resize, no fullscreen (too much work to handle, especially on macOS)
         sf::State::Windowed,
-        get_improved_context_settings());  // Enable 8x anti-aliasing
+        get_improved_context_settings());  // Enable anti-aliasing
 
     // Enable V-Sync to limit the frame rate to the refresh rate of the monitor
     window->setVerticalSyncEnabled(true);
