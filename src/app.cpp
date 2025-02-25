@@ -82,16 +82,18 @@ void run()
         if (reset_score) {
             percentage_display.reset();
         }
-        // TODO: Refactor this ugly hacky loop to fit old code
+
+        // Get the current state of the category toggles for all categories
         std::unordered_map<core::hangul::Category, bool> toggle_states;
-        for (std::size_t i = 0; i < 4; ++i) {
-            const auto [category, enabled] = category_labels[i].get_enabled_state();
+        for (const auto &label : category_labels) {
+            const auto [category, enabled] = label.get_enabled_state();
             toggle_states[category] = enabled;
         }
 
-        const std::optional<core::hangul::Entry> maybe_entry =
-            vocab.get_random_enabled_entry(toggle_states);
+        // Pick a random entry from the vocabulary
+        const std::optional<core::hangul::Entry> maybe_entry = vocab.get_random_enabled_entry(toggle_states);
         if (!maybe_entry.has_value()) {
+            // If no entries are available, set invalid state (unsure if this is even possible, but just in case)
             question_circle.set_invalid();
             current_state = GameState::NoEntries;
             for (auto &c : answer_circles) {
@@ -101,16 +103,15 @@ void run()
         }
         correct_entry = maybe_entry.value();
         is_hangul = core::math::rng::get_random_bool();
-        const std::vector<core::hangul::Entry> opts =
-            vocab.generate_enabled_question_options(correct_entry, toggle_states);
-        for (std::size_t i = 0; i < 4; ++i) {
+        const std::vector<core::hangul::Entry> opts = vocab.generate_enabled_question_options(correct_entry, toggle_states);
+        for (std::size_t i = 0; i < opts.size(); ++i) {
             if (opts[i].hangul == correct_entry.hangul) {
                 correct_index = i;
                 break;
             }
         }
         question_circle.set_question(is_hangul ? correct_entry.hangul : correct_entry.latin);
-        for (std::size_t i = 0; i < 4; ++i) {
+        for (std::size_t i = 0; i < opts.size(); ++i) {
             answer_circles[i].set_answer(is_hangul ? opts[i].latin : opts[i].hangul);
         }
         current_state = GameState::Waiting;
@@ -135,8 +136,8 @@ void run()
                     // Handle toggles
                     for (auto &button : category_labels) {
                         if (button.is_hovering(pos)) {
-                            button.set_enabled(!button.get_enabled());
-                            initialize_question(true);  // Always reset
+                            button.set_enabled(!button.get_enabled());  // Inverse of the original
+                            initialize_question(true);                  // Always reset
                             break;
                         }
                     }
@@ -171,17 +172,15 @@ void run()
                 }
             }
             else if (const sf::Event::MouseMoved *mouseMove = event->getIf<sf::Event::MouseMoved>()) {
+                const sf::Vector2f pos(
+                    static_cast<float>(mouseMove->position.x),
+                    static_cast<float>(mouseMove->position.y));
                 // Toggle button hover
                 for (auto &button : category_labels) {
-                    button.set_hover(sf::Vector2f(
-                        static_cast<float>(mouseMove->position.x),
-                        static_cast<float>(mouseMove->position.y)));
+                    button.set_hover(pos);
                 }
                 // Answer circle hover
                 if (current_state == GameState::Waiting) {
-                    const sf::Vector2f pos(
-                        static_cast<float>(mouseMove->position.x),
-                        static_cast<float>(mouseMove->position.y));
                     for (auto &circle : answer_circles) {
                         circle.toggle_hover_highlight(pos);
                     }
@@ -189,35 +188,35 @@ void run()
             }
             else if (const sf::Event::KeyPressed *keyPressed = event->getIf<sf::Event::KeyPressed>()) {
                 if (current_state == GameState::Waiting) {
-                    std::optional<std::size_t> sel;
+                    std::optional<std::size_t> selected_index;
                     switch (keyPressed->scancode) {
                     case sf::Keyboard::Scancode::Num1:
-                        sel = 0;
+                        selected_index = 0;
                         break;
                     case sf::Keyboard::Scancode::Num2:
-                        sel = 1;
+                        selected_index = 1;
                         break;
                     case sf::Keyboard::Scancode::Num3:
-                        sel = 2;
+                        selected_index = 2;
                         break;
                     case sf::Keyboard::Scancode::Num4:
-                        sel = 3;
+                        selected_index = 3;
                         break;
                     default:
                         break;
                     }
-                    if (sel.has_value()) {
-                        if (*sel == correct_index) {
+                    if (selected_index.has_value()) {
+                        if (*selected_index == correct_index) {
                             percentage_display.add_correct_answer();
-                            answer_circles[*sel].set_answer_highlight(ui::circles::AnswerHighlight::Correct);
+                            answer_circles[*selected_index].set_answer_highlight(ui::circles::AnswerHighlight::Correct);
                         }
                         else {
                             percentage_display.add_incorrect_answer();
-                            answer_circles[*sel].set_answer_highlight(ui::circles::AnswerHighlight::SelectedWrong);
+                            answer_circles[*selected_index].set_answer_highlight(ui::circles::AnswerHighlight::SelectedWrong);
                             answer_circles[correct_index].set_answer_highlight(ui::circles::AnswerHighlight::Correct);
                         }
                         for (std::size_t j = 0; j < 4; ++j) {
-                            if (j != *sel && j != correct_index) {
+                            if (j != *selected_index && j != correct_index) {
                                 answer_circles[j].set_answer_highlight(ui::circles::AnswerHighlight::Incorrect);
                             }
                         }
@@ -235,6 +234,7 @@ void run()
         window->clear(core::graphics::settings::colors::background::normal);
         question_circle.draw(*window);
         if (current_state == GameState::ShowingResult) {
+            // Only draw memo if showing result
             memo_text.draw(*window);
         }
         for (const auto &circle : answer_circles) {
