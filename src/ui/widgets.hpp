@@ -141,11 +141,12 @@ class CategoryButton {
                             const core::hangul::Category category,
                             const bool enabled = true);
 
-    // TODO: Get rid of this ugly function, was only needed for old code
-    std::tuple<core::hangul::Category, bool> get_toggle_state()
-    {
-        return std::make_tuple(this->category_, this->enabled_);
-    }
+    /**
+     * @brief Get the category and enabled state of the button.
+     *
+     * @return Tuple containing the category and enabled state (e.g., "{Category::CompoundVowel, true}").
+     */
+    [[nodiscard]] std::tuple<core::hangul::Category, bool> get_enabled_state() const;
 
     /**
      * @brief Get the state of the category button (enabled or disabled).

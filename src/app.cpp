@@ -86,7 +86,7 @@ void run()
         // TODO: Refactor this ugly hacky loop to fit old code
         std::unordered_map<core::hangul::Category, bool> toggle_states;
         for (std::size_t i = 0; i < 4; ++i) {
-            const auto [category, enabled] = category_labels[i].get_toggle_state();
+            const auto [category, enabled] = category_labels[i].get_enabled_state();
             toggle_states[category] = enabled;
         }
 

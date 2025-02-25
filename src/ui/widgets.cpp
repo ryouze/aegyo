@@ -124,12 +124,15 @@ CategoryButton::CategoryButton(const sf::Font &font,
     this->text_.setPosition(this->button_.getPosition() + button_size / 2.f);
 }
 
-
+std::tuple<core::hangul::Category, bool> CategoryButton::get_enabled_state() const
+{
+    return std::make_tuple(this->category_, this->enabled_);
+}
 
 bool CategoryButton::get_enabled() const
-    {
-        return this->enabled_;
-    }
+{
+    return this->enabled_;
+}
 
 void CategoryButton::set_enabled(const bool enabled)
 {
