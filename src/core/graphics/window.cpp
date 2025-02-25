@@ -57,7 +57,7 @@ std::unique_ptr<sf::RenderWindow> create_window()
 #if defined(_WIN32)
     // Set window titlebar icon (Windows-only)
     // macOS doesn't have titlebar icons, GNU/Linux is DE-dependent
-    if (const auto e = core::platform::windows::set_titlebar_icon(*window); e.has_value()) {
+    if (const auto e = core::graphics::platform::windows::set_titlebar_icon(*window); e.has_value()) {
         fmt::print(stderr, "Warning: {}\n", *e);
     }
 #endif
