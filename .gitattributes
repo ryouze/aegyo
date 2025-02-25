@@ -1,5 +1,5 @@
 # Ignore all raw assets
-src/core/assets/raw/* linguist-vendored
+src/core/graphics/assets/* linguist-vendored
 
 # Ignore all Python files
 *.py linguist-vendored
