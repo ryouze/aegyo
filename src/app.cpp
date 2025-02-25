@@ -149,16 +149,16 @@ void run()
                             if (answer_circles[i].is_hovering(pos)) {
                                 if (i == correct_index) {
                                     percentage_display.add_correct_answer();
-                                    answer_circles[i].set_correct_answer_highlight();
+                                    answer_circles[i].set_answer_highlight(ui::circles::AnswerHighlight::Correct);
                                 }
                                 else {
                                     percentage_display.add_incorrect_answer();
-                                    answer_circles[i].set_selected_wrong_answer_highlight();
-                                    answer_circles[correct_index].set_correct_answer_highlight();
+                                    answer_circles[i].set_answer_highlight(ui::circles::AnswerHighlight::SelectedWrong);
+                                    answer_circles[correct_index].set_answer_highlight(ui::circles::AnswerHighlight::Correct);
                                 }
                                 for (std::size_t j = 0; j < 4; ++j) {
                                     if (j != i && j != correct_index) {
-                                        answer_circles[j].set_incorrect_answer_highlight();
+                                        answer_circles[j].set_answer_highlight(ui::circles::AnswerHighlight::Incorrect);
                                     }
                                 }
                                 memo_text.set(correct_entry.memo);
@@ -213,16 +213,16 @@ void run()
                     if (sel.has_value()) {
                         if (*sel == correct_index) {
                             percentage_display.add_correct_answer();
-                            answer_circles[*sel].set_correct_answer_highlight();
+                            answer_circles[*sel].set_answer_highlight(ui::circles::AnswerHighlight::Correct);
                         }
                         else {
                             percentage_display.add_incorrect_answer();
-                            answer_circles[*sel].set_selected_wrong_answer_highlight();
-                            answer_circles[correct_index].set_correct_answer_highlight();
+                            answer_circles[*sel].set_answer_highlight(ui::circles::AnswerHighlight::SelectedWrong);
+                            answer_circles[correct_index].set_answer_highlight(ui::circles::AnswerHighlight::Correct);
                         }
                         for (std::size_t j = 0; j < 4; ++j) {
                             if (j != *sel && j != correct_index) {
-                                answer_circles[j].set_incorrect_answer_highlight();
+                                answer_circles[j].set_answer_highlight(ui::circles::AnswerHighlight::Incorrect);
                             }
                         }
                         memo_text.set(correct_entry.memo);

@@ -71,6 +71,32 @@ enum class AnswerPosition {
 };
 
 /**
+ * @brief Enum that that maps to the highlight color of the answer circle.
+ */
+enum class AnswerHighlight {
+    /**
+     * @brief Correct answer (green).
+     *
+     * Whether the user clicked on the correct answer or not, the correct answer will always be highlighted in green.
+     */
+    Correct,
+
+    /**
+     * @brief Selected wrong answer (orange).
+     *
+     * If the user clicked on the wrong answer, the wrong answer will be highlighted in orange for visual feedback, but it is basically the same as Incorrect.
+     */
+    SelectedWrong,
+
+    /**
+     * @brief Incorrect answer (red).
+     *
+     * Any remaining incorrect answers will be highlighted in red.
+     */
+    Incorrect,
+};
+
+/**
  * @brief Class that represents one of the four answer circles.
  *
  * On construction, the class positions itself and sets up its appearance.
@@ -123,19 +149,16 @@ class Answer : public core::shapes::BaseCircleWithText {
     void toggle_hover_highlight(const sf::Vector2f mouse_pos);
 
     /**
-     * @brief Set the highlight of the answer circle to indicate the correct answer (green).
+     * @brief Set the highlight of the answer circle to indicate the correct answer.
+     *
+     * The following colors are used:
+     * - Correct: Green.
+     * - Incorrect: Red.
+     * - Wrong: Orange.
+     *
+     * @param highlight Highlight color to set (e.g., "AnswerHighlight::Correct").
      */
-    void set_correct_answer_highlight();
-
-    /**
-     * @brief Set the highlight of the answer circle to indicate an incorrect answer (red).
-     */
-    void set_incorrect_answer_highlight();
-
-    /**
-     * @brief Set the highlight of the answer circle to indicate a selected wrong answer (orange).
-     */
-    void set_selected_wrong_answer_highlight();
+    void set_answer_highlight(const AnswerHighlight highlight);
 };
 
 }  // namespace ui::circles

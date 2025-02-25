@@ -103,19 +103,21 @@ void Answer::toggle_hover_highlight(const sf::Vector2f mouse_pos)
     }
 }
 
-void Answer::set_correct_answer_highlight()
+void Answer::set_answer_highlight(const AnswerHighlight highlight)
 {
-    this->circle_.setFillColor(core::graphics::settings::colors::circle::correct);
-}
-
-void Answer::set_incorrect_answer_highlight()
-{
-    this->circle_.setFillColor(core::graphics::settings::colors::circle::incorrect_unselected);
-}
-
-void Answer::set_selected_wrong_answer_highlight()
-{
-    this->circle_.setFillColor(core::graphics::settings::colors::circle::incorrect_selected);
+    switch (highlight) {
+    case AnswerHighlight::Correct:
+        this->circle_.setFillColor(core::graphics::settings::colors::circle::correct);
+        break;
+    case AnswerHighlight::SelectedWrong:
+        this->circle_.setFillColor(core::graphics::settings::colors::circle::incorrect_selected);
+        break;
+    case AnswerHighlight::Incorrect:
+        this->circle_.setFillColor(core::graphics::settings::colors::circle::incorrect_unselected);
+        break;
+    default:
+        throw std::runtime_error("Invalid AnswerHighlight");
+    }
 }
 
 }  // namespace ui::circles
