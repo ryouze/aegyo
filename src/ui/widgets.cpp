@@ -2,7 +2,9 @@
  * @file widets.cpp
  */
 
-#include <string>  // for std::string
+#include <cstddef>  // for std::size_t
+#include <string>   // for std::string
+#include <tuple>    // for std::tuple, std::make_tuple
 
 #include <SFML/Graphics.hpp>
 

@@ -6,7 +6,6 @@
 #include <cstddef>        // for std::size_t
 #include <memory>         // for std::unique_ptr
 #include <optional>       // for std::optional
-#include <string>         // for std::string
 #include <unordered_map>  // for std::unordered_map
 #include <vector>         // for std::vector
 

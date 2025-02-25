@@ -8,6 +8,7 @@
 
 #include <cstddef>  // for std::size_t
 #include <string>   // for std::string
+#include <tuple>    // for std::tuple
 
 #include <SFML/Graphics.hpp>
 #include <fmt/core.h>
