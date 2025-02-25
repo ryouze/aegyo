@@ -80,10 +80,12 @@ class Answer : public core::shapes::BaseCircleWithText {
     /**
      * @brief Construct a new Answer object.
      *
+     * Each answer should be positioned in one of the four corners of the screen, with no repetition. The order doesn't matter.
+     *
      * @param font Font to use for the answer circle.
      * @param pos Position of the answer circle (e.g., AnswerPosition::TopLeft).
      *
-     * Each answer should be positioned in one of the four corners of the screen, with no repetition. The order doesn't matter.
+     * @throws std::runtime_error if the position is invalid.
      */
     explicit Answer(const sf::Font &font,
                     const AnswerPosition pos);
