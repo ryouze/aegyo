@@ -22,9 +22,9 @@ class Text : public sf::Text {
     /**
      * @brief Set the string's text.
      *
-     * To ensure unicode support, the string is converted to an SFML string before setting.
+     * The provided UTF-8 string is converted to an SFML string before setting to ensure that unicode characters are displayed correctly.
      *
-     * @param utf8_str String to set (e.g., "こんにちは").
+     * @param utf8_str UTF-8 string to set (e.g., "こんにちは").
      */
     void setString(const std::string &utf8_str);
 
@@ -52,16 +52,16 @@ class Text : public sf::Text {
  *
  * On construction, the class initializes a shape and text pair, then sets the origin to the center of the circle instead of the top-left corner.
  */
-class TextInCircle {
+class CircleWithText {
   public:
     /**
-     * @brief Construct a new TextInCircle object.
+     * @brief Construct a new CircleWithText object.
      *
      * @param font Font to use for the text object.
      * @param radius Radius of the circle (e.g., "80.f").
      */
-    explicit TextInCircle(const sf::Font &font,
-                          const float radius);
+    explicit CircleWithText(const sf::Font &font,
+                            const float radius);
 
     /**
      * @brief Draw the circle and text to the window.

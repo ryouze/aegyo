@@ -14,7 +14,7 @@
 namespace ui::circles {
 
 Question::Question(const sf::Font &font)
-    : core::shapes::TextInCircle(font, 80.f)
+    : core::shapes::CircleWithText(font, 80.f)
 {
     // Position
     constexpr sf::Vector2f position = {core::graphics::settings::screen::CENTER.x,
@@ -45,7 +45,7 @@ void Question::set_question(const std::string &latin_or_hangul)
 
 Answer::Answer(const sf::Font &font,
                const AnswerPosition pos)
-    : core::shapes::TextInCircle(font, 60.f)
+    : core::shapes::CircleWithText(font, 60.f)
 {
     // Position
     sf::Vector2f position;

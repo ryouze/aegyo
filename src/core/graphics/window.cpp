@@ -38,7 +38,7 @@ namespace {
 
 }  // namespace
 
-std::unique_ptr<sf::RenderWindow> create_window()
+std::unique_ptr<sf::RenderWindow> create()
 {
     // Create a new SFML window
     std::unique_ptr<sf::RenderWindow> window = std::make_unique<sf::RenderWindow>(
@@ -51,7 +51,7 @@ std::unique_ptr<sf::RenderWindow> create_window()
     // Enable V-Sync to limit the frame rate to the refresh rate of the monitor
     window->setVerticalSyncEnabled(true);
 
-    // Disable key repeat, as we only want one key press to register
+    // Disable key repeat, as we want only one key press to register at a time
     window->setKeyRepeatEnabled(false);
 
 #if defined(_WIN32)

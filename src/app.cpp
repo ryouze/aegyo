@@ -49,10 +49,10 @@ enum class GameState {
 void run()
 {
     // Create SFML window with sane defaults
-    auto window = core::graphics::window::create_window();
+    std::unique_ptr<sf::RenderWindow> window = core::graphics::window::create();
 
     // Load embedded NanumGothic font
-    std::unique_ptr<sf::Font> font = core::graphics::font::load();  // Ownership is transferred here
+    std::unique_ptr<sf::Font> font = core::graphics::font::load();
 
     // Prepare vocabulary and interface items
     core::hangul::Vocabulary vocabulary_obj;
@@ -62,7 +62,6 @@ void run()
         {core::hangul::Category::DoubleConsonant, true},
         {core::hangul::Category::CompoundVowel, true}};
 
-    const std::array<std::string, 4> toggle_labels = {"Vow", "Con", "DCon", "CompV"};
     const std::array<core::hangul::Category, 4> toggle_categories = {
         core::hangul::Category::BasicVowel,
         core::hangul::Category::BasicConsonant,
@@ -76,6 +75,9 @@ void run()
         core::shapes::Text(*font),
         core::shapes::Text(*font)};
     {
+        // Prepare toggle buttons
+        const std::array<std::string, 4> toggle_labels = {"Vow", "Con", "DCon", "CompV"};
+
         constexpr float total_toggle_width = 4.f * 60.f;
         const float start_x = static_cast<float>(window->getSize().x) - total_toggle_width - 10.f;
         for (std::size_t i = 0; i < 4; ++i) {

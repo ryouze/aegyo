@@ -19,7 +19,7 @@ namespace ui::circles {
  *
  * On construction, the class positions itself and sets up its appearance.
  */
-class Question : public core::shapes::TextInCircle {
+class Question : public core::shapes::CircleWithText {
   public:
     /**
      * @brief Construct a new Question object.
@@ -75,7 +75,7 @@ enum class AnswerPosition {
  *
  * On construction, the class positions itself and sets up its appearance.
  */
-class Answer : public core::shapes::TextInCircle {
+class Answer : public core::shapes::CircleWithText {
   public:
     /**
      * @brief Construct a new Answer object.

@@ -23,8 +23,8 @@ namespace core::graphics::window {
  * - Disabling key repeat
  * - Setting the window icon (Windows-only)
  *
- * @return Pointer to the created window. The ownership is transferred to the caller.
+ * @return Pointer to the created window. The ownership is transferred to the caller. The caller is also responsible for adding an event loop and rendering logic.
  */
-[[nodiscard]] std::unique_ptr<sf::RenderWindow> create_window();
+[[nodiscard]] std::unique_ptr<sf::RenderWindow> create();
 
 }  // namespace core::graphics::window
