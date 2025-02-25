@@ -41,5 +41,5 @@ function(fetch_and_link_external_dependencies target)
     target_link_libraries(${target} PUBLIC SFML::Main)
   endif()
 
-  message(STATUS "Linked dependencies 'fmt' and 'sfml' to target '${target}'.")
+  message(STATUS "Linked dependencies 'fmt' and 'SFML' to target '${target}'.")
 endfunction()

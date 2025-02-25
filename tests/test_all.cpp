@@ -15,8 +15,8 @@
 #include <SFML/Graphics.hpp>
 #include <fmt/core.h>
 
-#include "core/assets/raw/NanumGothic.hpp"
-#include "core/rng.hpp"
+#include "core/assets/NanumGothic.hpp"
+#include "core/math/rng.hpp"
 #include "modules/vocabulary.hpp"
 #include "ui/components/base.hpp"
 #if defined(_WIN32)

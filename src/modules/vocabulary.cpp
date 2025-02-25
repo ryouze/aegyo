@@ -11,7 +11,7 @@
 
 #include <fmt/core.h>
 
-#include "core/rng.hpp"
+#include "core/math/rng.hpp"
 #include "vocabulary.hpp"
 
 namespace modules::vocabulary {

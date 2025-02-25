@@ -14,8 +14,8 @@
 #include <fmt/core.h>
 
 #include "app.hpp"
-#include "core/assets/raw/NanumGothic.hpp"
-#include "core/rng.hpp"
+#include "core/assets/NanumGothic.hpp"
+#include "core/math/rng.hpp"
 #include "core/settings/antialiasing.hpp"
 #include "core/settings/colors.hpp"
 #include "core/settings/screen.hpp"
