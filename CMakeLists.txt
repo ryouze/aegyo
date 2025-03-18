@@ -80,7 +80,7 @@ include_directories(${CMAKE_BINARY_DIR}/generated)
 
 # Add the main library target
 add_library(${PROJECT_NAME}-lib STATIC
-  # find src -name "*.cpp" | sort
+  # find src -name "*.cpp" ! -name "main.cpp" | sort
   src/app.cpp
   src/core/graphics/font.cpp
   src/core/graphics/platform/windows.cpp
@@ -88,7 +88,6 @@ add_library(${PROJECT_NAME}-lib STATIC
   src/core/hangul.cpp
   src/core/math/rng.cpp
   src/core/shapes.cpp
-  src/main.cpp
   src/ui/circles.cpp
   src/ui/widgets.cpp
 )
