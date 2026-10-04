@@ -38,7 +38,7 @@
     <key>NSHumanReadableCopyright</key>
     <string>@MACOSX_COPYRIGHT@</string>
 
-    <!-- Disable high resolution mode on a Mac with a Retina display. -->
+    <!-- Enable high-resolution rendering on Retina displays. -->
     <key>NSHighResolutionCapable</key>
     <true/>
 </dict>

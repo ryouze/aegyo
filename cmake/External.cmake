@@ -23,7 +23,7 @@ function(fetch_and_link_external_dependencies target)
   set(SFML_BUILD_NETWORK OFF)
   FetchContent_Declare(
     sfml
-    URL https://github.com/SFML/SFML/archive/refs/tags/3.0.0.zip
+    URL https://github.com/SFML/SFML/archive/refs/tags/3.1.0.tar.gz
     DOWNLOAD_EXTRACT_TIMESTAMP TRUE
     EXCLUDE_FROM_ALL
     SYSTEM
